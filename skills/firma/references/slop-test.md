@@ -9,13 +9,20 @@ Cualquier eje <3 dispara un pase de revisión ANTES de los gates. Dos pases es n
 | Eje | Qué se puntúa |
 |---|---|
 | **P** Filosofía | ¿Hay un *por qué*, una posición que la página toma? ¿O es solo un layout? |
-| **H** Jerarquía | ¿En 2 segundos se distingue primario/secundario/terciario? |
-| **E** Ejecución | ¿Los detalles (rules, acento, contraste, focus, alineación) están en spec? |
-| **S** Especificidad | ¿Parece hecho para ESTE brief o para cualquiera? |
-| **R** Restraint | ¿Se sacó todo lo que no se gana su lugar? |
+| **J** Jerarquía | ¿En 2 segundos se distingue primario/secundario/terciario? |
+| **E** Ejecución | ¿Los detalles (rules, acento, contraste, focus, alineación) están en spec, **y** se sacó todo lo que no se gana su lugar? Restraint no es un eje aparte: es una propiedad de la ejecución, y una página con decoración sobrante está mal ejecutada, no "menos sobria". |
+| **F** Firma | ¿Existe el UN artefacto o gesto que no se puede pegar en otro sitio? Este eje absorbe la especificidad: una página con firma real es específica de ESTE brief por construcción, y una sin firma es genérica aunque el copy nombre al cliente. |
+| **H** Honestidad | ¿Cada número, quote, logo, screenshot y contador de la página corresponde a algo que existe y es verificable? |
 | **V** Variedad | ¿Comparte fingerprint estructural con un output anterior del proyecto? (distancia estructural, no visual: un color-swap no es variedad, y dos formas de la misma familia de macro tampoco) |
 
-Registrar en el stamp: `critique: P5 H4 E5 S4 R5 V5`.
+**Dos ejes no admiten nota intermedia y no dependen del umbral <3:**
+
+- **H Honestidad es 5 o es fail.** Un solo dato sin respaldo la deja en 1 y **bloquea la entrega**, no dispara un pase de revisión. Es exposición legal (SERNAC en Chile), no una dimensión de calidad que se pueda promediar con las otras.
+- **F Firma bajo 3 significa que no hay build.** No se entrega una página sin firma con la nota puesta como advertencia; se le construye la firma o se cambia de macroestructura.
+
+Los otros cuatro sí se puntúan como escala: bajo 3, pase de revisión y se re-corre.
+
+Registrar en el stamp: `critique: P5 J4 E5 F4 H5 V5`.
 
 ## Gates
 

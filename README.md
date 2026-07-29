@@ -26,7 +26,7 @@ Plus the rule the skill is named after: **nothing ships without its firma**, the
 | `references/layout.md` | Space, asymmetry, depth, and the grid-alignment check |
 | `references/motion.md` | Motion budget, named easings, the CSS ticker recipe |
 | `references/copy.md` | Spanish neutral copy rules and the voseo blacklist |
-| `references/slop-test.md` | ~60 gates plus the six-axis self-critique, run before every handoff |
+| `references/slop-test.md` | ~60 gates plus a six-axis self-critique, run before every handoff |
 | `references/audit.md` | Scoring rubric for the `audit` and `redesign` verbs |
 | `scripts/guard.mjs` | Deterministic linter for the hard rules. Node, zero dependencies |
 
@@ -95,7 +95,7 @@ It catches contrast, grey-on-colour, nested cards, glow shadows, AI palettes and
 
 ## Provenance
 
-`firma` is a derivative work and says so. The six-axis self-critique, most of the gate battery, the rotation mechanism and the OKLCH engine come from [hallmark](https://github.com/Nutlope/hallmark) (MIT), along with the idea of picking a named page shape before writing code. The shape catalogue itself was re-derived here: 18 shapes in 10 families, with near-duplicates merged and the family grouping added to close a hole in the rotation rule. Brief inference and audit-first come from [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). The execution-defect lens comes from pols-antislop. Full breakdown, including the two hallmark rules this skill deliberately overrides, in [`NOTICE.md`](NOTICE.md).
+`firma` is a derivative work and says so. The shape of the six-axis self-critique, most of the gate battery, the rotation mechanism and the OKLCH engine come from [hallmark](https://github.com/Nutlope/hallmark) (MIT), along with the idea of picking a named page shape before writing code. The shape catalogue itself was re-derived here: 18 shapes in 10 families, with near-duplicates merged and the family grouping added to close a hole in the rotation rule. Brief inference and audit-first come from [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). The execution-defect lens comes from pols-antislop. Full breakdown, including the two hallmark rules this skill deliberately overrides, in [`NOTICE.md`](NOTICE.md).
 
 MIT licensed. Built by [Santiago Moya](https://github.com/stgomoyaa).
 
@@ -174,6 +174,6 @@ Caza contraste, gris sobre color, cards anidadas, sombras de glow, paletas IA y 
 
 ## Procedencia
 
-`firma` es un trabajo derivado y lo dice. La autocrítica de 6 ejes, la mayor parte de la batería de gates, el mecanismo de rotación y el motor OKLCH vienen de [hallmark](https://github.com/Nutlope/hallmark) (MIT), junto con la idea de elegir una forma de página nombrada antes de escribir código. El catálogo de formas se re-derivó acá: 18 formas en 10 familias, con los casi-duplicados fusionados y la agrupación por familia agregada para tapar un hueco de la regla de rotación. La inferencia de brief y el audit-first, de [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). La lente de defectos de ejecución, de pols-antislop. Desglose completo, incluidas las dos reglas de hallmark que esta skill anula a propósito, en [`NOTICE.md`](NOTICE.md).
+`firma` es un trabajo derivado y lo dice. La forma de la autocrítica de 6 ejes, la mayor parte de la batería de gates, el mecanismo de rotación y el motor OKLCH vienen de [hallmark](https://github.com/Nutlope/hallmark) (MIT), junto con la idea de elegir una forma de página nombrada antes de escribir código. El catálogo de formas se re-derivó acá: 18 formas en 10 familias, con los casi-duplicados fusionados y la agrupación por familia agregada para tapar un hueco de la regla de rotación. La inferencia de brief y el audit-first, de [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). La lente de defectos de ejecución, de pols-antislop. Desglose completo, incluidas las dos reglas de hallmark que esta skill anula a propósito, en [`NOTICE.md`](NOTICE.md).
 
 Licencia MIT. Hecho por [Santiago Moya](https://github.com/stgomoyaa).

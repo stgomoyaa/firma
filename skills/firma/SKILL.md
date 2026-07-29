@@ -127,12 +127,12 @@ La **firma** es obligatoria: el UN artefacto/gesto que hace que esta página no 
 - Todo elemento interactivo con sus 8 estados (default/hover/focus-visible/active/disabled/loading/error/success). Focus ring instantáneo, nunca animado.
 - Responsive verificado a 320/375/768/1280: sin scroll horizontal (`overflow-x: clip` en html y body), CTAs y nav links en UNA línea, grids con imágenes usan `minmax(0, 1fr)`.
 - Copy por `references/copy.md`: específico, honesto, en español neutro chileno.
-- **Stamp** en la primera línea del CSS: `/* firma · macro: <n> · tema: <n> · direccion: <d> · critique: P#H#E#S#R#V# */` y append a `.firma/log.json`.
+- **Stamp** en la primera línea del CSS: `/* firma · macro: <n> · tema: <n> · direccion: <d> · critique: P#J#E#F#H#V# */` y append a `.firma/log.json`.
 - Nunca clobberear el stylesheet global existente; append-only bajo las directivas del framework.
 
 ### 8 · Gates + autocrítica (antes de entregar)
 
-1. **Autocrítica en 6 ejes** (1-5): Filosofía · Jerarquía · Ejecución · Especificidad · Restraint · Variedad. Cualquier eje <3 → pase de revisión antes de los gates.
+1. **Autocrítica en 6 ejes** (1-5): Filosofía · Jerarquía · Ejecución · **Firma** · **Honestidad** · Variedad. Cualquier eje <3 → pase de revisión antes de los gates, con dos excepciones que no se promedian: Honestidad es 5 o bloquea la entrega, y Firma bajo 3 significa que no hay build. Detalle en `references/slop-test.md`.
 2. Correr los **gates de `references/slop-test.md`** (los ~50 heredados de hallmark, consolidados, + los propios: em-dash, voseo, alineación de grid/whitespace huérfano, orbes/grilla-radial, eyebrows, honestidad). Toda respuesta debe ser **no**. Si un gate falla, se arregla; no se shippea slop.
 3. Verificación visual real cuando haya browser disponible (screenshot a 2-3 anchos): centrado óptico, nada cortado por un clip/notch, columnas paralelas alineadas.
 
