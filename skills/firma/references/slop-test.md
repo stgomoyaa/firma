@@ -19,6 +19,26 @@ Registrar en el stamp: `critique: P5 H4 E5 S4 R5 V5`.
 
 ## Gates
 
+### Gate 0 · Chequeo determinista (correr ANTES de la lista a mano)
+
+Los gates de abajo los evalúa el mismo modelo que escribió la página, así que son auto-reportados. Antes de leerlos, correr los dos linters que no dependen de eso. Si algo sale acá, se arregla y se vuelve a correr; no se pasa a los gates a mano con errores pendientes.
+
+```bash
+# 1. reglas duras propias: voseo, em-dash, métricas sin confirmar, negros/grises puros, tokens sueltos
+node <ruta-de-la-skill>/scripts/guard.mjs <ruta>
+
+# 2. capa genérica de ejecución: contraste, gris-sobre-color, cards anidadas, glow, paletas IA, eyebrow chips
+npx impeccable detect <ruta>
+```
+
+Dos reglas de impeccable chocan **a propósito** con esta skill y se ignoran en trabajo dark-técnico (el ticker CSS y la display face son prescripciones, no defectos). Dejar en `.impeccable/config.json` del proyecto:
+
+```json
+{ "detector": { "ignoreRules": ["marquee"] } }
+```
+
+Lo que impeccable NO ve y el guard sí: voseo, métricas fabricadas, y em-dashes con tolerancia cero (su regla es *advisory* y necesita 8 ocurrencias para gatillar). Lo que el guard NO ve y impeccable sí: todo lo que necesita DOM o AST (contraste calculado, anidamiento real de cards, contenido invisible en reposo). Los dos, no uno.
+
 ### Reglas duras (no negociables)
 
 1. ¿Hay voseo argentino en algún texto visible (vos/tenés/querés/agendá/mirá…)? Buscar imperativos en `-á/-é/-í` tónica y presentes en `-és/-ás/-ís`.

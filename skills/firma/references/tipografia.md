@@ -16,6 +16,7 @@ La tipografía carga el diseño. Si el tipo está mal, nada más importa.
 - **Sans:** Inter, Roboto, Open Sans, Lato, Poppins, Nunito, Montserrat, Raleway, Work Sans, DM Sans, Sora, Syne, Archivo, Figtree, Gabarito, system-ui como único stack.
 - **Serif (vetadas como default):** **Fraunces**, **Instrument Serif** (las dos favoritas de la IA), Playfair Display, Cormorant Garamond, Lora, Merriweather, y los didones (Bodoni/Didot) como reflejo de "lujo".
 - **Mono:** Courier New, Consolas default, mono del sistema como voz de marca.
+- **Grotescas saturadas:** **Space Grotesk** y **Geist** salen del slot default. Space Grotesk se volvió la "alternativa tasteful" de todo lo técnico y los linters deterministas ya la marcan junto a Inter; queda disponible solo por rotación explícita, nunca como primer pick de un tema.
 
 Excepciones: si el usuario la pide por nombre, se usa. Inter Tight solo como body de apoyo en temas técnicos, nunca display. Una serif vetada puede usarse si hay justificación de marca explícita, nunca por reflejo.
 
@@ -34,7 +35,7 @@ Excepciones: si el usuario la pide por nombre, se usa. Inter Tight solo como bod
 | **Sentient** | Fontshare | Serif variable de contraste suave | Editorial soft, atmosférico |
 | **Erode** | Fontshare | Serif distressed, hand-set | Riso, táctil, brand-y |
 | **Bricolage Grotesque** | Google | Sans display variable, pesos brutos | Brutal, playful, personalidad |
-| **Space Grotesk** | Google | Grotesca geométrica con quirk | Dark-técnico, brutalist |
+| **Space Grotesk** | Google | Grotesca geométrica con quirk | Solo por rotación explícita, ver veto abajo |
 | **Familjen Grotesk** | Google | Grotesca cálida con carácter | Editorial-sans, producto con voz |
 | **Cabinet Grotesk** | Fontshare | Grotesca display, 9 pesos | Editorial display, magazine |
 | **General Sans** | Fontshare | Grotesca moderna | Minimal-moderno |
@@ -59,7 +60,7 @@ Geist Mono · JetBrains Mono · IBM Plex Mono · Commit Mono · Space Mono (retr
 | Dirección | Display | Body | Outlier |
 | --- | --- | --- | --- |
 | **editorial-sobrio** | Newsreader · EB Garamond · Cabinet Grotesk · Familjen Grotesk · Erode | Switzer · IBM Plex Sans · Source Serif 4 | JetBrains Mono · Geist Mono |
-| **dark-técnico** | Space Grotesk (700) · JetBrains Mono · Tomorrow · Commit Mono | Geist · Switzer · IBM Plex Sans | mono de la display o Cabinet (wordmark) |
+| **dark-técnico** | Tomorrow (700) · Switzer (700) · JetBrains Mono · Commit Mono | Geist · IBM Plex Sans | mono de la display o Cabinet (wordmark) |
 | **minimal-moderno** | Geist (700) · General Sans · Familjen Grotesk | Geist · Switzer | Geist Mono |
 | **cálido-playful** | Bricolage Grotesque · Satoshi · Sentient | Satoshi · Geist · Crimson Pro | Space Mono |
 | **brutal / poster** | Bricolage (800) · Anton · Tanker · Big Shoulders | Geist · Switzer | Space Grotesk (numerales) |

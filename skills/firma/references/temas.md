@@ -12,7 +12,7 @@ Un tema también sugiere fuentes (ver `tipografia.md` para alternativas dentro d
 
 ### 1 · Pizarra — dark cálido de alto contraste, chaflán y ticker
 
-Ejes: **dark · grotesk · cálido (ámbar 75°)**. El flagship dark-técnico: carbón cálido (no azul-slate), acento ámbar-fósforo escaso, geometría con chaflán (`clip-path: polygon(...)` cortando UNA esquina de cards/CTAs como firma), UN ticker CSS de datos reales. Display Space Grotesk 700 o Tomorrow; body Switzer; mono JetBrains Mono.
+Ejes: **dark · grotesk · cálido (ámbar 75°)**. El flagship dark-técnico: carbón cálido (no azul-slate), acento ámbar-fósforo escaso, geometría con chaflán (`clip-path: polygon(...)` cortando UNA esquina de cards/CTAs como firma), UN ticker CSS de datos reales. Display: rotar entre **Tomorrow** (700) y **Switzer** (700); body Switzer 400; mono JetBrains Mono. Space Grotesk queda fuera del slot default por saturación (ver `tipografia.md`).
 
 ```css
 :root {
@@ -119,7 +119,7 @@ Ejes: **light · serif-clásica · cálido (28°)**. Masthead, columnas densas, 
 
 ### 7 · Cobalto — light técnico con banda grafito (valores reales de hallmark)
 
-Ejes: **light · grotesk · frío (256°)**. Paper frío de ingeniería, cobalto eléctrico como señal (nunca inundación), UNA banda oscura grafito por página (quickstart/demo) que da ritmo light → dark → light. Space Grotesk + mono.
+Ejes: **light · grotesk · frío (256°)**. Paper frío de ingeniería, cobalto eléctrico como señal (nunca inundación), UNA banda oscura grafito por página (quickstart/demo) que da ritmo light → dark → light. Display Tomorrow o Switzer + mono.
 
 ```css
 :root {

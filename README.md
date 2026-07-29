@@ -28,6 +28,7 @@ Plus the rule the skill is named after: **nothing ships without its firma**, the
 | `references/copy.md` | Spanish neutral copy rules and the voseo blacklist |
 | `references/slop-test.md` | ~60 gates plus the six-axis self-critique, run before every handoff |
 | `references/audit.md` | Scoring rubric for the `audit` and `redesign` verbs |
+| `scripts/guard.mjs` | Deterministic linter for the hard rules. Node, zero dependencies |
 
 ## Install
 
@@ -67,18 +68,29 @@ The skill is written to be read by an agent, not by a human on a train. It is op
 7. A named veto list of tells that auto-fail even when they look fine.
 8. Layout verified, never assumed. Declared grid alignment, no orphan whitespace.
 
-## Deterministic linting
+## Deterministic linting: two linters, not one
 
-The gates in `slop-test.md` are run by the agent, which means they are self-reported: the model that wrote the page is the one asked whether the page is slop. For a second, deterministic opinion, pair it with [impeccable](https://github.com/pbakaus/impeccable)'s detector, which needs no LLM and no API key:
+The gates in `slop-test.md` are run by the agent, which means they are self-reported: the model that wrote the page is the one asked whether the page is slop. Two deterministic linters close that gap, and they cover different halves of it.
+
+**1. The bundled guard**, for the hard rules an English linter cannot see. Node, zero dependencies, ships inside the skill:
 
 ```bash
-npx impeccable detect --json src/
+node <skill-path>/scripts/guard.mjs src/          # human output, exit 1 on errors
+node <skill-path>/scripts/guard.mjs src/ --json   # for CI
 ```
 
-It catches the generic execution layer well (contrast, gray-on-colour, nested cards, glow shadows, AI palettes, eyebrow chips). It does not know about *voseo*, fabricated metrics, or zero-tolerance em-dashes, and it flags two things this skill prescribes on purpose, so ignore those two rules for dark-technical work:
+It flags *voseo* in visible text, em-dashes and en-dashes in visible text, unconfirmed marketing metrics, pure `#000`/`#fff`, exact untinted greys (including `oklch` with chroma below 0.005), and colour literals declared outside a token. It reads text and CSS, not a DOM: it will not compute contrast or detect real card nesting, and it is deliberately conservative about *voseo* (an explicit blacklist, because any regex over tonic `-á/-é/-í` also matches *café*, *sofá* and *aquí*).
+
+**2. [impeccable](https://github.com/pbakaus/impeccable)'s detector**, for the generic execution layer, with a real DOM and AST. No LLM, no API key:
+
+```bash
+npx impeccable detect src/
+```
+
+It catches contrast, grey-on-colour, nested cards, glow shadows, AI palettes and eyebrow chips. It does not know about *voseo* or fabricated metrics, and its em-dash rule is advisory and needs eight occurrences to fire, so it will never enforce rule 3 above. One of its rules conflicts with this skill on purpose: the dark-technical direction prescribes exactly one CSS ticker per page, with a motion budget and `prefers-reduced-motion` honoured, which its `marquee` rule reads as a defect. Waive that one and nothing else:
 
 ```json
-{ "detector": { "ignoreRules": ["marquee"], "ignoreValues": { "overused-font": ["Space Grotesk"] } } }
+{ "detector": { "ignoreRules": ["marquee"] } }
 ```
 
 ## Provenance
@@ -135,18 +147,29 @@ firma redesign <target>    # audit primero, después restyle dentro de la implem
 7. Una lista nombrada de tells que hacen auto-fail aunque se vean bien.
 8. Layout verificado, nunca asumido. Alineación de grid declarada, sin whitespace huérfano.
 
-## Linter determinista
+## Linters deterministas: dos, no uno
 
-Los gates de `slop-test.md` los corre el agente, o sea que son auto-reportados: el modelo que escribió la página es el mismo al que se le pregunta si la página es slop. Para una segunda opinión determinista, complementa con el detector de [impeccable](https://github.com/pbakaus/impeccable), que no necesita LLM ni API key:
+Los gates de `slop-test.md` los corre el agente, o sea que son auto-reportados: el modelo que escribió la página es el mismo al que se le pregunta si la página es slop. Dos linters deterministas cierran ese hueco, y cubren mitades distintas.
+
+**1. El guard incluido**, para las reglas duras que un linter en inglés no ve. Node, cero dependencias, viaja dentro de la skill:
 
 ```bash
-npx impeccable detect --json src/
+node <ruta-de-la-skill>/scripts/guard.mjs src/          # salida legible, exit 1 si hay errores
+node <ruta-de-la-skill>/scripts/guard.mjs src/ --json   # para CI
 ```
 
-Caza bien la capa genérica de ejecución (contraste, gris sobre color, cards anidadas, sombras de glow, paletas IA, eyebrow chips). No sabe nada de voseo, métricas fabricadas ni em-dashes con tolerancia cero, y marca dos cosas que esta skill prescribe a propósito, así que para trabajo dark-técnico esas dos se ignoran:
+Marca voseo en texto visible, em-dashes y en-dashes en texto visible, métricas de marketing sin confirmar, `#000`/`#fff` puros, grises neutros exactos (incluido `oklch` con chroma bajo 0.005), y literales de color declarados fuera de un token. Lee texto y CSS, no un DOM: no calcula contraste ni detecta anidamiento real de cards, y es deliberadamente conservador con el voseo (lista negra explícita, porque cualquier regex sobre tónicas `-á/-é/-í` también matchea *café*, *sofá* y *aquí*).
+
+**2. El detector de [impeccable](https://github.com/pbakaus/impeccable)**, para la capa genérica de ejecución, con DOM y AST reales. Sin LLM ni API key:
+
+```bash
+npx impeccable detect src/
+```
+
+Caza contraste, gris sobre color, cards anidadas, sombras de glow, paletas IA y eyebrow chips. No sabe de voseo ni de métricas fabricadas, y su regla de em-dash es *advisory* y necesita ocho ocurrencias para gatillar, así que nunca va a hacer cumplir la regla 3. Una de sus reglas choca con esta skill a propósito: la dirección dark-técnica prescribe exactamente un ticker CSS por página, con presupuesto de motion y `prefers-reduced-motion` respetado, y su regla `marquee` lo lee como defecto. Se waivea esa y ninguna más:
 
 ```json
-{ "detector": { "ignoreRules": ["marquee"], "ignoreValues": { "overused-font": ["Space Grotesk"] } } }
+{ "detector": { "ignoreRules": ["marquee"] } }
 ```
 
 ## Procedencia

@@ -1,6 +1,6 @@
 ---
 name: firma
-description: "Sistema de diseño anti-slop para agentes que escriben frontend en español. Invocar ANTES de escribir markup/CSS ante cualquier trabajo visual: landing pages, componentes nuevos, portfolios, heroes, pricing, redesigns, dark mode, 'que se vea mejor/premium/menos IA', o auditar UI existente. También cuando se pida 'audit', 'redesign', 'firma', 'antislop' o que un diseño no parezca hecho por IA. Motor: OKLCH con grises tinteados, un solo acento, fuentes con carácter, macroestructuras que rotan entre builds para que dos páginas no compartan fingerprint, gates anti-tells, copy en español neutro con tú (cero voseo), cero métricas o testimonios inventados, y estéticas dark-técnicas con animación CSS cuando encajan."
+description: "Sistema de diseño anti-slop para agentes que escriben frontend en español. Invocar ANTES de escribir markup/CSS ante CUALQUIER trabajo visual: landing pages, componentes nuevos, portfolios, heroes, pricing, redesigns, dark mode, 'que se vea mejor/premium/menos IA', o auditar UI existente. También cuando se pida 'audit', 'redesign', 'firma', 'antislop' o que un diseño no parezca hecho por IA. Motor: OKLCH con grises tinteados, un solo acento, fuentes con carácter, macroestructuras que rotan entre builds para que dos páginas no compartan fingerprint, gates anti-tells, copy en español neutro con tú (cero voseo), cero métricas o testimonios inventados, y estéticas dark-técnicas con animación CSS cuando encajan."
 ---
 
 # firma
@@ -76,10 +76,10 @@ La dirección scopea qué temas rotan y qué gates se relajan. Decirla en voz al
 
 ### 3 · Memoria y diversificación (lo más valioso de la skill)
 
-Leer `.firma/log.json` en la raíz del proyecto (y `.firma/log.json` si existe, para continuidad). Schema: array JSON, entrada más nueva primero:
+Leer `.firma/log.json` en la raíz del proyecto (y `.hallmark/log.json` si el proyecto viene de hallmark, para continuidad). Schema: array JSON, entrada más nueva primero:
 
 ```json
-[{ "date": "2026-07-17", "macro": "Bento Grid", "tema": "Pizarra", "direccion": "dark-tecnico", "display": "Space Grotesk", "nav": "pill", "brief": "landing de producto" }]
+[{ "date": "2026-07-17", "macro": "Bento Grid", "tema": "Pizarra", "direccion": "dark-tecnico", "display": "Tomorrow", "nav": "pill", "brief": "landing de producto" }]
 ```
 
 Reglas con las últimas 3-5 entradas:
@@ -108,7 +108,7 @@ Bloque corto de bullets para que quien pide pueda redirigir antes de 500 líneas
 - **Dirección** · dark-técnico
 - **Macro** · Split Studio
 - **Tema** · Pizarra (dark cálido · grotesk · acento ámbar-fósforo)
-- **Fuentes** · Space Grotesk 700 / Switzer 400 / JetBrains Mono
+- **Fuentes** · Tomorrow 700 / Switzer 400 / JetBrains Mono
 - **Firma** · ticker de métricas reales + chaflán en cards
 - **Secciones** · Hero · Demo · Precios · FAQ · Cierre
 - **Difiere del anterior en** · banda de paper + display
