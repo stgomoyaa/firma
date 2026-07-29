@@ -13,7 +13,7 @@ Cualquier eje <3 dispara un pase de revisión ANTES de los gates. Dos pases es n
 | **E** Ejecución | ¿Los detalles (rules, acento, contraste, focus, alineación) están en spec? |
 | **S** Especificidad | ¿Parece hecho para ESTE brief o para cualquiera? |
 | **R** Restraint | ¿Se sacó todo lo que no se gana su lugar? |
-| **V** Variedad | ¿Comparte fingerprint estructural con un output anterior del proyecto? (distancia estructural, no visual: un color-swap no es variedad) |
+| **V** Variedad | ¿Comparte fingerprint estructural con un output anterior del proyecto? (distancia estructural, no visual: un color-swap no es variedad, y dos formas de la misma familia de macro tampoco) |
 
 Registrar en el stamp: `critique: P5 H4 E5 S4 R5 V5`.
 
@@ -75,7 +75,7 @@ Lo que impeccable NO ve y el guard sí: voseo, métricas fabricadas, y em-dashes
 
 ### Estructura y layout
 
-26. ¿Template genérico (hero → 3 features iguales → CTA → footer), o la misma macroestructura que alguna de las últimas 3 del log?
+26. ¿Template genérico (hero → 3 features iguales → CTA → footer), la misma forma de macroestructura que alguna de las últimas 3 del log, o la misma **familia** de macroestructura que el build anterior?
 27. ¿Grilla de 3 columnas iguales con icono-arriba-heading-abajo?
 28. ¿Card dentro de card?
 29. ¿Hero `100vh` con todo centrado en un solo eje vertical (eyebrow+título+lede+CTA)? Máximo 2 elementos centrados; el resto rompe el eje.
@@ -124,7 +124,7 @@ Lo que impeccable NO ve y el guard sí: voseo, métricas fabricadas, y em-dashes
 ### Firma y variedad
 
 59. ¿La página tiene su firma (el artefacto/gesto que no se puede pegar en otro sitio)? Sin firma, es slop limpio: la restraint sin idea es trabajo a medio terminar.
-60. ¿Falta el stamp en la primera línea del CSS, o falta el append a `.firma/log.json`?
+60. ¿Falta el stamp en la primera línea del CSS, o falta el append a `.firma/log.json` con sus campos completos (`familia` incluida, o la próxima rotación no puede chequear la familia del build anterior)?
 
 ## El tell más profundo
 

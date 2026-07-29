@@ -10,7 +10,7 @@ What it adds to that field is three things nobody else covers.
 
 **2. Honesty as a hard gate, not good taste.** No invented metrics, no fabricated testimonials, no client logos you do not have, no fake urgency counters. In Chile that is consumer-law exposure (SERNAC), not a style preference. The consequence is structural: a stat-led hero with no real stat is the wrong macrostructure, so the skill picks a different one instead of inventing `+47% conversión`.
 
-**3. Rotation memory.** A per-project log records the macrostructure, theme, display face, nav and footer of every build. The next build cannot repeat any of the last three. Without this, an agent converges back on one house style within a week, and clean-but-identical is still slop.
+**3. Rotation memory, by family.** A per-project log records the macrostructure, its family, the theme, display face, nav and footer of every build. The next build cannot repeat any of the last three shapes, and cannot reuse the previous build's **family**. That second rule is what makes the first one work: Bento followed by Catalogue passes a shape-only check and still gives you two grids. Without rotation, an agent converges back on one house style within a week, and clean-but-identical is still slop.
 
 Plus the rule the skill is named after: **nothing ships without its firma**, the one artifact or gesture that would make no sense pasted into another site. A built CSS artifact, a bespoke silhouette, a ticker of real numbers, a typographic composition. No firma, no build.
 
@@ -19,7 +19,7 @@ Plus the rule the skill is named after: **nothing ships without its firma**, the
 | File | What it holds |
 |---|---|
 | `skills/firma/SKILL.md` | The 8 hard rules, 3 verbs, and the 8-step design flow |
-| `references/macroestructuras.md` | 21 named page shapes, plus nav and footer archetypes, chosen before any code |
+| `references/macroestructuras.md` | 18 page shapes in 10 families, plus nav and footer archetypes, chosen before any code |
 | `references/temas.md` | 12 copy-paste OKLCH themes, 4 of them dark-technical |
 | `references/tipografia.md` | Type pairings, and the faces vetoed for being LLM defaults |
 | `references/color.md` | The OKLCH engine for building a theme from a brand colour |
@@ -95,7 +95,7 @@ It catches contrast, grey-on-colour, nested cards, glow shadows, AI palettes and
 
 ## Provenance
 
-`firma` is a derivative work and says so. The macrostructure taxonomy, the six-axis self-critique, most of the gate battery, the rotation mechanism and the OKLCH engine come from [hallmark](https://github.com/Nutlope/hallmark) (MIT). Brief inference and audit-first come from [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). The execution-defect lens comes from pols-antislop. Full breakdown, including the two hallmark rules this skill deliberately overrides, in [`NOTICE.md`](NOTICE.md).
+`firma` is a derivative work and says so. The six-axis self-critique, most of the gate battery, the rotation mechanism and the OKLCH engine come from [hallmark](https://github.com/Nutlope/hallmark) (MIT), along with the idea of picking a named page shape before writing code. The shape catalogue itself was re-derived here: 18 shapes in 10 families, with near-duplicates merged and the family grouping added to close a hole in the rotation rule. Brief inference and audit-first come from [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). The execution-defect lens comes from pols-antislop. Full breakdown, including the two hallmark rules this skill deliberately overrides, in [`NOTICE.md`](NOTICE.md).
 
 MIT licensed. Built by [Santiago Moya](https://github.com/stgomoyaa).
 
@@ -113,7 +113,7 @@ Lo que agrega son tres cosas que nadie más cubre.
 
 **2. Honestidad como regla dura, no como buen gusto.** Cero métricas inventadas, cero testimonios fabricados, cero logos de clientes que no tienes, cero contadores de urgencia falsos. En Chile eso es riesgo SERNAC, no una preferencia estética. La consecuencia es estructural: un hero stat-led sin un stat real es la macroestructura equivocada, así que la skill elige otra en vez de inventar `+47% conversión`.
 
-**3. Memoria de rotación.** Un log por proyecto registra macroestructura, tema, display face, nav y footer de cada build. El siguiente no puede repetir ninguno de los últimos tres. Sin eso, un agente vuelve a su único house style en una semana, y limpio pero idéntico sigue siendo slop.
+**3. Memoria de rotación, por familia.** Un log por proyecto registra la macroestructura, su familia, el tema, la display face, el nav y el footer de cada build. El siguiente no puede repetir ninguna de las últimas tres formas, ni reusar la **familia** del build anterior. Esa segunda regla es la que hace funcionar la primera: Bento seguido de Catálogo pasa un chequeo por forma y te deja dos grillas igual. Sin rotación, un agente vuelve a su único house style en una semana, y limpio pero idéntico sigue siendo slop.
 
 Más la regla que le da el nombre: **nada se entrega sin su firma**, el UN artefacto o gesto que no tendría sentido pegado en otro sitio. Un artefacto CSS construido, una silueta bespoke, un ticker con números reales, una composición tipográfica. Sin firma, no hay build.
 
@@ -174,6 +174,6 @@ Caza contraste, gris sobre color, cards anidadas, sombras de glow, paletas IA y 
 
 ## Procedencia
 
-`firma` es un trabajo derivado y lo dice. La taxonomía de macroestructuras, la autocrítica de 6 ejes, la mayor parte de la batería de gates, el mecanismo de rotación y el motor OKLCH vienen de [hallmark](https://github.com/Nutlope/hallmark) (MIT). La inferencia de brief y el audit-first, de [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). La lente de defectos de ejecución, de pols-antislop. Desglose completo, incluidas las dos reglas de hallmark que esta skill anula a propósito, en [`NOTICE.md`](NOTICE.md).
+`firma` es un trabajo derivado y lo dice. La autocrítica de 6 ejes, la mayor parte de la batería de gates, el mecanismo de rotación y el motor OKLCH vienen de [hallmark](https://github.com/Nutlope/hallmark) (MIT), junto con la idea de elegir una forma de página nombrada antes de escribir código. El catálogo de formas se re-derivó acá: 18 formas en 10 familias, con los casi-duplicados fusionados y la agrupación por familia agregada para tapar un hueco de la regla de rotación. La inferencia de brief y el audit-first, de [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). La lente de defectos de ejecución, de pols-antislop. Desglose completo, incluidas las dos reglas de hallmark que esta skill anula a propósito, en [`NOTICE.md`](NOTICE.md).
 
 Licencia MIT. Hecho por [Santiago Moya](https://github.com/stgomoyaa).

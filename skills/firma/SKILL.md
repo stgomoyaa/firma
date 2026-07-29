@@ -79,21 +79,22 @@ La dirección scopea qué temas rotan y qué gates se relajan. Decirla en voz al
 Leer `.firma/log.json` en la raíz del proyecto (y `.hallmark/log.json` si el proyecto viene de hallmark, para continuidad). Schema: array JSON, entrada más nueva primero:
 
 ```json
-[{ "date": "2026-07-17", "macro": "Bento Grid", "tema": "Pizarra", "direccion": "dark-tecnico", "display": "Tomorrow", "nav": "pill", "brief": "landing de producto" }]
+[{ "date": "2026-07-17", "familia": "Grilla", "macro": "Bento", "tema": "Pizarra", "direccion": "dark-tecnico", "display": "Tomorrow", "nav": "pill", "brief": "landing de producto" }]
 ```
 
 Reglas con las últimas 3-5 entradas:
 
-- La **macroestructura** no puede repetir ninguna de las últimas 3.
+- La **forma** de macroestructura no puede repetir ninguna de las últimas 3.
+- La **familia** de macroestructura no puede repetir la del build anterior. Es la regla que más rinde: dos formas de la misma familia (Bento y Catálogo, las dos Grilla) cumplen la regla de forma y aun así producen dos páginas que se parecen.
 - El **tema** debe diferir del anterior en al menos 1 de 3 ejes: **banda de paper** (dark <30% / mid 30-85% / light >85% de lightness) · **estilo de display** (serif-contraste / serif-clásica / grotesk / mono / condensed-heavy / humanista) · **hue del acento** (cálido 10-60° / frío 200-300° / verde-otro / neutro).
 - La **display face** no puede repetir la del build anterior.
 - Nav y footer archetype tampoco repiten el build anterior.
 
-**Declarar la rotación en el chat antes de elegir** ("Últimos 3: Bento/Pizarra, Long Document/Papel, Manifesto/Tinta → elijo Split Studio/Cobalto, difiere en banda y acento"). Elegir en la página, no en la cabeza: es lo que impide volver al atractor default. Al final del build, append al log (recortar a 20 entradas).
+**Declarar la rotación en el chat antes de elegir** ("Últimos 3: Grilla/Bento/Pizarra, Documento/Memo/Papel, Póster/Manifiesto/Tinta → elijo Díptico/Split Studio/Cobalto, cambia familia y difiere en banda y acento"). Elegir en la página, no en la cabeza: es lo que impide volver al atractor default. Al final del build, append al log (recortar a 20 entradas).
 
 ### 4 · Macroestructura + nav + footer
 
-Elegir UNA de las 21 formas nombradas en `references/macroestructuras.md` ANTES de escribir código. La macroestructura fija colocación de heading, composición, lenguaje de divisores y voz de botones de una vez. Specimen no es default. Nav y footer se eligen en el mismo paso: **el nav "wordmark + 4 links + botón a la derecha" y el footer "4 columnas + social + copyright" son los fingerprints IA más reconocidos**; usarlos solo con justificación real.
+Elegir UNA de las 18 formas nombradas en `references/macroestructuras.md` ANTES de escribir código, y decir a qué **familia** pertenece (son 10). La macroestructura fija colocación de heading, composición, lenguaje de divisores y voz de botones de una vez. Especimen no es default, y la familia **Prueba** está prohibida si no hay un número o quote real y verificable. Nav y footer se eligen en el mismo paso: **el nav "wordmark + 4 links + botón a la derecha" y el footer "4 columnas + social + copyright" son los fingerprints IA más reconocidos**; usarlos solo con justificación real.
 
 ### 5 · Tema (paleta + fuentes)
 
@@ -106,12 +107,12 @@ Bloque corto de bullets para que quien pide pueda redirigir antes de 500 líneas
 ```markdown
 **firma**
 - **Dirección** · dark-técnico
-- **Macro** · Split Studio
+- **Macro** · Díptico / Split Studio
 - **Tema** · Pizarra (dark cálido · grotesk · acento ámbar-fósforo)
 - **Fuentes** · Tomorrow 700 / Switzer 400 / JetBrains Mono
 - **Firma** · ticker de métricas reales + chaflán en cards
 - **Secciones** · Hero · Demo · Precios · FAQ · Cierre
-- **Difiere del anterior en** · banda de paper + display
+- **Difiere del anterior en** · familia de macro + banda de paper + display
 ```
 
 La **firma** es obligatoria: el UN artefacto/gesto que hace que esta página no pueda pegarse en otro sitio (un artefacto CSS construido, una silueta bespoke, un ticker con datos reales, una composición tipográfica). Página sin firma = slop limpio. Si no hay firma, no hay build.

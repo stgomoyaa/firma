@@ -14,10 +14,10 @@
 
 The structural engine comes from hallmark. Specifically:
 
-- **The macrostructure taxonomy.** `references/macroestructuras.md` uses the same 21 named page shapes, in the same order and numbering, as hallmark's `references/macrostructures/01-bento-grid.md` … `21-component-playground.md`. The names and the taxonomy are hallmark's. Every description, every diversification note, and every honesty constraint attached to them is written here.
+- **The idea of picking a named page shape before writing code.** The catalogue itself was re-derived: `references/macroestructuras.md` now holds 18 shapes grouped into 10 families, against hallmark's flat list of 21. Near-duplicates were merged (its Specimen and Type Specimen became one Especimen family with typographic and photographic variants; Index-First and Ecosystem Index became one Índice; Stat-Led and Quote-Led became one Prueba family carrying the honesty gate once instead of twice), and the grouping exists to fix a real hole in the rotation rule, which is described below.
 - **The six-axis pre-emit self-critique**, including the single-line stamp format (`P5 H4 E5 S4 R5 V5`) and the "two passes is normal, three means the brief is wrong" heuristic.
 - **The gate battery.** Roughly 50 of the ~60 gates in `references/slop-test.md` are consolidated and translated from hallmark's 58-gate slop test. The rest are new (see below).
-- **The rotation mechanism**: a per-project log that forbids repeating recent structural choices, plus its three diversification axes (paper band / display style / accent hue).
+- **The rotation mechanism**: a per-project log that forbids repeating recent structural choices, plus its three theme diversification axes (paper band / display style / accent hue). The extension is this skill's: rotation also has to change the macrostructure **family**, not only the shape. Hallmark's rule allows Bento followed by Catalogue, which are both grids, so the log passes while the two pages still read alike.
 - **The OKLCH theme engine** in `references/color.md`: the four-layer construction (paper / ink / tinted neutrals / one accent), the tinting discipline, and the three diversification axes.
 
 Two of hallmark's rules are **deliberately overridden** here, and the override is the point:
