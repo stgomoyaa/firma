@@ -4,6 +4,11 @@
 // Complementa a `npx impeccable detect` (DOM/AST, capa genérica); no lo reemplaza.
 // Uso: node guard.mjs [rutas...] [--json] [--quiet]
 // Sale con código 1 si hay algún hallazgo de nivel error.
+//
+// Escape hatch: un archivo que contenga el texto `firma-guard-disable-file` no se
+// escanea. Sirve para el que define las reglas (este mismo archivo), para fixtures
+// de test, y para copy que de verdad tiene que ir en otro registro.
+// firma-guard-disable-file
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname, relative, resolve } from 'node:path';
@@ -79,6 +84,7 @@ function visibleText(src, ext) {
   s = blank(s, /<style\b[\s\S]*?<\/style>/gi);
   s = blank(s, /<!--[\s\S]*?-->/g);
   s = blank(s, /\/\*[\s\S]*?\*\//g);
+  s = blank(s, /(?<!:)\/\/[^\n]*/g); // comentarios de línea, sin comerse https://
   if (MARKUP.has(ext)) s = blankTags(s);
   return s;
 }
@@ -237,9 +243,13 @@ for (const root of roots) {
   else files.push(root);
 }
 
+const DISABLE = 'firma-guard' + '-disable-file';
 const sources = files.map((f) => { try { return readFileSync(f, 'utf8'); } catch { return ''; } });
 const findings = [];
-files.forEach((f, i) => findings.push(...checkFile(f, sources[i])));
+files.forEach((f, i) => {
+  if (sources[i].includes(DISABLE)) return;
+  findings.push(...checkFile(f, sources[i]));
+});
 findings.push(...checkProject(files, sources));
 
 const errors = findings.filter((f) => f.level === 'error');

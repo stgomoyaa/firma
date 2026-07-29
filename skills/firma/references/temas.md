@@ -2,7 +2,7 @@
 
 Doce temas nombrados, construidos con el motor de `color.md`. Cada uno declara sus **3 ejes de diversificación** (banda de paper · estilo de display · hue de acento); dos temas consecutivos deben diferir en al menos un eje (regla del paso 3 de SKILL.md). Los bloques se copian tal cual a `:root` y se completan con neutrales intermedios según el motor.
 
-Procedencia: motor y valores de Cobalto derivados de hallmark (MIT); el resto construido con su misma receta. Si el brief trae color de marca, construir un custom con `color.md` en vez de forzar un tema del catálogo.
+Procedencia: el motor de construcción viene de hallmark (MIT); los doce temas están construidos con esa receta, con valores propios y contraste verificado. Si el brief trae color de marca, construir un custom con `color.md` en vez de forzar un tema del catálogo.
 
 Un tema también sugiere fuentes (ver `tipografia.md` para alternativas dentro de la misma dirección; recordar la rotación de display face).
 
@@ -117,23 +117,26 @@ Ejes: **light · serif-clásica · cálido (28°)**. Masthead, columnas densas, 
 }
 ```
 
-### 7 · Cobalto — light técnico con banda grafito (valores reales de hallmark)
+### 7 · Cobalto — light técnico con banda grafito
 
 Ejes: **light · grotesk · frío (256°)**. Paper frío de ingeniería, cobalto eléctrico como señal (nunca inundación), UNA banda oscura grafito por página (quickstart/demo) que da ritmo light → dark → light. Display Tomorrow o Switzer + mono.
 
 ```css
 :root {
-  --color-paper:    oklch(98.5% 0.004 250);
-  --color-paper-2:  oklch(95% 0.006 250);
-  --color-borde:    oklch(85% 0.006 252);
-  --color-neutral:  oklch(50% 0.012 256);
-  --color-muted:    oklch(34% 0.018 257);
-  --color-ink:      oklch(24% 0.02 258);
-  --color-acento:   oklch(58% 0.20 256);   /* cobalto eléctrico */
-  --color-grafito:  oklch(22% 0.016 260);  /* la banda dark */
-  --color-focus:    oklch(58% 0.20 256);
+  --color-paper:       oklch(97% 0.008 254);
+  --color-paper-2:     oklch(94% 0.010 254);
+  --color-borde:       oklch(84% 0.012 254);
+  --color-neutral:     oklch(52% 0.016 256);
+  --color-muted:       oklch(38% 0.020 257);
+  --color-ink:         oklch(21% 0.024 258);
+  --color-acento:      oklch(55% 0.19 258);   /* cobalto eléctrico */
+  --color-grafito:     oklch(20% 0.018 260);  /* la banda dark */
+  --color-acento-dark: oklch(68% 0.16 256);   /* el acento DENTRO de la banda */
+  --color-focus:       oklch(55% 0.19 258);
 }
 ```
+
+Contraste verificado (WCAG, sobre paper): ink 16.3:1 · muted 9.2:1 · neutral 5.1:1 · acento 4.6:1. Dentro de la banda grafito: paper 16.6:1 · `--color-acento-dark` 6.2:1. El acento normal sobre grafito da 3.6:1 y **no sirve para texto**: dentro de la banda se usa `--color-acento-dark`, que es la regla de dark mode del motor (más lightness, menos chroma) aplicada a una sola sección. `--color-borde` da 1.5:1 y es solo para hairlines, nunca para texto ni íconos con significado.
 
 ### 8 · Terracota — light cálido + slate, sin latón
 
@@ -179,7 +182,7 @@ Ejes: **light · grotesk · rota el hue del pop por build** (esmeralda 150° / a
 
 ```css
 :root {
-  --color-paper:   oklch(97% 0.004 260);
+  --color-paper:   oklch(97% 0.005 260);
   --color-paper-2: oklch(94% 0.005 260);
   --color-borde:   oklch(84% 0.005 260);
   --color-neutral: oklch(50% 0.006 260);

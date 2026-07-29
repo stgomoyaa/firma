@@ -18,7 +18,7 @@ The structural engine comes from hallmark. Specifically:
 - **The six-axis pre-emit self-critique**, including the single-line stamp format (`P5 H4 E5 S4 R5 V5`) and the "two passes is normal, three means the brief is wrong" heuristic.
 - **The gate battery.** Roughly 50 of the ~60 gates in `references/slop-test.md` are consolidated and translated from hallmark's 58-gate slop test. The rest are new (see below).
 - **The rotation mechanism**: a per-project log that forbids repeating recent structural choices, plus its three diversification axes (paper band / display style / accent hue).
-- **The OKLCH theme engine** in `references/color.md`, and the literal token values of theme 7 (`Cobalto`), which are hallmark's `cobalt`. The other 11 themes were built with the same recipe but are not hallmark's values.
+- **The OKLCH theme engine** in `references/color.md`: the four-layer construction (paper / ink / tinted neutrals / one accent), the tinting discipline, and the three diversification axes.
 
 Two of hallmark's rules are **deliberately overridden** here, and the override is the point:
 
@@ -54,5 +54,6 @@ Listed explicitly so the derivation above is not read as the whole story:
 - **The vetoed-tells list**: floating glow orbs, radially-masked grid backgrounds, a mono-caps eyebrow above every section, rows of identical shadowed cards, purple/mesh gradients, gradient text in headlines, Fraunces and Instrument Serif as default serifs.
 - **dark-técnico as a first-class direction** with its own theme set, chamfer geometry, and CSS ticker recipe.
 - **Component-scope mode**: when the brief is one component, skip macrostructure/nav/footer/rotation and get stricter about the eight interactive states.
+- **`scripts/guard.mjs`**, a zero-dependency deterministic linter for the hard rules an English-language linter cannot see: voseo, em-dashes in visible text, unconfirmed metrics, pure black and white, untinted greys, colour literals outside tokens.
 - **A Definition of Done** that closes the scope instead of inviting another iteration.
-- 11 of the 12 OKLCH themes.
+- **All 12 theme value sets** in `references/temas.md`. Theme 7 (`Cobalto`) started as hallmark's `cobalt` and was rebuilt from scratch, because hallmark's values used a neutral chroma of 0.004 and this skill's own floor is 0.005: its own theme failed its own rule. Every theme now ships with WCAG contrast computed for each token pair, and `Cobalto` gained a separate accent for use inside its dark band, where the light-mode accent only reaches 3.6:1.
