@@ -1,3 +1,11 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/stgomoyaa/firma/main/assets/repo-banner-firma-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/stgomoyaa/firma/main/assets/repo-banner-firma-light.svg">
+    <img width="880" alt="firma. An anti-AI-slop design skill for coding agents. Nothing ships without its firma. Stack: Markdown, Node, Zero deps." src="https://raw.githubusercontent.com/stgomoyaa/firma/main/assets/repo-banner-firma-light.svg">
+  </picture>
+</p>
+
 # firma
 
 **An anti-AI-slop design skill for coding agents.**
