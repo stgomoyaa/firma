@@ -1,4 +1,4 @@
-# Slop test — self-critique plus gates
+# Slop test: self-critique plus gates
 
 Run this before handing over any output. Self-critique first, then the gates. Every gate answer must be **no**. If something fails, fix it and re-run. Slop does not ship.
 
@@ -50,7 +50,7 @@ What the external detector does NOT see and the bundled guard does: banned local
 
 ### Hard rules
 
-1. Is there any form banned by the active locale profile in visible text? (For `es-CL`: voseo — vos/tenés/querés/agendá/mirá. Look for stressed `-á/-é/-í` imperatives and `-és/-ás/-ís` presents.)
+1. Is there any form banned by the active locale profile in visible text? (For `es-CL`: voseo, meaning vos/tenés/querés/agendá/mirá. Look for stressed `-á/-é/-í` imperatives and `-és/-ás/-ís` presents.)
 2. Is there any `—` or `–` used as a separator in visible text (headlines, body, quotes, buttons, captions, alt)?
 3. Is there any metric, testimonial, name, job title, client logo or urgency counter the user did not provide? (Legal exposure, not only aesthetics.)
 4. Is there italic in any heading or display line (including ONE `<em>` word inside a title)?
