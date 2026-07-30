@@ -8,105 +8,148 @@
 
 # firma
 
-**An anti-AI-slop design skill for coding agents.**
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Every model was trained on the same SaaS templates, so every model reaches for the same page: Inter, a purple gradient, an eyebrow label above each section, three identical shadowed cards, a glow orb behind the hero. There is a small field of skills that fight this. `firma` is one of them, and it is honest about standing on the others (see [`NOTICE.md`](NOTICE.md)).
+**Reads the brief, picks one named shape before writing a line of code, writes the copy in the target market's own register, then runs a linter against itself before anything ships.** No em dash in that sentence: the skill would fail its own gate on itself, so neither does this one.
 
-Three things it adds that the field does not cover.
+Nothing ships without passing 68 gates, a locale register check most anti-slop skills do not have, and two independent linters, none of which need an API key.
 
-**1. A locale register gate.** Every model has a dominant register per language, learned from whatever dominated its training data. Ask for Spanish and you get Argentine voseo: `Empezá gratis`, `crece con vos`, `mirá el demo`. Fluent, confident, and wrong for most of the market you are shipping to, and telling the model "write in Spanish" does not fix it because it believes it already did. Here it is auto-fail against an explicit banned-forms table, and a bundled linter enforces it. No other skill in this genre has a locale gate at all.
+[Before and after](#before-and-after) · [Install](#install) · [Hard rules](#hard-rules) · [Directions](#one-brief-four-directions) · [What ships](#what-ships) · [Numbers](#the-numbers) · [Where this is weak](#where-this-is-weak) · [How it works](#how-it-works) · [Provenance](#provenance-and-license)
 
-**2. Honesty as a hard gate, not good taste.** No invented metrics, no fabricated testimonials, no client logos you do not have, no fake urgency counters. In some markets that is consumer-law exposure, not a style preference. The consequence is structural: a stat-led hero with no real stat is the wrong macrostructure, so the skill picks a different one instead of inventing `+47% conversion`.
+## What this is
 
-**3. Rotation memory, by family.** A per-project log records the macrostructure, its family, the theme, display face, nav and footer of every build. The next build cannot repeat any of the last three shapes, and cannot reuse the previous build's **family**. That second rule is what makes the first one work: Bento followed by Catalogue passes a shape-only check and still gives you two grids. Without rotation, an agent converges back on one house style within a week, and clean-but-identical is still slop.
+`firma` is a skill folder for coding agents: one instructions file (`SKILL.md`), ten reference files, one shipped locale profile, and one zero-dependency linter. Installing it means copying `skills/firma/` into wherever your harness reads skill folders, nothing to build and nothing to run as a service. What you get forever, on every future build in that project: a fixed set of hard rules (no invented metrics, no em dashes, no italic headings, no default Argentine Spanish when the brief is Chilean), a rotation log so two builds do not repeat the same page shape and family, and a linter you can wire into CI without paying for a model call to check it.
 
-Plus the rule the skill is named after: **nothing ships without its firma** (Spanish for *signature*), the one artifact or gesture that would make no sense pasted into another site. A built CSS artifact, a bespoke silhouette, a ticker of real numbers, a typographic composition. No firma, no build.
+It rewrites how a page looks and reads. It does not touch application logic, state, routing, backend code or test coverage, and `guard.mjs` parses text and CSS, not a live rendered page.
 
-## What is in the box
+## Before and after
 
-| File | What it holds |
-|---|---|
-| `SKILL.md` | The 8 hard rules, 3 verbs, and the 8-step design flow |
-| `references/macrostructures.md` | 19 page shapes in 11 families, plus nav and footer archetypes, chosen before any code |
-| `references/themes.md` | 12 copy-paste OKLCH themes, 4 of them dark-technical, contrast verified |
-| `references/typography.md` | Pairings by direction, and the faces vetoed for being LLM defaults |
-| `references/color.md` | The OKLCH engine for building a theme from a brand colour |
-| `references/layout.md` | Space, asymmetry, depth, and the grid-alignment gate |
-| `references/motion.md` | Motion budget, named easings, the CSS ticker, the scroll-cinematic contract |
-| `references/copy.md` | Locale-independent copy rules, honesty, banned openings |
-| `references/product-surfaces.md` | Onboarding, settings, dashboards, forms, empty states |
-| `references/slop-test.md` | 68 gates plus a six-axis self-critique, run before every handoff |
-| `references/audit.md` | Scoring rubric for the `audit` and `redesign` verbs |
-| `locales/es-CL.md` | The shipped locale profile: Spanish, neutral Chilean register, tuteo |
-| `scripts/guard.mjs` | Deterministic linter for the hard rules. Node, zero dependencies |
+Two committed fixtures, not two versions of one brief. `examples/slop.html` is a generic SaaS landing page written the way a model defaults to write one. `examples/firma.html` is an events-API landing page built to this skill's spec: dark-technical direction, the Slate theme, the Split Studio macrostructure, a chamfer signature and one CSS ticker. They carry different content on purpose, so what follows is two independent measurements run through the same two linters, not a rewrite of one into the other.
+
+| | `examples/slop.html` | `examples/firma.html` |
+|---|---|---|
+| `guard.mjs --locale es-CL` | 8 errors, 14 warnings | 0 errors, 1 warning |
+| `npx impeccable detect` | 23 anti-patterns | 2 anti-patterns |
+| Locale register | Argentine voseo ("vos", "Empezá gratis") | Chilean tuteo |
+| Numbers in the copy | "+47%", "5.000 clientes", "99,9% uptime": none sourced | "por confirmar" (to confirm), labelled, nothing invented |
+| Neutrals and blacks | pure `#ffffff`, `rgba(0,0,0,…)` shadow | every neutral tinted, no pure black or white |
+| Accent treatment | purple to blue gradient text, a blurred glow orb | one amber phosphor accent, used only for links, the CTA and focus states |
+
+Both commands are runnable against the committed files:
+
+```bash
+node skills/firma/scripts/guard.mjs --locale es-CL examples/slop.html
+npx impeccable detect examples/slop.html
+```
+
+## The honest number
+
+Set against those two linters and the catalogue behind them (68 gates, 12 themes, 19 page shapes across 11 families, a locale linter with 0 runtime dependencies), the number that stays flat is **1**: exactly one locale profile ships, `es-CL`. Every other hard rule (no em dashes, no invented metrics, no italic headings, the vetoed serifs, the rotation memory) applies in any language. The register gate, the rule this project is proudest of, only has a banned-forms table for that one market. Ask for Spanish outside Chile, or for Portuguese or German, and rule 1 still fires, it just has nothing to check the copy against. Writing another profile closes that gap; nothing in the tooling does it for you.
 
 ## Install
-
-The skill is a folder of markdown plus one script. Any harness that reads `SKILL.md` directories can use it.
 
 ```bash
 git clone https://github.com/stgomoyaa/firma.git
 cp -R firma/skills/firma ~/.claude/skills/
 ```
 
-Project-local works too, in `<project>/.claude/skills/firma/`. Other harnesses: same folder, different destination. `~/.agents/skills/` for the `.agents` convention, `~/.config/opencode/skills/` for OpenCode, `.cursor/skills/` for Cursor with Agent Skills enabled. Only the Claude Code path is verified here; the rest follow each harness's documented skill location.
+Under a minute: one clone, one copy, no build step, no account, no API key. Requirements: a current Node.js to run `scripts/guard.mjs` (no `package.json`, nothing to `npm install`), and a harness that reads `SKILL.md` folders. Safe to re-run: the `cp -R` overwrites the same destination every time, and nothing in the skill writes outside `.firma/log.json` inside whichever project uses it.
 
-## Use
+Project-local works too, in `<project>/.claude/skills/firma/`. Other harnesses, same folder under a different root: `~/.agents/skills/` for the `.agents` convention, `~/.config/opencode/skills/` for OpenCode, `.cursor/skills/` for Cursor with Agent Skills enabled. Only the Claude Code path above is verified here.
 
-```
-firma                      # design something new: runs the 8-step flow
-firma audit <target>       # score an existing surface, ranked punch list, no edits
-firma redesign <target>    # audit first, then restyle inside the existing implementation
-```
+> [!TIP]
+> Point the guard at your own project once it is installed: `node skills/firma/scripts/guard.mjs --locale es-CL src/`. It scans every matching file, collects every finding, and exits 1 if any error-level one is present, so it wires into CI without a model call.
 
-The default flow, condensed: read the existing code before asking anything, state the design read in one line, pick a direction, check the rotation log, pick a macrostructure family and shape plus nav and footer, pick a theme, emit a short preview block so you can redirect, build against locked tokens, then run the gates and the self-critique before handing back.
+> [!IMPORTANT]
+> Honesty and the locale register are hard gates, not style notes. One invented metric or one line of voseo Spanish fails the build regardless of how good the rest of the page is.
 
-The skill is written to be read by an agent, not by a human on a train. It is opinionated on purpose, and short on purpose.
+> [!NOTE]
+> Only one locale profile ships. The schema for writing another, and the two rules that matter most (prefer an explicit banned-forms list to a clever pattern, never add a form you are unsure about), are in `skills/firma/locales/README.md`.
 
-## The 8 hard rules
+## Hard rules
 
-1. Copy ships in the target locale's neutral register. The model's default register is auto-fail.
-2. Total honesty. No invented metrics, testimonials, or logos.
-3. **No em-dashes in visible text.** The single loudest AI writing tell.
-4. No italics inside headings. Emphasis by weight, accent, or a drawn underline.
+Checked in the gates, active in every verb (`firma`, `firma audit <target>`, `firma redesign <target>`):
+
+1. Copy ships in the target locale's neutral register. The model's default register is auto-fail until proven right for that market.
+2. Total honesty. No invented metrics, testimonials, client logos or fake urgency counters.
+3. No em dashes in visible text, the loudest AI-writing tell there is. A period, comma, colon or parentheses instead; ranges take a plain hyphen.
+4. No italics inside headings. Emphasis by weight, accent colour, or a drawn underline.
 5. Serifs are welcome. Fraunces and Instrument Serif are vetoed as defaults, because every LLM reaches for them first.
-6. dark-técnico is a first-class direction, not an exception.
-7. A named veto list of tells that auto-fail even when they look fine.
-8. Layout verified, never assumed. Declared grid alignment, no orphan whitespace.
+6. dark-technical is a first-class direction, not an exception.
+7. A named veto list of tells that auto-fail even when they look fine (glow orbs, masked grid backgrounds, the eyebrow-above-every-section habit, identical shadowed cards).
+8. Layout verified, never assumed. Declared grid alignment, checked for orphan whitespace.
 
-## Locale profiles
+## One brief, four directions
 
-The gate is driven by a profile in `locales/`, so it works for any language whose default register is wrong for your market.
+The same brief routes to a different slice of the theme catalogue depending on which of the four directions it reads as. This is the axis the rotation log walks every build: same input, different setting.
 
-**One profile ships, on purpose.** Writing a profile means knowing a market's register well enough to say which forms are wrong, and inventing that from the outside produces exactly the confident nonsense the profile exists to prevent. `es-CL` is complete and battle-tested. The schema for writing another is documented in `locales/README.md`, including the two rules that matter: prefer an explicit banned-forms list to a clever pattern, and never add a form you are unsure about, because a gate with false positives gets disabled and a disabled gate catches nothing.
+| Direction | Themes it draws from |
+|---|---|
+| dark-technical | Slate, Phosphor, Press, Forest |
+| editorial-sober | Paper, Newsprint, Smoke, Riso |
+| minimal-modern | Cobalt, Mono+Pop |
+| warm-playful | Terracotta, Olive |
 
-## Deterministic linting: two linters, not one
+Source: `skills/firma/references/themes.md`, "How to choose" step 2.
 
-The gates in `slop-test.md` are run by the agent, which means they are self-reported: the model that wrote the page is the one asked whether the page is slop. Two deterministic linters close that gap, and they cover different halves of it.
+## What ships
 
-**1. The bundled guard**, for the hard rules a generic linter does not have. Node, zero dependencies, ships inside the skill:
+| File | What it holds |
+|---|---|
+| `SKILL.md` | The 8 hard rules, the 3 verbs, and the 8-step design flow |
+| `references/macrostructures.md` | 19 page shapes in 11 families, plus nav and footer archetypes |
+| `references/themes.md` | 12 copy-paste OKLCH themes, with contrast declared per token pair |
+| `references/typography.md` | Pairings by direction, and the faces vetoed as LLM defaults |
+| `references/color.md` | The OKLCH engine for building a theme from a brand colour |
+| `references/layout.md` | Space, asymmetry, depth, and the grid-alignment gate |
+| `references/motion.md` | Motion budget, named easings, the CSS ticker, the scroll-cinematic contract |
+| `references/copy.md` | Locale-independent copy rules, honesty, banned openings |
+| `references/product-surfaces.md` | Onboarding, settings, dashboards, forms, empty states |
+| `references/slop-test.md` | 68 gates plus the six-axis self-critique, run before every handoff |
+| `references/audit.md` | Scoring rubric for the `audit` and `redesign` verbs |
+| `locales/es-CL.md` | The one shipped locale profile: Spanish, neutral Chilean register, tuteo |
+| `scripts/guard.mjs` | The deterministic linter for the hard rules. Node, 0 dependencies |
+| `examples/` | The two fixtures this README measures |
 
-```bash
-node <skill-path>/scripts/guard.mjs --locale es-CL src/   # exit 1 on errors
-node <skill-path>/scripts/guard.mjs src/ --json           # for CI
-```
+## The numbers
 
-It flags banned locale forms in visible text, em-dashes and en-dashes in visible text, unconfirmed marketing metrics, pure `#000`/`#fff`, exact untinted greys (including `oklch` below 0.005 chroma), and colour literals declared outside a token. It reads text and CSS, not a DOM: it will not compute contrast or detect real card nesting.
+Every count below was produced this session by reading or grepping the committed files, not estimated. Reproduce any row with the command in the third column.
 
-**2. [impeccable](https://github.com/pbakaus/impeccable)'s detector**, for the generic execution layer, with a real DOM and AST. No LLM, no API key:
+| Metric | Value | Reproduce |
+|---|---|---|
+| Gates in `slop-test.md` | 68 | `grep -cE '^[0-9]+\.' skills/firma/references/slop-test.md` |
+| Macrostructure shapes / families | 19 / 11 | count the bold shape names and the `## N ·` family headings in `skills/firma/references/macrostructures.md` |
+| OKLCH themes | 12 | `grep -cE '^### [0-9]+ ' skills/firma/references/themes.md` |
+| Locale profiles shipped | 1 (`es-CL`) | `ls skills/firma/locales/*.md` |
+| Runtime dependencies | 0 | no `package.json` in the repo; `scripts/guard.mjs` imports only `node:fs` and `node:path` |
+| `guard.mjs` on `examples/slop.html` | 8 errors, 14 warnings | `node skills/firma/scripts/guard.mjs --locale es-CL examples/slop.html` |
+| `guard.mjs` on `examples/firma.html` | 0 errors, 1 warning | `node skills/firma/scripts/guard.mjs --locale es-CL examples/firma.html` |
+| `impeccable detect` on `examples/slop.html` | 23 anti-patterns | `npx impeccable detect examples/slop.html` |
+| `impeccable detect` on `examples/firma.html` | 2 anti-patterns, both edge cases this skill documents on purpose (the CSS ticker override, and Space Grotesk used under the skill's explicit-rotation exception rather than as a first pick) | `npx impeccable detect examples/firma.html` |
+| Cobalt theme contrast against paper (ink, muted, neutral, accent) | 16.3:1, 9.2:1, 5.1:1, 4.6:1 | declared in `skills/firma/references/themes.md`, theme 7, not computed this session |
+| Cobalt `--color-accent-dark` inside the graphite band | 6.2:1 | same source |
 
-```bash
-npx impeccable detect src/
-```
+## Where this is weak
 
-It catches contrast, grey-on-colour, nested cards, glow shadows, AI palettes and eyebrow chips. It does not know about locale registers or fabricated metrics, and its em-dash rule is advisory and needs eight occurrences to fire, so it will never enforce rule 3. One of its rules conflicts with this skill on purpose: the dark-technical direction prescribes exactly one CSS ticker per page, with a motion budget and `prefers-reduced-motion` honoured, which its `marquee` rule reads as a defect. Waive that one and nothing else:
+- Of the 68 gates in `slop-test.md`, only the subset `guard.mjs` and `impeccable detect` cover is checked mechanically. The rest are self-reported: the same model that wrote the page is the one asked whether the page passes them.
+- One locale profile ships. Every hard rule except the register gate applies in any language; the register gate itself only has a banned-forms table for `es-CL`.
+- `guard.mjs` reads text and CSS with regular expressions, not a rendered DOM. It cannot compute contrast, detect real card nesting, or tell whether an element is actually visible; that half of the job belongs to `impeccable`, which needs a real HTML parse.
+- The rotation log at `.firma/log.json` is a plain file the agent is instructed to read and append to. `guard.mjs` skips that directory outright and enforces none of it: delete the log and the rotation memory the whole skill leans on for variety is gone with it.
 
-```json
-{ "detector": { "ignoreRules": ["marquee"] } }
-```
+## How it works
 
-## Provenance
+1. **Pre-flight.** Read the existing code first (`design.md` if present, font stack, tokens, framework) before asking anything.
+2. **Read.** Infer audience, the page's single job and a tone extreme from the brief; declare the read in one line.
+3. **Rotate.** Check `.firma/log.json` against the last 3 to 5 builds; the macrostructure shape cannot repeat any of them and the family cannot repeat the previous one.
+4. **Theme.** Pick from the 12-theme catalogue, or build one from a brand colour with the OKLCH engine; every colour locked into a `:root` token.
+5. **Preview.** Emit a short bullet block, including the one firma artifact, before writing any CSS.
+6. **Build.** Tokens only, named spacing scale, copy run through the target locale's profile, a stamp on the first line of the CSS.
+7. **Gate.** Score the six-axis self-critique, then run all 68 gates starting with `guard.mjs` and `impeccable detect`; hand over only once every gate answers no.
 
-`firma` is a derivative work and says so. The shape of the six-axis self-critique, most of the gate battery, the rotation mechanism and the OKLCH engine come from [hallmark](https://github.com/Nutlope/hallmark) (MIT), along with the idea of picking a named page shape before writing code. The shape catalogue itself was re-derived here: 19 shapes in 11 families, with near-duplicates merged and the family grouping added to close a hole in the rotation rule. Brief inference and audit-first come from [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). The execution-defect lens comes from pols-antislop. Full breakdown, including the two hallmark rules this skill deliberately overrides, in [`NOTICE.md`](NOTICE.md).
+## Provenance and license
 
-MIT licensed. Built by [Santiago Moya](https://github.com/stgomoyaa).
+`firma` is a derivative work and says so. The shape of the six-axis self-critique, most of the gate battery, the rotation mechanism and the OKLCH engine come from [hallmark](https://github.com/Nutlope/hallmark) (MIT), along with the idea of picking a named page shape before writing code. The shape catalogue itself was re-derived here: 19 shapes in 11 families, near-duplicates merged and the family grouping added to close a hole in the rotation rule. Brief inference and audit-first come from [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). The execution-defect lens comes from pols-antislop. Full breakdown, including the two hallmark rules this skill deliberately overrides, in [`NOTICE.md`](NOTICE.md).
+
+MIT. Copy it, fork it, strip the attribution if you must, but the locale gate and the honesty gate are the two rules worth keeping even if nothing else survives the fork.
+
+Built by [Santiago Moya](https://github.com/stgomoyaa).
