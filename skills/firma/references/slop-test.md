@@ -148,6 +148,17 @@ Skip this block for landing pages. Run it for onboarding, settings, dashboards, 
 67. Does the helper or error slot collapse at rest, so the layout jumps on validation?
 68. Does the submit button change width when it enters its loading state? Are the error strings in the locale profile's register, or did they ship in the model's default?
 
+### README (only when the artifact is a repository README)
+
+Detail in `readme.md`.
+
+69. Does a demonstration appear before the explanation, or is the first concrete thing an install command?
+70. Is there a number in the file that no command in the repository can reproduce?
+71. Is there a "what this does not do" section, and does it name a real loss rather than a humble-brag?
+72. Is the number that does not flatter the project published next to the one that does?
+73. Is there a badge for a service that is not configured, or a license badge the host does not detect?
+74. Is the tagline a description of the product rather than a sample of it?
+
 ## The deepest tell
 
 Dodging this list is not designing. You can pass every gate and still ship slop if you invented nothing. The list makes the work less incorrect; the **firma** (gate 59) and the position (axis P) make it good. Clean is the floor, never the achievement.

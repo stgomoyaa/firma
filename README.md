@@ -105,6 +105,7 @@ Source: `skills/firma/references/themes.md`, "How to choose" step 2.
 | `references/motion.md` | Motion budget, named easings, the CSS ticker, the scroll-cinematic contract |
 | `references/copy.md` | Locale-independent copy rules, honesty, banned openings |
 | `references/product-surfaces.md` | Onboarding, settings, dashboards, forms, empty states |
+| `references/readme.md` | A repository README, which is a shipped surface with its own slop shape |
 | `references/slop-test.md` | 68 gates plus the six-axis self-critique, run before every handoff |
 | `references/audit.md` | Scoring rubric for the `audit` and `redesign` verbs |
 | `locales/es-CL.md` | The one shipped locale profile: Spanish, neutral Chilean register, tuteo |

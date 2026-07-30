@@ -92,7 +92,7 @@ Rules, against the last 3 to 5 entries:
 
 ### 4 · Macrostructure, nav and footer
 
-If the target is an app surface rather than a marketing page (onboarding, settings, a dashboard, a form), skip this step and use `references/product-surfaces.md` instead: the macrostructure catalogue does not apply there.
+If the target is an app surface rather than a marketing page (onboarding, settings, a dashboard, a form), skip this step and use `references/product-surfaces.md` instead: the macrostructure catalogue does not apply there. If the target is a repository README, use `references/readme.md`, which has its own structure and its own gates.
 
 Pick ONE of the 19 named shapes in `references/macrostructures.md` BEFORE writing code, and say which of the 11 **families** it belongs to. The macrostructure fixes heading placement, composition, divider language and button voice all at once. Specimen is not the default, and the **Proof** family is forbidden without a real, verifiable number or quote. Nav and footer are picked in the same step: **the "wordmark + 4 links + button on the right" nav and the "4 columns + social + copyright" footer are the most recognised AI fingerprints**; use them only with a real justification.
 
@@ -133,7 +133,7 @@ The **firma** is mandatory: the ONE artifact or gesture that stops this page bei
 ### 8 · Gates and self-critique (before handing over)
 
 1. **Six-axis self-critique** (1-5): Philosophy · Hierarchy · Execution · **Firma** · **Honesty** · Variety. Any axis <3 triggers a revision pass before the gates, with two exceptions that are not averaged: Honesty is 5 or it blocks the handoff, and Firma below 3 means there is no build. Detail in `references/slop-test.md`.
-2. Run the **68 gates in `references/slop-test.md`** (the last 8 apply only to app surfaces), which start with a deterministic Gate 0: the bundled `scripts/guard.mjs` plus an external detector. Every gate answer must be **no**. If a gate fails, fix it; slop does not ship.
+2. Run the **74 gates in `references/slop-test.md`** (the last 14 are conditional: 8 for app surfaces, 6 for READMEs), which start with a deterministic Gate 0: the bundled `scripts/guard.mjs` plus an external detector. Every gate answer must be **no**. If a gate fails, fix it; slop does not ship.
 3. Real visual verification when a browser is available (screenshots at 2-3 widths): optical centring, nothing clipped by a chamfer or notch, parallel columns aligned.
 
 ---
@@ -160,6 +160,7 @@ The build is done when: gates green, firma present, responsive verified, copy pa
 | `references/color.md` | Custom theme, or palette and contrast questions |
 | `references/layout.md` | Build: space, asymmetry, depth, grid alignment |
 | `references/product-surfaces.md` | Onboarding, settings, dashboards, forms, empty states |
+| `references/readme.md` | A repository README, which is a shipped surface with its own slop shape |
 | `references/motion.md` | Build with any interactive element or animation (includes the ticker recipe) |
 | `references/copy.md` | Build: every visible string |
 | `locales/<tag>.md` | Whenever copy is written; `es-CL` is the default profile |
