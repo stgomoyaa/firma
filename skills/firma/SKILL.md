@@ -1,167 +1,169 @@
 ---
 name: firma
-description: "Sistema de diseño anti-slop para agentes que escriben frontend en español. Invocar ANTES de escribir markup/CSS ante CUALQUIER trabajo visual: landing pages, componentes nuevos, portfolios, heroes, pricing, redesigns, dark mode, 'que se vea mejor/premium/menos IA', o auditar UI existente. También cuando se pida 'audit', 'redesign', 'firma', 'antislop' o que un diseño no parezca hecho por IA. Motor: OKLCH con grises tinteados, un solo acento, fuentes con carácter, macroestructuras que rotan entre builds para que dos páginas no compartan fingerprint, gates anti-tells, copy en español neutro con tú (cero voseo), cero métricas o testimonios inventados, y estéticas dark-técnicas con animación CSS cuando encajan."
+description: "Anti-AI-slop design skill for coding agents. Invoke BEFORE writing any markup or CSS for visual work: landing pages, new components, portfolios, heroes, pricing, redesigns, dark mode, 'make it look better/premium/less AI', or auditing existing UI. Also when asked to 'audit', 'redesign', 'firma' or to make a design not look AI-generated. Engine: OKLCH with tinted greys, one accent, display faces with character, macrostructures that rotate between builds so two pages never share a fingerprint, anti-tell gates, a locale register gate for user-visible copy, zero invented metrics or testimonials, and dark-technical aesthetics with CSS animation when they fit."
 ---
 
 # firma
 
-Objetivo doble, en este orden: que el output **no parezca generado por IA** y que tenga **harta personalidad**. Un diseño limpio sin idea es el piso, no el logro. Dos builds consecutivos deben parecer **sitios distintos**, no color-swaps del mismo template.
+Two goals, in this order: the output must **not look AI-generated**, and it must have **real personality**. A clean design with no idea is the floor, not the achievement. Two consecutive builds should look like **different sites**, not colour swaps of one template.
 
-El nombre es la regla central: ninguna página se entrega sin **su firma**, el UN artefacto o gesto que hace que no se pueda copiar y pegar en otro sitio. Página sin firma es slop limpio, y slop limpio sigue siendo slop.
+The name is the central rule: nothing ships without **its firma** (Spanish for *signature*), the one artifact or gesture that would make no sense pasted into another site. A page without a firma is clean slop, and clean slop is still slop.
 
-Tres cosas que esta skill hace y el resto del género no:
+Three things this skill does that the rest of the genre does not:
 
-1. **Gate de copy en español neutro.** El voseo argentino es el default de todo LLM que escribe español; acá es auto-fail con lista negra explícita.
-2. **Honestidad como regla dura, no como buen gusto.** Cero métricas, testimonios o logos inventados. En Chile eso es riesgo SERNAC, no una preferencia estética: una macroestructura que necesita datos que no existen es la macroestructura equivocada.
-3. **Memoria de rotación entre builds.** Un log en el proyecto impide repetir macroestructura, tema, display face, nav y footer. Sin eso, todo agente vuelve al mismo atractor a los tres días.
+1. **A locale register gate.** Every model has a dominant register per language, and it is wrong for most of the market you are shipping to. Here it is auto-fail, driven by an explicit banned-forms table, and a bundled linter enforces it.
+2. **Honesty as a hard rule, not good taste.** Zero invented metrics, testimonials or client logos. In some markets that is consumer-law exposure rather than a style preference, which makes it structural: a macrostructure that needs data you do not have is the wrong macrostructure.
+3. **Rotation memory across builds.** A per-project log forbids repeating the macrostructure, its family, the theme, the display face, the nav and the footer. Without it, any agent converges back on one house style within days.
 
-Es autosuficiente: no necesita ninguna otra skill instalada. Si choca con otra skill de diseño, **gana esta** (ver `NOTICE.md` para qué se hereda y de dónde).
-
----
-
-## Reglas duras (no negociables, activas en todo verbo)
-
-Estas no son estilo, son ley. Se chequean en los gates (`references/slop-test.md`).
-
-1. **Español neutro chileno con TÚ. Cero voseo argentino.** Todo copy visible al usuario final va en tú.
-   - Prohibido: `vos · tenés · querés · podés · salís · sabés · pagás · hacés · agendá · mirá · dejá · empezá · descubrí · sumate` y cualquier imperativo/conjugación voseante en `-á/-é/-í`.
-   - Correcto: `tú · tienes · quieres · puedes · sales · sabes · pagas · haces · agenda · mira · deja · empieza · descubre · súmate`.
-   - Sin "usted". Términos técnicos quedan en inglés (deploy, pricing, checkout). Detalle en `references/copy.md`.
-2. **Honestidad total — riesgo legal SERNAC, no solo estética.** Cero testimonios inventados, cero logos de clientes falsos, cero métricas fabricadas ("+47% conversión", "5.000 clientes"), cero contadores de urgencia falsos. Si no hay dato real: placeholder gris etiquetado ("métrica por confirmar"), preguntar, o rediseñar la sección sin el slot de prueba. Un stat-led sin stats reales es la macroestructura equivocada.
-3. **Em-dashes (`—`) prohibidos en todo texto visible.** Es EL tell de escritura IA. Usa punto, coma, dos puntos o paréntesis. Rangos con guion simple (`2020-2026`, `$40-80`). Esto anula la regla tipográfica de hallmark que los prescribía.
-4. **Itálicas en headings prohibidas.** Ni una palabra en itálica dentro de un título (`Built to <em>think</em>` es un tell top). Énfasis por peso, color de acento o underline dibujado. Itálica solo como énfasis dentro de párrafos de body.
-5. **Serifs permitidas y bienvenidas** (dan personalidad), **pero Fraunces e Instrument Serif están vetadas como default** (son las serif favoritas de todo LLM; también Playfair/Cormorant/didones como reflejo de "lujo"). Preferir picks más distintivos y **rotar** la display face entre builds. Catálogo en `references/tipografia.md`.
-6. **Dark-técnico es dirección de primera clase**, no excepción: dark de alto contraste, geometría con chaflán/notch, ticker CSS, acentos fosforescentes. Cuando el brief lo pide (dev tool, API, datos, "técnico", "oscuro"), es la dirección natural. Receta en `references/motion.md` y temas dark en `references/temas.md`.
-7. **Tells vetados explícitamente** (auto-fail aunque "se vean bien"): orbes de glow flotantes · fondo de grilla con máscara radial · eyebrow mono-caps arriba de CADA sección · cards flotantes con sombra idénticas en fila · look "SaaS de acento que brilla" · gradientes purple/mesh · gradient-text en headlines.
-8. **Layout verificado, no asumido.** El bug clásico: gap en blanco bajo el h1 porque un grid con `align-items: center` (o `stretch` implícito) tiene al lado una columna más alta. Todo grid de 2+ columnas con alturas distintas declara su alineación a propósito (`align-items: start` casi siempre) y se revisa que no quede **whitespace huérfano** ni columnas de comparación desfasadas. Gate propio.
+Self-sufficient: it needs no other skill installed. If it conflicts with another design skill, **this one wins**. See `NOTICE.md` for what is inherited and from where.
 
 ---
 
-## Verbos
+## Hard rules (non-negotiable, active in every verb)
 
-| Invocación | Qué hace |
+These are not style, they are law. They are checked in the gates (`references/slop-test.md`).
+
+1. **Copy ships in the target locale's neutral register.** The register the model reaches for by default is auto-fail until proven right for that market. Name the locale, load its profile from `locales/`, treat its banned-forms table as a gate. Default profile: `locales/es-CL.md` (Spanish, neutral Chilean register, second person *tú*, zero Argentine voseo). If the brief names no locale, ask once: guessing the locale is guessing the audience. Detail in `references/copy.md`.
+2. **Total honesty.** Zero invented testimonials, zero fake client logos, zero fabricated metrics ("+47% conversion", "5,000 customers"), zero fake urgency counters. With no real figure: a labelled grey placeholder ("metric to confirm"), or ask, or redesign the section without the proof slot. A stat-led hero with no real stat is the wrong macrostructure.
+3. **Em-dashes (`—`) banned in every visible string.** It is THE AI-writing tell. Use a period, comma, colon or parentheses. Ranges take a plain hyphen (`2020-2026`, `$40-80`). This deliberately overrides the typographic convention that prescribes them.
+4. **No italics inside headings.** Not one word in italic inside a title (`Built to <em>think</em>` is a top tell). Emphasis by weight, accent colour, or a drawn underline. Italic only as emphasis inside body paragraphs.
+5. **Serifs are welcome** and add personality, **but Fraunces and Instrument Serif are vetoed as defaults** (every LLM's two favourite serifs; likewise Playfair, Cormorant and the didones as a reflex for "luxury"). Prefer more distinctive picks and **rotate** the display face between builds. Catalogue in `references/typography.md`.
+6. **dark-técnico is a first-class direction**, not an exception: high-contrast dark, chamfered or notched geometry, a CSS ticker, phosphor accents. When the brief calls for it (dev tool, API, data, "technical", "dark"), it is the natural direction. Recipe in `references/motion.md`, themes in `references/themes.md`.
+7. **Explicitly vetoed tells** (auto-fail even when they "look fine"): floating glow orbs · radially-masked grid backgrounds · a mono-caps eyebrow above EVERY section · rows of identical shadowed floating cards · the "glowing accent SaaS" look · purple and mesh gradients · gradient text in headlines.
+8. **Layout verified, never assumed.** The classic bug: blank gap under the `h1` because a grid with `align-items: center` (or an implicit `stretch`) sits beside a taller column. Every grid of 2+ columns with unequal heights declares its alignment on purpose (`align-items: start` almost always), and gets checked for **orphan whitespace** and misaligned comparison columns. Its own gate.
+
+---
+
+## Verbs
+
+| Invocation | What it does |
 | --- | --- |
-| *(default)* | Diseñar/construir algo nuevo. Sigue el **Flujo de diseño** de abajo. |
-| `audit <target>` | Lee el target, lo puntúa contra `references/audit.md` + los gates, devuelve punch list rankeada (critical/major/minor + veredicto). **No edita.** |
-| `redesign <target>` | Audit primero, después rediseña la capa visual **dentro de los límites de la implementación existente** salvo confirmación explícita de rebuild total. Preserva rutas, IA de contenido, copy voice, analytics hooks y slugs. Nunca borra archivos de producción sin plan aprobado. |
+| *(default)* | Design or build something new. Follows the **Design flow** below. |
+| `audit <target>` | Reads the target, scores it against `references/audit.md` plus the gates, returns a ranked punch list (critical/major/minor plus a verdict). **Does not edit.** |
+| `redesign <target>` | Audit first, then restyle the visual layer **within the limits of the existing implementation** unless a full rebuild is explicitly confirmed. Preserves routes, content IA, copy voice, analytics hooks and slugs. Never deletes production files without an approved plan. |
 
-En proyectos existentes: declarar qué archivos se van a tocar antes de editar. Deletes requieren confirmación.
+In existing projects: declare which files will be touched before editing. Deletions need confirmation.
 
 ---
 
-## Flujo de diseño (default)
+## Design flow (default)
 
 ### 0 · Pre-flight scan
 
-Si el proyecto tiene código, **leerlo antes de preguntar nada**: `design.md` (si existe, es el sistema lockeado y manda), font stack (`next/font`, `@fontsource`, links a Google Fonts, tailwind config), paleta (`:root`, tokens), libs de motion, spacing scale, framework. Emitir un bloque corto "Pre-flight: preservo X, introduzco Y". Proyecto vacío → una línea y seguir.
+If the project has code, **read it before asking anything**: `design.md` (if it exists it is the locked system and it wins), font stack (`next/font`, `@fontsource`, Google Fonts links, tailwind config), palette (`:root`, tokens), motion libraries, spacing scale, framework. Emit a short "Pre-flight: preserving X, introducing Y" block. Empty project: one line and move on.
 
-### 1 · Design read (inferir, no interrogar)
+### 1 · Design read (infer, do not interrogate)
 
-Antes de tocar código, inferir del brief: **audiencia · trabajo de la página (la acción única) · tono extremo** (editorial, brutalista, técnico, soft, lujo, playful, austero; "clean y moderno" no es un tono). Declararlo en UNA línea:
+Before touching code, infer from the brief: **audience · the job of the page (the single action) · the extreme of tone** (editorial, brutalist, technical, soft, luxury, playful, austere; "clean and modern" is not a tone). Declare it in ONE line:
 
-> *"Leyendo esto como: landing de <X> para <audiencia>, lenguaje <vibe>, dirección <dirección>."*
+> *"Reading this as: a landing page for <X> aimed at <audience>, <vibe> language, <direction> direction."*
 
-Si el read genuinamente diverge en dos caminos, **una** pregunta corta, nunca un cuestionario. Si se puede inferir con confianza, declarar y avanzar. Sin señales de marca en el brief, el default es personal brand honesto: primera persona, entregables concretos, cero performance.
+If the read genuinely forks in two, **one** short question, never a questionnaire. If it can be inferred confidently, declare and move. With no brand signals in the brief, the default is honest personal brand: first person, concrete deliverables, zero performance.
 
-### 2 · Dirección
+### 2 · Direction
 
-Cuatro direcciones; el brief elige por señales, default silencioso **editorial-sobrio**:
+Four directions; the brief picks by signal, silent default **editorial-sober**:
 
-- **editorial-sobrio** — el registro anti-slop canónico. Paper tinteado, serif o grotesk con carácter, hairlines, radius 0-4px, tipografía manda.
-- **dark-técnico** — dev tools, APIs, infra, datos, "oscuro", "terminal". Alto contraste sobre dark tinteado (nunca `#000` ni el azul-carbón default), mono o grotesk display, chaflán/notch como firma geométrica, UN ticker CSS permitido, acento fosforescente ≤5%. El default cuando el contenido es técnico, no una excepción.
-- **minimal-moderno** — SaaS/B2B tipo Linear/Stripe. Neutrales fríos permitidos, precisión, restraint.
-- **cálido-playful** — consumer, comunidad, onboarding. Radius generoso, sans humanista, color con más chroma.
+- **editorial-sober** — the canonical anti-slop register. Tinted paper, serif or grotesk with character, hairlines, radius 0-4px, typography leads.
+- **dark-técnico** — dev tools, APIs, infrastructure, data, "dark", "terminal". High contrast on tinted dark (never `#000`, never the default carbon blue), mono or grotesk display, chamfer or notch as the geometric signature, ONE CSS ticker allowed, phosphor accent ≤5%. The default when the content is technical, not an exception.
+- **minimal-modern** — SaaS/B2B in the Linear or Stripe register. Cool neutrals allowed, precision, restraint.
+- **warm-playful** — consumer, community, onboarding. Generous radius, humanist sans, more chroma.
 
-La dirección scopea qué temas rotan y qué gates se relajan. Decirla en voz alta junto al pick de macroestructura.
+The direction scopes which themes rotate and which gates relax. Say it out loud alongside the macrostructure pick.
 
-### 3 · Memoria y diversificación (lo más valioso de la skill)
+### 3 · Memory and diversification (the most valuable part of the skill)
 
-Leer `.firma/log.json` en la raíz del proyecto (y `.hallmark/log.json` si el proyecto viene de hallmark, para continuidad). Schema: array JSON, entrada más nueva primero:
+Read `.firma/log.json` at the project root (and `.hallmark/log.json` if the project came from hallmark, for continuity). Schema: a JSON array, newest entry first:
 
 ```json
-[{ "date": "2026-07-17", "familia": "Grilla", "macro": "Bento", "tema": "Pizarra", "direccion": "dark-tecnico", "display": "Tomorrow", "nav": "pill", "brief": "landing de producto" }]
+[{ "date": "2026-07-17", "family": "Grid", "macro": "Bento", "theme": "Slate", "direction": "dark-tecnico", "display": "Tomorrow", "nav": "pill", "brief": "product landing" }]
 ```
 
-Reglas con las últimas 3-5 entradas:
+Rules, against the last 3 to 5 entries:
 
-- La **forma** de macroestructura no puede repetir ninguna de las últimas 3.
-- La **familia** de macroestructura no puede repetir la del build anterior. Es la regla que más rinde: dos formas de la misma familia (Bento y Catálogo, las dos Grilla) cumplen la regla de forma y aun así producen dos páginas que se parecen.
-- El **tema** debe diferir del anterior en al menos 1 de 3 ejes: **banda de paper** (dark <30% / mid 30-85% / light >85% de lightness) · **estilo de display** (serif-contraste / serif-clásica / grotesk / mono / condensed-heavy / humanista) · **hue del acento** (cálido 10-60° / frío 200-300° / verde-otro / neutro).
-- La **display face** no puede repetir la del build anterior.
-- Nav y footer archetype tampoco repiten el build anterior.
+- The macrostructure **shape** cannot repeat any of the last 3.
+- The macrostructure **family** cannot repeat the previous build's. This is the rule that pays: two shapes from one family (Bento and Catalogue, both Grid) satisfy the shape rule and still produce two pages that look alike.
+- The **theme** must differ from the previous one on at least 1 of 3 axes: **paper band** (dark <30% / mid 30-85% / light >85% lightness) · **display style** (high-contrast serif / classical serif / grotesk / mono / condensed-heavy / humanist) · **accent hue** (warm 10-60° / cool 200-300° / green-other / neutral).
+- The **display face** cannot repeat the previous build's.
+- Nav and footer archetypes cannot repeat the previous build's either.
 
-**Declarar la rotación en el chat antes de elegir** ("Últimos 3: Grilla/Bento/Pizarra, Documento/Memo/Papel, Póster/Manifiesto/Tinta → elijo Díptico/Split Studio/Cobalto, cambia familia y difiere en banda y acento"). Elegir en la página, no en la cabeza: es lo que impide volver al atractor default. Al final del build, append al log (recortar a 20 entradas).
+**Declare the rotation in chat before choosing** ("Last 3: Grid/Bento/Slate, Document/Memo/Paper, Poster/Manifesto/Press → choosing Diptych/Split Studio/Cobalt, changes family and differs in band and accent"). Choose on the page, not in your head: that is what stops the slide back to the default attractor. At the end of the build, append to the log (trim to 20 entries).
 
-### 4 · Macroestructura + nav + footer
+### 4 · Macrostructure, nav and footer
 
-Elegir UNA de las 18 formas nombradas en `references/macroestructuras.md` ANTES de escribir código, y decir a qué **familia** pertenece (son 10). La macroestructura fija colocación de heading, composición, lenguaje de divisores y voz de botones de una vez. Especimen no es default, y la familia **Prueba** está prohibida si no hay un número o quote real y verificable. Nav y footer se eligen en el mismo paso: **el nav "wordmark + 4 links + botón a la derecha" y el footer "4 columnas + social + copyright" son los fingerprints IA más reconocidos**; usarlos solo con justificación real.
+If the target is an app surface rather than a marketing page (onboarding, settings, a dashboard, a form), skip this step and use `references/product-surfaces.md` instead: the macrostructure catalogue does not apply there.
 
-### 5 · Tema (paleta + fuentes)
+Pick ONE of the 19 named shapes in `references/macrostructures.md` BEFORE writing code, and say which of the 11 **families** it belongs to. The macrostructure fixes heading placement, composition, divider language and button voice all at once. Specimen is not the default, and the **Proof** family is forbidden without a real, verifiable number or quote. Nav and footer are picked in the same step: **the "wordmark + 4 links + button on the right" nav and the "4 columns + social + copyright" footer are the most recognised AI fingerprints**; use them only with a real justification.
 
-Catálogo OKLCH copiable en `references/temas.md` (incluye 4 temas dark-técnicos). Si el brief trae color de marca o un vibe multi-atributo que el catálogo no cubre, construir un tema custom con el motor de `references/color.md` (paper/ink/neutrales tinteados al hue ancla, un acento 0.12-0.22 de chroma). Reglas universales: OKLCH en todo, nada de `#000`/`#fff` puros, grises SIEMPRE tinteados (chroma ≥0.005), acento ≤5% del viewport, tipografía por `references/tipografia.md`.
+### 5 · Theme (palette plus fonts)
 
-### 6 · Preview (antes de emitir código)
+Copy-paste OKLCH catalogue in `references/themes.md` (includes 4 dark-technical themes). If the brief brings a brand colour, or a multi-attribute vibe the catalogue does not cover, build a custom theme with the engine in `references/color.md` (paper/ink/neutrals tinted to one anchor hue, one accent at 0.12-0.22 chroma). Universal rules: OKLCH throughout, no pure `#000` or `#fff`, greys ALWAYS tinted (chroma ≥0.005), accent ≤5% of the viewport, typography per `references/typography.md`.
 
-Bloque corto de bullets para que quien pide pueda redirigir antes de 500 líneas de CSS:
+### 6 · Preview (before emitting code)
+
+A short bullet block so the person asking can redirect before 500 lines of CSS:
 
 ```markdown
 **firma**
-- **Dirección** · dark-técnico
-- **Macro** · Díptico / Split Studio
-- **Tema** · Pizarra (dark cálido · grotesk · acento ámbar-fósforo)
-- **Fuentes** · Tomorrow 700 / Switzer 400 / JetBrains Mono
-- **Firma** · ticker de métricas reales + chaflán en cards
-- **Secciones** · Hero · Demo · Precios · FAQ · Cierre
-- **Difiere del anterior en** · familia de macro + banda de paper + display
+- **Direction** · dark-técnico
+- **Macro** · Diptych / Split Studio
+- **Theme** · Slate (warm dark · grotesk · amber-phosphor accent)
+- **Fonts** · Tomorrow 700 / Switzer 400 / JetBrains Mono
+- **Firma** · ticker of real metrics + chamfer on cards
+- **Sections** · Hero · Demo · Pricing · FAQ · Close
+- **Differs from the last build in** · macro family + paper band + display
 ```
 
-La **firma** es obligatoria: el UN artefacto/gesto que hace que esta página no pueda pegarse en otro sitio (un artefacto CSS construido, una silueta bespoke, un ticker con datos reales, una composición tipográfica). Página sin firma = slop limpio. Si no hay firma, no hay build.
+The **firma** is mandatory: the ONE artifact or gesture that stops this page being pasteable into another site (a built CSS artifact, a bespoke silhouette, a ticker of real data, a typographic composition). A page with no firma is clean slop. No firma, no build.
 
 ### 7 · Build
 
-- **Tokens lockeados.** Todo color y toda `font-family` referencia un token de `:root` (`var(--color-acento)`). Cero hex/oklch inline a mitad del render; si falta un valor, se sube al bloque de tokens primero.
-- Spacing scale 4pt nombrada (`--space-xs` … `--space-4xl`); ningún `padding: 17px` suelto.
-- Pesos a los extremos: si el body es 400, headings 700-800 o 200. Nunca 500/600 como contraste.
-- Asimetría con eje primario; máximo 2 elementos centrados en el hero. Hairlines o elevación tonal en vez de cards con sombra. Radius coherente con la dirección (editorial = 0-4px, un solo sistema de radius por página).
-- Motion: solo `transform` + `opacity`, 3 easings custom nombrados, UNA entrada orquestada por página (no fade-up-on-scroll en todo), `prefers-reduced-motion` siempre, **contenido nunca escondido detrás de una animación de entrada** (si el reveal no dispara, la sección queda en blanco). Detalle en `references/motion.md`.
-- Todo elemento interactivo con sus 8 estados (default/hover/focus-visible/active/disabled/loading/error/success). Focus ring instantáneo, nunca animado.
-- Responsive verificado a 320/375/768/1280: sin scroll horizontal (`overflow-x: clip` en html y body), CTAs y nav links en UNA línea, grids con imágenes usan `minmax(0, 1fr)`.
-- Copy por `references/copy.md`: específico, honesto, en español neutro chileno.
-- **Stamp** en la primera línea del CSS: `/* firma · macro: <n> · tema: <n> · direccion: <d> · critique: P#J#E#F#H#V# */` y append a `.firma/log.json`.
-- Nunca clobberear el stylesheet global existente; append-only bajo las directivas del framework.
+- **Tokens locked.** Every colour and every `font-family` references a `:root` token (`var(--color-accent)`). Zero inline hex or oklch mid-render; if a value is missing, it goes up into the token block first.
+- Named 4pt spacing scale (`--space-xs` … `--space-4xl`); no loose `padding: 17px`.
+- Weights at the extremes: if body is 400, headings are 700-800 or 200. Never 500/600 as contrast.
+- Asymmetry with a primary axis; at most 2 centred elements in the hero. Hairlines or tonal elevation instead of shadowed cards. Radius coherent with the direction (editorial 0-4px, one radius system per page).
+- Motion: `transform` and `opacity` only, 3 named custom easings, ONE orchestrated entrance per page (not fade-up-on-scroll everywhere), `prefers-reduced-motion` always, and **content never hidden behind an entrance animation** (if the reveal does not fire, the section is blank). Detail in `references/motion.md`.
+- Every interactive element gets its 8 states (default/hover/focus-visible/active/disabled/loading/error/success). Focus ring instant, never animated.
+- Responsive verified at 320/375/768/1280: no horizontal scroll (`overflow-x: clip` on html and body), CTAs and nav links on ONE line, image grids use `minmax(0, 1fr)`.
+- Copy per `references/copy.md`: specific, honest, in the target locale's register.
+- **Stamp** on the first line of the CSS: `/* firma · macro: <n> · theme: <n> · direction: <d> · critique: P#J#E#F#H#V# */` and append to `.firma/log.json`.
+- Never clobber an existing global stylesheet; append-only under the framework's directives.
 
-### 8 · Gates + autocrítica (antes de entregar)
+### 8 · Gates and self-critique (before handing over)
 
-1. **Autocrítica en 6 ejes** (1-5): Filosofía · Jerarquía · Ejecución · **Firma** · **Honestidad** · Variedad. Cualquier eje <3 → pase de revisión antes de los gates, con dos excepciones que no se promedian: Honestidad es 5 o bloquea la entrega, y Firma bajo 3 significa que no hay build. Detalle en `references/slop-test.md`.
-2. Correr los **gates de `references/slop-test.md`** (los ~50 heredados de hallmark, consolidados, + los propios: em-dash, voseo, alineación de grid/whitespace huérfano, orbes/grilla-radial, eyebrows, honestidad). Toda respuesta debe ser **no**. Si un gate falla, se arregla; no se shippea slop.
-3. Verificación visual real cuando haya browser disponible (screenshot a 2-3 anchos): centrado óptico, nada cortado por un clip/notch, columnas paralelas alineadas.
+1. **Six-axis self-critique** (1-5): Philosophy · Hierarchy · Execution · **Firma** · **Honesty** · Variety. Any axis <3 triggers a revision pass before the gates, with two exceptions that are not averaged: Honesty is 5 or it blocks the handoff, and Firma below 3 means there is no build. Detail in `references/slop-test.md`.
+2. Run the **gates in `references/slop-test.md`**, which start with a deterministic Gate 0: the bundled `scripts/guard.mjs` plus an external detector. Every gate answer must be **no**. If a gate fails, fix it; slop does not ship.
+3. Real visual verification when a browser is available (screenshots at 2-3 widths): optical centring, nothing clipped by a chamfer or notch, parallel columns aligned.
 
 ---
 
-## Component-scope (cuando el brief es un componente, no una página)
+## Component scope (when the brief is a component, not a page)
 
-Señales: nombra un solo elemento UI, brief ≤30 palabras, target es un archivo de componente. En ese caso: saltar macroestructura/nav/footer/log (los componentes no rotan), heredar tokens y dirección del proyecto, y ser MÁS estricto en estados: los 8 estados con código real + un preview que los muestre apilados. Los gates universales (tipografía, color, contraste, motion, español) aplican igual.
+Signals: it names a single UI element, the brief is ≤30 words, the target is a component file. In that case: skip macrostructure, nav, footer and the rotation log (components do not rotate), inherit tokens and direction from the project, and be STRICTER about states: all 8 with real code plus a preview that stacks them. The universal gates (typography, colour, contrast, motion, locale) apply unchanged.
 
 ---
 
 ## Definition of Done
 
-El build está listo cuando: gates en verde + firma presente + responsive verificado + copy en español neutro sin voseo + cero datos inventados. **Ahí se cierra el scope.** Iterar más allá de eso sin que te lo pidan es scope creep que no mueve plata; decirlo explícito ("ya está suficientemente bueno para shippear") en el cierre.
+The build is done when: gates green, firma present, responsive verified, copy passing the locale gate, and zero invented data. **That is where the scope closes.** Iterating past it unasked is scope creep that moves no metric; say so explicitly ("this is good enough to ship") when closing.
 
 ---
 
-## Mapa de references (cargar solo lo que el paso pide)
+## Reference map (load only what the step asks for)
 
-| Archivo | Cuándo |
+| File | When |
 | --- | --- |
-| `references/macroestructuras.md` | Paso 4, todo build de página |
-| `references/temas.md` | Paso 5, todo build |
-| `references/tipografia.md` | Paso 5 + build |
-| `references/color.md` | Tema custom o dudas de paleta/contraste |
-| `references/layout.md` | Build: espacio, asimetría, profundidad, grid-alignment |
-| `references/motion.md` | Build con cualquier elemento interactivo o animación (incluye receta de ticker) |
-| `references/copy.md` | Build: todo texto visible |
-| `references/slop-test.md` | Paso 8, SIEMPRE antes de entregar |
-| `references/audit.md` | Verbos `audit` y `redesign` |
+| `references/macrostructures.md` | Step 4, every page build |
+| `references/themes.md` | Step 5, every build |
+| `references/typography.md` | Step 5 plus build |
+| `references/color.md` | Custom theme, or palette and contrast questions |
+| `references/layout.md` | Build: space, asymmetry, depth, grid alignment |
+| `references/product-surfaces.md` | Onboarding, settings, dashboards, forms, empty states |
+| `references/motion.md` | Build with any interactive element or animation (includes the ticker recipe) |
+| `references/copy.md` | Build: every visible string |
+| `locales/<tag>.md` | Whenever copy is written; `es-CL` is the default profile |
+| `references/slop-test.md` | Step 8, ALWAYS before handing over |
+| `references/audit.md` | The `audit` and `redesign` verbs |
+| `scripts/guard.mjs` | Gate 0, and any time you want the hard rules checked mechanically |
 
-Procedencia, en detalle y con licencias, en `NOTICE.md` del repo: https://github.com/stgomoyaa/firma/blob/main/NOTICE.md. Resumen: la taxonomía de macroestructuras, la autocrítica de 6 ejes, la batería de gates y el mecanismo de rotación vienen de **hallmark** (MIT); la inferencia de dirección sin interrogar al usuario, de **taste-skill** (MIT); la cacería de tells de ejecución, de **pols-antislop**. Las reglas duras, el requisito de firma, los temas (salvo Cobalto), el gate de español neutro, la regla de honestidad y el modo component-scope son propios.
+Provenance, in detail and with licences, in `NOTICE.md` of the repo: https://github.com/stgomoyaa/firma/blob/main/NOTICE.md

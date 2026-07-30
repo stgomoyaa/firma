@@ -1,64 +1,66 @@
-# Color
+# Colour
 
-La UI generada por IA falla primero en color: elige azul, usa negro puro, dibuja un gradiente purple-cyan, riega el acento por el 30% de la página. Todo eso se corrige acá.
+AI-generated UI fails at colour first: it picks blue, uses pure black, draws a purple-cyan gradient, and floods 30% of the page with the accent. All of that is corrected here.
 
-## Principios
+## Principles
 
-- **OKLCH en todo.** Perceptualmente uniforme; `hsl()` y `rgb()` mienten sobre el brillo.
-- **Un acento.** Máximo dos. Todo lo demás es neutral. El acento ocupa **≤5% de cualquier viewport** (contar por área: fills sólidos, headings en acento, fondos).
-- **Sin extremos puros.** Nada de `#000` ni `#fff`. Siempre tintear hacia el hue ancla.
-- **Grises tinteados.** Ancla cálida → neutrales cálidos; ancla fría → fríos. Chroma mínima 0.005 en todo neutral. Un gris plano (`chroma 0`) lee a wireframe.
+- **OKLCH everywhere.** Perceptually uniform; `hsl()` and `rgb()` lie about brightness.
+- **One accent.** Two at most. Everything else is neutral. The accent occupies **≤5% of any viewport** (count by area: solid fills, headings in accent, backgrounds).
+- **No pure extremes.** No `#000`, no `#fff`. Always tint toward the anchor hue.
+- **Tinted greys.** Warm anchor gives warm neutrals; cool anchor gives cool ones. Minimum chroma 0.005 on every neutral. A flat grey (chroma 0) reads as a wireframe.
 
-## Construcción de paleta (motor para temas custom)
+## Palette construction (the engine for custom themes)
 
-Cuatro capas, todas tinteadas al mismo hue ancla:
+Four layers, all tinted to the same anchor hue:
 
-1. **Paper** — superficie base. Light: `oklch(95-98% 0.005-0.015 <hue>)`. Dark: `oklch(12-18% 0.008-0.02 <hue>)`.
-2. **Ink** — texto primario. Light: `oklch(16-24% 0.005-0.02 <hue>)`. Dark: `oklch(92-96% 0.005-0.01 <hue>)`.
-3. **Neutrales** — 5-9 pasos entre paper e ink, todos con la tinta del ancla (0.005-0.015).
-4. **Acento** — un color saturado (chroma 0.12-0.22). Links, estados activos, focus, highlights. Nunca fondo de secciones enteras.
+1. **Paper** — the base surface. Light: `oklch(95-98% 0.005-0.015 <hue>)`. Dark: `oklch(12-18% 0.008-0.02 <hue>)`.
+2. **Ink** — primary text. Light: `oklch(16-24% 0.005-0.02 <hue>)`. Dark: `oklch(92-96% 0.005-0.01 <hue>)`.
+3. **Neutrals** — 5 to 9 steps between paper and ink, all carrying the anchor's tint (0.005-0.015).
+4. **Accent** — one saturated colour (chroma 0.12-0.22). Links, active states, focus, highlights. Never the background of a whole section.
 
 ```css
 :root {
   --color-paper:   oklch(96% 0.012 80);
   --color-paper-2: oklch(93% 0.014 80);
-  --color-borde:   oklch(82% 0.010 80);
+  --color-border:  oklch(82% 0.010 80);
   --color-neutral: oklch(56% 0.008 80);
   --color-muted:   oklch(40% 0.008 70);
   --color-ink:     oklch(18% 0.010 60);
-  --color-acento:  oklch(62% 0.20 40);
+  --color-accent:  oklch(62% 0.20 40);
   --color-focus:   oklch(55% 0.19 55);
 }
 ```
 
-## Receta dark mode (y de temas dark)
+## Dark mode recipe (and dark themes)
 
-- Paper lightness 12-18%, nunca `#000`. Ink 92-96%, nunca `#fff`.
-- Body font-weight baja 50 unidades (400 → 350) para compensar el peso óptico de texto claro sobre oscuro.
-- Acento: -0.02/-0.04 de chroma, +5-10% de lightness respecto al modo claro.
-- **Elevación = superficies más CLARAS** (+3% lightness por nivel), no sombras. Sombra sobre dark crea glow accidental.
-- El hue ancla no cambia entre modos; solo lightness y chroma.
-- **Prohibido el dark-slop default:** el azul-carbón/slate-índigo (`#0c0e15` y familia) con acento lila es el gemelo nocturno del gradiente purple. Un dark no tiene por qué ser azul: cálido, verde-negro, carbón cálido, oxblood-negro. Elegido, no defaulteado.
+- Paper lightness 12-18%, never `#000`. Ink 92-96%, never `#fff`.
+- Body font-weight drops 50 units (400 → 350) to compensate for the optical weight of light text on dark.
+- Accent: -0.02/-0.04 chroma, +5-10% lightness relative to light mode.
+- **Elevation is LIGHTER surfaces** (+3% lightness per level), not shadows. A shadow over dark creates accidental glow.
+- The anchor hue does not change between modes; only lightness and chroma do.
+- **The default dark-slop is banned:** carbon-blue / slate-indigo (`#0c0e15` and family) with a lilac accent is the night twin of the purple gradient. A dark theme does not have to be blue: warm, green-black, warm carbon, oxblood-black. Chosen, not defaulted.
 
-## Contraste (gates 40-41)
+## Contrast
 
-| Contenido | Mínimo WCAG | Target |
+| Content | WCAG minimum | Target |
 | --- | --- | --- |
 | Body text | 4.5:1 | 7:1 |
-| Texto grande (≥24px o ≥18px bold), iconos, focus rings | 3:1 | 4.5:1 |
+| Large text (≥24px, or ≥18px bold), icons, focus rings | 3:1 | 4.5:1 |
 
-Chequeo rápido en OKLCH: si `|L_texto − L_fondo| < 50%`, probablemente falla; confirmar. Los que más se escapan: texto que hereda `color` dentro de una card que cambió a `paper-2`; botón con texto ≈ fill (negro sobre negro: el modelo olvidó `--color-acento-ink`); sección oscura cuyo interior sigue con ink oscuro. Toda regla que setea `background` oscuro setea `color` claro en la misma regla.
+Quick OKLCH check: if `|L_text − L_background| < 50%` it probably fails; confirm it. The ones that slip through most: text inheriting `color` inside a card that switched to `paper-2`; a button whose text ≈ its fill (black on black, because the model forgot `--color-accent-ink`); a dark section whose interior still carries dark ink. **Every rule that sets a dark `background` sets a light `color` in the same rule.**
 
-## Paletas vetadas como default
+When a theme has a dark band inside a light page, the light-mode accent usually fails against that band. Give the band its own accent token at higher lightness and lower chroma rather than reusing the page accent and hoping.
 
-- **Purple-to-cyan / purple-to-blue / mesh gradients / aurora blobs.** El fingerprint IA número 1.
-- **Beige+brass premium:** crema/hueso (`#f5f1ea` y familia) + latón/arcilla/ocre + espresso para cualquier brief "premium/artesanal". Es EL default LLM de consumo premium. Alternativas: lujo frío (plata/humo), forest (verde profundo + hueso + ámbar), negro + tan, cobalto + crema, terracota + slate, monocromo + un pop saturado.
-- **Crema "editorial" como reflejo.** Elegir cream es el nuevo elegir gradiente purple; válido solo elegido con argumento.
-- **El gris de UI-kit** (gray-100/200, `#f3f4f6`) como banda de footer o superficie: wireframe en su default.
-- **Gradientes de 3+ stops** y gradientes animados en hover.
+## Palettes vetoed as defaults
 
-## Uso del acento
+- **Purple-to-cyan, purple-to-blue, mesh gradients, aurora blobs.** The number-one AI fingerprint.
+- **Beige+brass premium:** cream or bone (`#f5f1ea` and family) plus brass, clay or ochre plus espresso, for any "premium/artisanal" brief. It is THE LLM default for premium consumer. Alternatives: cool luxury (silver/smoke), forest (deep green + bone + amber), black + tan, cobalt + cream, terracotta + slate, monochrome plus one saturated pop.
+- **"Editorial" cream as a reflex.** Choosing cream is the new choosing a purple gradient; valid only when chosen with an argument.
+- **UI-kit grey** (gray-100/200, `#f3f4f6`) as a footer band or surface: a wireframe in its default state.
+- **Gradients with 3+ stops**, and gradients animated on hover.
 
-Es un destacador, no un bloque: nav activo, focus ring, underline en hover, borde/texto del CTA primario, un cuadrado chico junto a un heading. No llenar botones gigantes con él, no secciones enteras, no glow. En dark-técnico el acento fosforescente sigue la misma regla del ≤5%: brilla porque es escaso. Si dan ganas de usar más acento, esa es la señal de usar menos.
+## Using the accent
 
-Regla de continuidad (de pols): las secciones se resuelven una en la otra, sin costuras duras de color; un corte duro deliberado por página como máximo (ej. el footer bajando a su propio piso). Y un solo acento por página, lockeado: un sitio gris-cálido no recibe un CTA azul en la sección 7.
+It is a highlighter, not a block: active nav item, focus ring, hover underline, the primary CTA's border or text, a small square beside a heading. Do not fill giant buttons with it, do not fill whole sections, no glow. In dark-técnico the phosphor accent follows the same ≤5% rule: it glows because it is scarce. **If you feel like using more accent, that is the signal to use less.**
+
+Continuity rule: sections resolve into one another with no hard colour seams; at most one deliberate hard cut per page (for example the footer dropping to its own floor). And one accent per page, locked: a warm-grey site does not get a blue CTA in section 7.

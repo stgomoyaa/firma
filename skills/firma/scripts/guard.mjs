@@ -1,13 +1,14 @@
 #!/usr/bin/env node
-// firma guard: chequeo determinista de las reglas duras que un linter en inglés no ve.
-// Cubre voseo, em-dashes, métricas sin confirmar, negros y grises puros, y tokens sueltos.
-// Complementa a `npx impeccable detect` (DOM/AST, capa genérica); no lo reemplaza.
-// Uso: node guard.mjs [rutas...] [--json] [--quiet]
-// Sale con código 1 si hay algún hallazgo de nivel error.
+// firma guard: deterministic checks for the hard rules a generic linter does not have.
+// Covers the locale register gate, em-dashes, unconfirmed metrics, pure black and white,
+// untinted greys, and colour literals outside tokens.
+// Complements `npx impeccable detect` (DOM/AST, generic execution layer); does not replace it.
+// Usage: node guard.mjs [paths...] [--locale <tag>] [--json] [--quiet]
+// Exits 1 if any error-level finding is present.
 //
-// Escape hatch: un archivo que contenga el texto `firma-guard-disable-file` no se
-// escanea. Sirve para el que define las reglas (este mismo archivo), para fixtures
-// de test, y para copy que de verdad tiene que ir en otro registro.
+// Escape hatch: a file containing the text `firma-guard-disable-file` is skipped.
+// For the file that defines the rules (this one), for test fixtures, and for copy that
+// genuinely has to ship in another register.
 // firma-guard-disable-file
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
@@ -21,11 +22,15 @@ const MARKUP = new Set(['.html', '.htm', '.jsx', '.tsx', '.vue', '.svelte', '.as
 const SCRIPTISH = new Set(['.js', '.ts', '.mjs', '.cjs']);
 const STYLE = new Set(['.css', '.scss', '.sass', '.less']);
 
-// --- reglas de copy -----------------------------------------------------------
+// --- locale profiles ----------------------------------------------------------
 
-// Voseo rioplatense. Lista explícita en vez de un patrón de tónicas, porque
-// "café", "sofá", "aquí" y "también" convierten cualquier regex de -á/-é/-í en ruido.
-const VOSEO = [
+// One entry per profile in ../locales/. The list is the gate: a form that is not here
+// cannot be caught. Explicit list rather than a pattern over stressed -á/-é/-í endings,
+// because that pattern also matches "café", "sofá", "aquí" and "también", and a gate
+// with false positives gets disabled.
+const LOCALES = {
+  // Spanish, neutral Chilean register (tuteo). Rejects Argentine voseo.
+  'es-CL': [
   // presente
   'tenés', 'querés', 'podés', 'sabés', 'salís', 'pagás', 'hacés', 'venís', 'decís',
   'vivís', 'elegís', 'seguís', 'preferís', 'necesitás', 'buscás', 'esperás', 'tomás',
@@ -34,14 +39,25 @@ const VOSEO = [
   'agendá', 'mirá', 'dejá', 'empezá', 'fijate', 'sumate', 'escribí', 'probá', 'contá',
   'mandá', 'revisá', 'hacé', 'andá', 'vení', 'elegí', 'seguí', 'descubrí', 'comprá',
   'reservá', 'sumá', 'activá', 'guardá', 'compartí', 'cotizá', 'pedí', 'llamá',
-  'enterate', 'aprovechá', 'registrate', 'suscribite', 'ingresá', 'conocé', 'llevate',
-];
-const VOSEO_RE = new RegExp(`(?<![\\p{L}])(?:${VOSEO.join('|')}|vos)(?![\\p{L}])`, 'giu');
+    'enterate', 'aprovechá', 'registrate', 'suscribite', 'ingresá', 'conocé', 'llevate',
+    'vos',
+  ],
+};
+
+const localeArg = process.argv.find((a) => a.startsWith('--locale='))
+  || (process.argv.includes('--locale') ? process.argv[process.argv.indexOf('--locale') + 1] : null);
+const LOCALE = (localeArg || 'es-CL').replace('--locale=', '');
+if (!LOCALES[LOCALE]) {
+  console.error(`unknown locale profile "${LOCALE}". Shipped: ${Object.keys(LOCALES).join(', ')}.`);
+  console.error('Add its banned-forms list to LOCALES in this file. See ../locales/README.md.');
+  process.exit(2);
+}
+const BANNED_RE = new RegExp(`(?<![\\p{L}])(?:${LOCALES[LOCALE].join('|')})(?![\\p{L}])`, 'giu');
 
 const DASH_RE = /[—–]/g;
 
-// Métricas de marketing. Warn, no error: un número real es legítimo, lo que no es
-// legítimo es no haberlo confirmado.
+// Marketing metrics. Warn, not error: a real number is legitimate; what is not
+// legitimate is shipping one nobody confirmed.
 const METRIC_RES = [
   /[+±]\s?\d+([.,]\d+)?\s?%/g,
   /\d+([.,]\d+)?\s?%[\s]{0,60}(de\s+)?(más|menos|aumento|crecimiento|conversión|conversion|uptime|satisfacción|ahorro|retención|ROI)/gi,
@@ -50,15 +66,15 @@ const METRIC_RES = [
   /\b\d+\s?x[\s]{0,20}(más|mejor|faster|rápido)/gi,
 ];
 
-// --- reglas de color ----------------------------------------------------------
+// --- colour rules -------------------------------------------------------------
 
 const PURE_RE = /#(?:000{1,2}|fff{1,2}|000000|ffffff)\b|rgba?\(\s*0\s*,\s*0\s*,\s*0\s*[,)]|rgba?\(\s*255\s*,\s*255\s*,\s*255\s*[,)]/gi;
 const HEX_RE = /#([0-9a-f]{3}|[0-9a-f]{6})\b/gi;
 const OKLCH_RE = /oklch\(\s*([\d.]+)%?\s+([\d.]+)\s+([\d.-]+)/gi;
 
 /**
- * matchAll sobre un regex global copia el lastIndex del original, así que un
- * regex de módulo reusado entre archivos se saltea matches. Siempre uno fresco.
+ * matchAll on a global regex copies the original's lastIndex, so a module-level
+ * regex reused across files silently skips matches. Always build a fresh one.
  */
 function all(re, s) {
   return [...s.matchAll(new RegExp(re.source, re.flags))];
@@ -70,28 +86,28 @@ function hexChannels(hex) {
   return [full.slice(0, 2), full.slice(2, 4), full.slice(4, 6)].map((p) => parseInt(p, 16));
 }
 
-// --- utilidades ---------------------------------------------------------------
+// --- helpers ------------------------------------------------------------------
 
-/** Reemplaza una región por espacios para no mover offsets ni números de línea. */
+/** Blanks a region with spaces so offsets and line numbers do not shift. */
 function blank(src, re) {
   return src.replace(re, (m) => m.replace(/[^\n]/g, ' '));
 }
 
-/** Deja solo lo que un lector ve: sin tags, sin script/style, sin comentarios. */
+/** Leaves only what a reader sees: no tags, no script/style, no comments. */
 function visibleText(src, ext) {
   let s = src;
   s = blank(s, /<script\b[\s\S]*?<\/script>/gi);
   s = blank(s, /<style\b[\s\S]*?<\/style>/gi);
   s = blank(s, /<!--[\s\S]*?-->/g);
   s = blank(s, /\/\*[\s\S]*?\*\//g);
-  s = blank(s, /(?<!:)\/\/[^\n]*/g); // comentarios de línea, sin comerse https://
+  s = blank(s, /(?<!:)\/\/[^\n]*/g); // line comments, without eating https://
   if (MARKUP.has(ext)) s = blankTags(s);
   return s;
 }
 
 /**
- * Borra los tags dejando en su offset original el valor de los atributos que el
- * usuario sí lee (alt, placeholder, title, aria-label, label).
+ * Blanks tags, keeping at its original offset the value of the attributes a user
+ * actually reads (alt, placeholder, title, aria-label, label).
  */
 function blankTags(src) {
   const ATTR = /\b(?:alt|placeholder|title|aria-label|label)\s*=\s*(["'])([\s\S]*?)\1/gi;
@@ -99,7 +115,7 @@ function blankTags(src) {
     let out = tag.replace(/[^\n]/g, ' ');
     for (const m of all(ATTR, tag)) {
       const val = m[2];
-      const at = m.index + m[0].length - val.length - 1; // salta la comilla de cierre
+      const at = m.index + m[0].length - val.length - 1; // skip the closing quote
       out = out.slice(0, at) + val + out.slice(at + val.length);
     }
     return out;
@@ -138,7 +154,7 @@ function walk(dir, acc = []) {
   return acc;
 }
 
-// --- chequeos -----------------------------------------------------------------
+// --- checks -------------------------------------------------------------------
 
 function checkFile(path, src) {
   const ext = extname(path);
@@ -149,18 +165,18 @@ function checkFile(path, src) {
 
   if (MARKUP.has(ext) || SCRIPTISH.has(ext)) {
     const text = visibleText(src, ext);
-    for (const m of all(VOSEO_RE, text)) {
-      push('error', 'voseo', m.index,
-        `voseo rioplatense en texto visible: "${m[0]}". Reescribir en tuteo.`);
+    for (const m of all(BANNED_RE, text)) {
+      push('error', 'locale-register', m.index,
+        `form banned by locale ${LOCALE} in visible text: "${m[0]}". See ../locales/${LOCALE}.md.`);
     }
     for (const m of all(DASH_RE, text)) {
       push('error', 'em-dash', m.index,
-        'em-dash o en-dash en texto visible. Usar punto, coma, dos puntos o paréntesis.');
+        'em-dash or en-dash in visible text. Use a period, comma, colon or parentheses.');
     }
     for (const re of METRIC_RES) {
       for (const m of all(re, text)) {
         push('warn', 'metrica-sin-confirmar', m.index,
-          `métrica en copy: "${m[0].replace(/\s+/g, ' ').trim()}". Confirmar que es real y verificable, o sacarla.`);
+          `metric in copy: "${m[0].replace(/\s+/g, ' ').trim()}". Confirm it is real and verifiable, or remove it.`);
       }
     }
   }
@@ -172,23 +188,23 @@ function checkFile(path, src) {
 
     for (const m of all(PURE_RE, css)) {
       push('error', 'negro-blanco-puro', m.index,
-        `${m[0]} puro. Tintar: todo neutral lleva chroma ≥ 0.005.`);
+        `pure ${m[0]}. Tint it: every neutral carries chroma >= 0.005.`);
     }
     for (const m of all(HEX_RE, css)) {
       const [r, g, b] = hexChannels(m[0]);
       const pure = (r === 0 && g === 0 && b === 0) || (r === 255 && g === 255 && b === 255);
       if (!pure && r === g && g === b) {
         push('error', 'gris-sin-tintar',
-          m.index, `${m[0]} es gris neutro exacto. Tintarlo al hue ancla del tema.`);
+          m.index, `${m[0]} is an exact neutral grey. Tint it toward the theme's anchor hue.`);
       }
     }
     for (const m of all(OKLCH_RE, css)) {
       if (parseFloat(m[2]) < 0.005) {
         push('error', 'gris-sin-tintar', m.index,
-          `oklch con chroma ${m[2]}. Los neutrales van tinteados (chroma ≥ 0.005).`);
+          `oklch with chroma ${m[2]}. Neutrals ship tinted (chroma >= 0.005).`);
       }
     }
-    // Un literal de color solo se declara al definir un token.
+    // A colour literal is only declared when defining a token.
     for (const m of [...all(HEX_RE, css), ...all(OKLCH_RE, css)]) {
       const lineStart = css.lastIndexOf('\n', m.index) + 1;
       let lineEnd = css.indexOf('\n', m.index);
@@ -196,12 +212,12 @@ function checkFile(path, src) {
       const line = css.slice(lineStart, lineEnd);
       if (!/--[\w-]+\s*:/.test(line) && !/^\s*(\/\/|\*)/.test(line)) {
         push('warn', 'color-fuera-de-tokens', m.index,
-          `color literal fuera de un token. Subirlo a :root como var(--color-...).`);
+          'colour literal outside a token. Lift it into :root as var(--color-...).');
       }
     }
   }
 
-  // Un mismo literal repetido en la línea no es un hallazgo nuevo.
+  // The same literal repeated on one line is not a new finding.
   const seen = new Set();
   return out.filter((f) => {
     const k = `${f.path}:${f.line}:${f.rule}:${f.msg}`;
@@ -220,7 +236,7 @@ function checkProject(files, sources) {
   if (!guarded) {
     out.push({
       level: 'error', rule: 'sin-reduced-motion', path: animated[0], line: 1,
-      msg: 'hay animación en el proyecto y ningún @media (prefers-reduced-motion: reduce).',
+      msg: 'the project animates and has no @media (prefers-reduced-motion: reduce).',
       snippet: '',
     });
   }
@@ -260,12 +276,12 @@ if (asJson) {
 } else if (!quiet || findings.length) {
   const cwd = process.cwd();
   for (const f of findings) {
-    const tag = f.level === 'error' ? 'ERROR' : 'aviso';
+    const tag = f.level === 'error' ? 'ERROR' : ' warn';
     console.log(`${relative(cwd, f.path)}:${f.line}  ${tag}  [${f.rule}] ${f.msg}`);
     if (f.snippet) console.log(`    ${f.snippet}`);
   }
-  console.log(`\n${files.length} archivos · ${errors.length} errores · ${warns.length} avisos`);
-  if (!findings.length) console.log('sin hallazgos.');
+  console.log(`\n${files.length} files · ${errors.length} errors · ${warns.length} warnings · locale ${LOCALE}`);
+  if (!findings.length) console.log('no findings.');
 }
 
 process.exit(errors.length ? 1 : 0);

@@ -1,15 +1,15 @@
-# Layout y espacio
+# Layout and space
 
-Acá se caza al "generado por IA": columnas iguales, todo centrado, cada card idéntica.
+This is where "AI-generated" gets caught: equal columns, everything centred, every card identical.
 
-## Principios
+## Principles
 
-- Todo layout tiene un **eje primario**: left-biased, right-biased, top-heavy. Centrado-en-todo es un default, no una decisión.
-- **La asimetría lee intencional; la simetría perfecta lee generada.** En la duda, desplazar.
-- El espaciado es una **escala, no valores sueltos**. Y variado: si cada gap es 24px, es un template.
-- **Romper la grilla una vez a propósito** (un pull-quote, una foto, un número que cruza el límite de columna) vale más que nunca romperla.
+- Every layout has a **primary axis**: left-biased, right-biased, top-heavy. Centred-everything is a default, not a decision.
+- **Asymmetry reads intentional; perfect symmetry reads generated.** When in doubt, offset it.
+- Spacing is a **scale, not loose values**. And varied: if every gap is 24px, it is a template.
+- **Breaking the grid once on purpose** (a pull-quote, a photo, a number crossing the column boundary) is worth more than never breaking it.
 
-## Escala de espaciado (4pt, nombrada)
+## Spacing scale (4pt, named)
 
 ```css
 :root {
@@ -20,50 +20,50 @@ Acá se caza al "generado por IA": columnas iguales, todo centrado, cada card id
 }
 ```
 
-`gap` para hermanos; `margin` solo para ajustes ópticos o break-outs. Ningún valor fuera de la escala (`padding: 17px` es un tell). Secciones con padding DISTINTO entre sí: si el padding de card = sección = página, el ritmo es plano.
+`gap` for siblings; `margin` only for optical adjustments or break-outs. No value outside the scale (`padding: 17px` is a tell). Sections carry DIFFERENT padding from each other: if card padding equals section equals page, the rhythm is flat.
 
-## Gate de alineación de grid / whitespace huérfano (regla dura #8)
+## Grid alignment and orphan whitespace gate (hard rule 8)
 
-El bug clásico, cazado en producción: **gap en blanco bajo el h1** porque el grid del hero tenía `align-items: center` (o `stretch` implícito) y la columna vecina era más alta; la columna de texto queda flotando con aire muerto arriba y abajo. Checklist mecánico para TODO grid/flex de 2+ columnas con alturas distintas:
+The classic bug, caught in production: **a blank gap under the `h1`** because the hero grid had `align-items: center` (or an implicit `stretch`) and the neighbouring column was taller, leaving the text column floating with dead air above and below. Mechanical checklist for EVERY grid or flex of 2+ columns with unequal heights:
 
-1. Declarar la alineación a propósito: casi siempre `align-items: start` en el grid del hero (el texto arranca arriba, el visual puede crecer).
-2. Buscar **whitespace huérfano**: aire que no fue diseñado sino que "quedó" (bajo un heading, entre un h1 y su lede, al pie de una columna corta). Si un espacio no se puede explicar como decisión de ritmo, es un bug.
-3. **Columnas paralelas comparables** (pricing, planes, before/after): cada rol (título, precio, body, lista, botón) comparte línea horizontal en TODAS las columnas. Alturas iguales, botón anclado al fondo (`margin-top: auto`), espacio reservado para copy variable. El largo del texto de una celda jamás decide dónde cae el contenido de las vecinas.
-4. Head de sección coherente con su body: un head angosto auto-centrado (`margin-inline: auto` + `max-width`) flotando sobre contenido full-width alineado a la izquierda es el mismatch accidental clásico.
+1. Declare the alignment on purpose: almost always `align-items: start` on a hero grid (text starts at the top, the visual is free to grow).
+2. Hunt for **orphan whitespace**: air that was not designed but simply "ended up there" (under a heading, between an `h1` and its lede, at the foot of a short column). If a space cannot be explained as a rhythm decision, it is a bug.
+3. **Comparable parallel columns** (pricing, plans, before/after): every role (title, price, body, list, button) shares a horizontal line across ALL columns. Equal heights, button anchored to the bottom (`margin-top: auto`), space reserved for variable copy. The text length of one cell never decides where its neighbours' content falls.
+4. Section head coherent with its body: a narrow auto-centred head (`margin-inline: auto` plus `max-width`) floating above full-width left-aligned content is the classic accidental mismatch.
 
-## Asimetría (técnicas)
+## Asymmetry (techniques)
 
-- Margen izquierdo ancho como espacio negativo permanente.
-- Grillas offset: columnas impares más anchas (`grid-template-columns: 1.2fr 1fr 0.8fr`), o 12 columnas con spans distintos por ítem.
-- Un break-out por página. Top generoso + bottom apretado (o al revés).
-- **Ban:** el eyebrow/número a la IZQUIERDA del heading en la misma fila (tag-left/header-right) es el tell editorial-templated más confiable; cuando hay eyebrow (casi nunca, ver copy.md), va ARRIBA del heading en la misma columna, stack vertical.
+- A wide left margin as permanent negative space.
+- Offset grids: odd columns wider (`grid-template-columns: 1.2fr 1fr 0.8fr`), or 12 columns with different spans per item.
+- One break-out per page. Generous top plus tight bottom, or the reverse.
+- **Ban:** the eyebrow or number to the LEFT of the heading on the same row (tag-left/header-right) is the most reliable editorial-templated tell. When there is an eyebrow at all (almost never, see `copy.md`), it goes ABOVE the heading in the same column, stacked vertically.
 
-## Profundidad
+## Depth
 
-- La jerarquía se hace con **peso y escala**, no con sombra. Card con borde hairline o elevación tonal (superficie ±3% lightness + stroke del propio color de la superficie a baja opacidad) > card con drop shadow.
-- Si hay sombra: UNA, chica, direccional, tinteada a la superficie (nunca bloom negro parejo en todos los lados, nunca glow de color sobre fondo claro, nunca sombra sobre dark).
-- Nada de card-en-card. Un solo nivel de contención.
-- Z-index con escala nombrada de 6 niveles; nunca `z-index: 9999`.
+- Hierarchy comes from **weight and scale**, not shadow. A card with a hairline border or tonal elevation (surface ±3% lightness plus a stroke in the surface's own colour at low opacity) beats a card with a drop shadow.
+- If there is a shadow: ONE, small, directional, tinted to the surface. Never an even black bloom on all sides, never a coloured glow on a light background, never a shadow over dark.
+- No card inside a card. One level of containment.
+- Z-index on a named 6-level scale; never `z-index: 9999`.
 
-## Ejecución (los misses que pols caza)
+## Execution (the misses that slip through)
 
-- **Nada queda mal centrado.** Un número flotando alto en su círculo, un glifo bajo en su tile: verificar centrado matemático Y óptico, no asumirlo. En SVG: `text-anchor: middle` + `dominant-baseline: central` (o `dy` medido).
-- **Clear the cut:** todo `clip-path`, notch, `overflow: hidden` o altura fija se verifica píxel a píxel en su borde: ninguna cap cortada, ningún descender comido. El chaflán de dark-técnico incluye el padding que mantiene el contenido entero.
-- **Texto nunca pegado al borde** del viewport o contenedor; gutter deliberado y consistente en todos los bloques.
-- Contenido que cruza un overlap de secciones no se guillotina en la costura.
-- El hero es dueño del primer viewport: o llena el fold o controla exactamente qué asoma abajo; nunca media sección colada sin alinear.
-- Hero: `min-h-[100dvh]` si va full, nunca `h-screen` (barra de iOS). Contenido esencial (headline+lede+CTA) visible sin scroll a 1280×800. Padding-top del hero con tope (~6rem): más que eso y el contenido flota como bug.
+- **Nothing is left badly centred.** A number floating high in its circle, a glyph sitting low in its tile: verify mathematical AND optical centring, do not assume it. In SVG: `text-anchor: middle` plus `dominant-baseline: central` (or a measured `dy`).
+- **Clear the cut:** every `clip-path`, notch, `overflow: hidden` or fixed height is verified pixel by pixel at its edge: no clipped cap, no eaten descender. The dark-technical chamfer includes the padding that keeps content whole.
+- **Text never touches the edge** of the viewport or its container; a deliberate, consistent gutter across every block.
+- Content crossing a section overlap does not get guillotined at the seam.
+- The hero owns the first viewport: it either fills the fold or controls exactly what peeks below. Never half a section sneaking in unaligned.
+- Hero: `min-h-[100dvh]` when full-height, never `h-screen` (the iOS bar). Essential content (headline, lede, CTA) visible without scrolling at 1280×800. Hero padding-top capped (~6rem): more than that and the content floats like a bug.
 
 ## Page-edge clipping
 
-Todo elemento que desborda a propósito (marquee full-bleed, headline oversized, figura inclinada) requiere clip global:
+Every element that overflows on purpose (a full-bleed marquee, an oversized headline, a tilted figure) requires a global clip:
 
 ```css
-html, body { overflow-x: clip; }  /* clip, no hidden: preserva sticky/fixed */
+html, body { overflow-x: clip; }  /* clip, not hidden: preserves sticky and fixed */
 ```
 
-Grids con imágenes: tracks `minmax(0, 1fr)`, nunca `1fr` pelado (el mínimo `auto` de una imagen de 1024px rompe el layout en móvil).
+Grids with images: tracks at `minmax(0, 1fr)`, never bare `1fr` (the `auto` minimum of a 1024px image breaks the layout on mobile).
 
-## Cuando el layout está bien pero plano
+## When the layout is correct but flat
 
-Antes de shippear, una de estas: (1) agregar un break-out, (2) desbalancear un ancho de columna, (3) sacar el CTA primario del centro, (4) reemplazar una card por espacio negativo, (5) variar el padding de UNA sección para que el ritmo sea desparejo.
+Before shipping, do one of these: (1) add a break-out, (2) unbalance a column width, (3) move the primary CTA off centre, (4) replace a card with negative space, (5) vary the padding of ONE section so the rhythm is uneven.

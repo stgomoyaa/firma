@@ -1,76 +1,73 @@
 # Copy
 
-Las palabras son parte del diseño. Layout brillante con copy stock lee genérico; copy apretado en layout promedio lee considerado.
+Words are part of the design. A brilliant layout with stock copy reads generic; tight copy in an average layout reads considered.
 
-## Español neutro chileno con TÚ (regla dura #1)
+## The locale gate (hard rule 1)
 
-Todo texto visible al usuario final va en **español neutro chileno, tuteo**. Ni voseo argentino, ni "usted", ni mexicanismos/argentinismos de registro.
+Every user-visible string ships in the **target locale's neutral register**, and the register your model reaches for by default is auto-fail until proven correct for that market.
 
-| Prohibido (voseo) | Correcto (tú) |
-| --- | --- |
-| vos | tú |
-| tenés | tienes |
-| querés | quieres |
-| podés | puedes |
-| sabés | sabes |
-| salís | sales |
-| pagás | pagas |
-| hacés | haces |
-| agendá | agenda |
-| mirá | mira |
-| dejá | deja |
-| empezá | empieza |
-| descubrí | descubre |
-| sumate | súmate |
-| elegí | elige |
-| probá | prueba |
+Name the locale, load its profile from [`../locales/`](../locales/), and treat the profile's banned-forms table as a hard gate. The profile owns the register, the banned forms, the formatting conventions and the placeholder names. This file owns everything about copy that is the same in every language.
 
-Patrón general: cualquier presente en `-és/-ás/-ís` tónico o imperativo en `-á/-é/-í` tónico es voseo → reescribir en tuteo. Términos técnicos quedan en inglés sin traducir (deploy, checkout, pricing, dashboard). Moneda: cuando el mercado es Chile, CLP con IVA incluido en el precio mostrado (el 19% ya va dentro, mostrarlo aparte es un tell de traducción).
+Default profile: [`es-CL`](../locales/es-CL.md). Its short version: Spanish, neutral Chilean register, second person **tú**, zero Argentine voseo, no "usted", technical terms untranslated.
 
-## Honestidad (regla dura #2, riesgo SERNAC)
+If the brief names no locale, ask once. Guessing the locale is guessing the audience.
 
-- Cero métricas inventadas ("10× más rápido", "5.000 clientes", "+47% conversión"). Sin dato real: `—` con bloque gris etiquetado ("métrica por confirmar"), o preguntar, o rediseñar la sección sin el slot.
-- Cero testimonios, nombres, cargos o logos de clientes falsos. Un logo wall solo con marcas reales y con derecho a nombrarlas; si no, no hay logo wall.
-- Cero contadores de urgencia falsos, cero "quedan 3 cupos" sin datos reales, cero precisión fake (`5.8mm`, `99.99%`) que la marca no puede sostener.
-- Un stat SÍ puede ser el hero cuando es real (un número real y verificable vale más que cualquier headline); nunca va solo, siempre con la línea que dice qué significa.
+## Honesty (hard rule 2)
 
-## Em-dash (regla dura #3)
+This is legal exposure in some markets, not only bad taste. Check the profile for the local consumer-protection body.
 
-`—` y `–` como separador: prohibidos en todo texto visible. Punto, coma, dos puntos o paréntesis. Rangos con guion simple (`2020-2026`, `$40-80`). Atribución de quote: salto de línea + nombre en peso menor (nunca "— Sarah").
+- **Zero invented metrics.** No "10× faster", "5,000 customers", "+47% conversion". With no real figure: a labelled grey placeholder block ("metric to confirm"), or ask, or redesign the section without the proof slot.
+- **Zero fabricated testimonials, names, job titles or client logos.** A logo wall holds real brands you have the right to name, or there is no logo wall.
+- **Zero fake urgency.** No countdown that does not count anything, no "3 spots left" without the number behind it, no fake precision (`5.8mm`, `99.99%`) the brand cannot defend.
+- **A stat can be the hero when it is real.** A real, verifiable number outperforms any headline. It never stands alone: always the line that says what it means.
 
-## Principios
+A section whose macrostructure requires proof you do not have is the wrong macrostructure. Change the structure, do not invent the proof.
 
-- **Verbos específicos.** "Guardar cambios" > "OK" > "Enviar". El botón nombra la acción que ejecuta.
-- **Links que se sostienen solos.** "Ver precios" > "Haz clic aquí".
-- **Errores = instrucciones:** qué pasó (factual) → por qué si se sabe → qué hacer (imperativo). Sin "¡Ups!", sin humor en rutas de frustración (pago fallido, cuenta bloqueada), sin signos de exclamación en errores.
-- **Voz activa, un registro por página.** Elegir "Eliminar" o "Quitar" y usarlo siempre.
-- **Decir menos.** Headline ≤7 palabras; sub-párrafo ≤25 palabras; hero con máximo 4 elementos de texto (eyebrow O marca, headline, subtexto, CTAs). La confianza se muestra en lo que se deja fuera.
-- **Un solo CTA por intención en toda la página.** "Hablemos" + "Contáctame" + "Escríbeme" son la misma intención → UN label, repetido idéntico en nav, hero y footer.
-- Empty states: qué está vacío + por qué importa + UN botón.
-- Tipografía correcta: comillas curvas, `…` real, espacio duro antes de unidades.
+## Em-dashes (hard rule 3)
 
-## Eyebrows y labels (default: OFF)
+`—` and `–` as separators: banned in every visible string. Use a period, a comma, a colon or parentheses. Ranges take a plain hyphen (`2020-2026`, `$40-80`). Quote attribution is a line break plus the name at a lighter weight, never `— Sarah`.
 
-- El eyebrow mono-caps arriba de cada sección es el tell #1 de la lista de vetos. **Máximo 1 eyebrow por cada 3 secciones**, y solo cuando nombra el tema en lenguaje plano. Casi siempre la respuesta es cero: el headline solo basta.
-- Prohibido: eyebrows numerados (`01 / FEATURES`), labels de versión en el hero (`BETA`, `V0.6`) salvo launch real, "Quietly trusted by", labels poético-artesanales ("Field notes", "Del taller"), micro-meta bajo el eyebrow, strips de locale/clima ("STGO 14:23 · 18°C"), scroll cues ("↓ scroll"), pills sobre imágenes, créditos de foto decorativos, footers de versión en marketing, dots de estado decorativos, texto rotado 90° como reflejo.
-- El punto medio (`·`) racionado: máximo 1 por línea de metadata.
-- Un solo tratamiento de label para TODO (mismo mono-caps en eyebrow, botón, colofón y nav) = disfraz, no voz. Roles distintos, tratamientos distintos, o sin labels.
+It is the loudest AI-writing tell there is, which is why it overrides the typographic convention that recommends them.
 
-## Aperturas prohibidas
+## Principles
 
-"Construido para el equipo moderno" · "Libera/Desata tu X" · "Donde A se encuentra con B" · "Potencia tu workflow" · "Soluciones innovadoras" · "Integración perfecta/seamless" · "En el panorama digital actual" · "Next-generation" · "Transforma/Eleva/Revoluciona tu…" y sus equivalentes en inglés. Nombres cliché de demo: Acme, Nexus, Pulse (usar placeholders con dominio: "Ferretería Brasil", "Rastro Sur"). Placeholder de persona: nombres verosímiles hispanos, jamás "Juan Pérez"/"Jane Doe".
+- **Specific verbs.** "Save changes" beats "OK" beats "Submit". The button names the action it performs.
+- **Links that stand alone.** "See pricing" beats "Click here".
+- **Errors are instructions:** what happened (factual), why if you know, what to do (imperative). No "Oops!", no humour on frustration paths (failed payment, locked account), no exclamation marks in errors.
+- **Active voice, one register per page.** Pick "Delete" or "Remove" and use it everywhere.
+- **Say less.** Headline ≤7 words. Sub-paragraph ≤25 words. Hero holds at most 4 text elements (eyebrow OR wordmark, headline, subtext, CTAs). Confidence shows in what you leave out.
+- **One CTA per intent across the whole page.** "Let's talk" plus "Contact me" plus "Get in touch" are one intent: pick one label and repeat it identically in nav, hero and footer.
+- **Empty states:** what is empty, why it matters, one button.
+- **Real typography:** curly quotes, a true `…`, a non-breaking space before units.
 
-Si el brief no da nada específico para la apertura, **decirlo y preguntar** por un sustantivo, verbo o lugar concreto. El modelo no inventa especificidad.
+## Eyebrows and labels (default: off)
 
-## La especificidad que sí funciona (imitar el patrón, no las palabras)
+- The mono-caps eyebrow above every section is the most recognised tell on the veto list. **At most 1 eyebrow per 3 sections**, and only when it names the topic in plain language. The answer is almost always zero: the headline alone carries it.
+- Banned outright: numbered eyebrows (`01 / FEATURES`), version labels in the hero (`BETA`, `V0.6`) outside a real launch, "Quietly trusted by", artisanal-poetic labels ("Field notes", "From the studio"), micro-meta under the eyebrow, locale/weather strips (`STGO 14:23 · 18°C`), scroll cues (`↓ scroll`), pills laid over images, decorative photo credits, version footers on marketing pages, decorative status dots, and 90°-rotated text as a reflex.
+- The interpunct (`·`) is rationed: at most one per metadata line.
+- One label treatment for everything (the same mono-caps in eyebrow, button, colophon and nav) is a costume, not a voice. Different roles get different treatments, or there are no labels.
 
-- Fecha + vertical nombrada: *"Dirección creativa y tipografía para cultura desde 2003."*
-- Rechazo del verbo de marketing: *"Una cosa bien hecha."*
-- Declarativo plano (dark-técnico): *"La API de eventos para equipos de datos. Ingesta real, entrega en segundos."*
-- Data-first cuando el dato es real: *"14 países · 9 servicios · entrega p50 4s."*
-- Enumerativo con rechazo: *"Lee lo que emita líneas. Archivos, pipes, sockets."*
-- Personal honesto: rol + lugar + entregable concreto, sin humildad performativa ni poesía de LLM.
+## Banned openings
 
-## Autoauditoría de copy (antes de shippear)
+"Built for the modern team" · "Unleash your X" · "Where A meets B" · "Supercharge your workflow" · "Innovative solutions" · "Seamless integration" · "In today's digital landscape" · "Next-generation" · "Transform/Elevate/Revolutionise your…" and their equivalents in any language. Cliché demo names: Acme, Nexus, Pulse. Use domain-specific placeholders instead, per the locale profile.
 
-Releer TODA string visible (headlines, labels, captions, alt, errores) y matar: frases gramaticalmente rotas, referentes poco claros, wordplay lindo-pero-incorrecto, meta-poesía de LLM ("un elegante nada"), humildad pasivo-agresiva. En la duda, la frase funcional simple gana. Copy IA "tierno" es peor que copy aburrido. Y el chequeo final de voseo: buscar `és `, `ás `, `ís `, `á ` tónicas en imperativos.
+If the brief gives nothing specific for the opening, **say so and ask** for a concrete noun, verb or place. A model cannot invent specificity; it can only invent the appearance of it.
+
+## The specificity that does work (copy the pattern, not the words)
+
+- **Date plus named vertical:** *"Creative direction and typography for culture since 2003."*
+- **Refusing the marketing verb:** *"One thing, done properly."*
+- **Flat declarative** (dark-technical): *"The events API for data teams. Real ingestion, delivery in seconds."*
+- **Data-first when the data is real:** *"14 countries · 9 services · p50 delivery 4s."*
+- **Enumerative with a refusal:** *"Reads anything that emits lines. Files, pipes, sockets."*
+- **Honest personal:** role plus place plus a concrete deliverable, with no performative modesty and no LLM poetry.
+
+## Copy self-audit (before shipping)
+
+Re-read every visible string (headlines, labels, captions, alt text, errors) and kill: grammatically broken phrases, unclear referents, wordplay that is cute but wrong, LLM meta-poetry ("an elegant nothing"), passive-aggressive humility. When in doubt the plain functional sentence wins. Twee AI copy is worse than boring copy.
+
+Then run the locale gate mechanically, do not eyeball it:
+
+```bash
+node <skill-path>/scripts/guard.mjs --locale <profile> src/
+```

@@ -1,138 +1,140 @@
-# Slop-test — autocrítica + gates
+# Slop test — self-critique plus gates
 
-Correr ANTES de entregar cualquier output. Primero la autocrítica, después los gates. Toda respuesta de gate debe ser **no**. Si algo falla, se arregla y se re-corre. No se shippea slop.
+Run this before handing over any output. Self-critique first, then the gates. Every gate answer must be **no**. If something fails, fix it and re-run. Slop does not ship.
 
-## Autocrítica en 6 ejes (1-5)
+## Six-axis self-critique (1-5)
 
-Cualquier eje <3 dispara un pase de revisión ANTES de los gates. Dos pases es normal; tres significa que el brief está mal leído, no el diseño.
+Any axis below 3 triggers a revision pass BEFORE the gates. Two passes is normal; three means the brief was misread, not the design.
 
-| Eje | Qué se puntúa |
+| Axis | What is being scored |
 |---|---|
-| **P** Filosofía | ¿Hay un *por qué*, una posición que la página toma? ¿O es solo un layout? |
-| **J** Jerarquía | ¿En 2 segundos se distingue primario/secundario/terciario? |
-| **E** Ejecución | ¿Los detalles (rules, acento, contraste, focus, alineación) están en spec, **y** se sacó todo lo que no se gana su lugar? Restraint no es un eje aparte: es una propiedad de la ejecución, y una página con decoración sobrante está mal ejecutada, no "menos sobria". |
-| **F** Firma | ¿Existe el UN artefacto o gesto que no se puede pegar en otro sitio? Este eje absorbe la especificidad: una página con firma real es específica de ESTE brief por construcción, y una sin firma es genérica aunque el copy nombre al cliente. |
-| **H** Honestidad | ¿Cada número, quote, logo, screenshot y contador de la página corresponde a algo que existe y es verificable? |
-| **V** Variedad | ¿Comparte fingerprint estructural con un output anterior del proyecto? (distancia estructural, no visual: un color-swap no es variedad, y dos formas de la misma familia de macro tampoco) |
+| **P** Philosophy | Is there a *why*, a position the page takes? Or is it only a layout? |
+| **J** Hierarchy | In 2 seconds, can you tell primary from secondary from tertiary? |
+| **E** Execution | Are the details (rules, accent, contrast, focus, alignment) in spec, **and** has everything that does not earn its place been removed? Restraint is not a separate axis: it is a property of execution, and a page carrying surplus decoration is badly executed, not "less sober". |
+| **F** Firma | Does the ONE artifact or gesture exist that cannot be pasted into another site? This axis absorbs specificity: a page with a real firma is specific to THIS brief by construction, and one without is generic even if the copy names the client. |
+| **H** Honesty | Does every number, quote, logo, screenshot and counter on the page correspond to something that exists and is verifiable? |
+| **V** Variety | Does this share a structural fingerprint with an earlier output in the project? (Structural distance, not visual: a colour swap is not variety, and neither are two shapes from the same macro family.) |
 
-**Dos ejes no admiten nota intermedia y no dependen del umbral <3:**
+**Two axes do not take a middle score and do not obey the <3 threshold:**
 
-- **H Honestidad es 5 o es fail.** Un solo dato sin respaldo la deja en 1 y **bloquea la entrega**, no dispara un pase de revisión. Es exposición legal (SERNAC en Chile), no una dimensión de calidad que se pueda promediar con las otras.
-- **F Firma bajo 3 significa que no hay build.** No se entrega una página sin firma con la nota puesta como advertencia; se le construye la firma o se cambia de macroestructura.
+- **H Honesty is 5 or it is a fail.** A single unbacked datum puts it at 1 and **blocks the handoff**; it does not trigger a revision pass. This is legal exposure in some markets, not a quality dimension you can average against the others.
+- **F Firma below 3 means there is no build.** You do not hand over a page with no firma and the score attached as a warning; you build the firma or you change macrostructure.
 
-Los otros cuatro sí se puntúan como escala: bajo 3, pase de revisión y se re-corre.
+The other four are scored as a scale: below 3, revision pass, re-run.
 
-Registrar en el stamp: `critique: P5 J4 E5 F4 H5 V5`.
+Record in the stamp: `critique: P5 J4 E5 F4 H5 V5`.
 
 ## Gates
 
-### Gate 0 · Chequeo determinista (correr ANTES de la lista a mano)
+### Gate 0 · Deterministic check (run BEFORE the manual list)
 
-Los gates de abajo los evalúa el mismo modelo que escribió la página, así que son auto-reportados. Antes de leerlos, correr los dos linters que no dependen de eso. Si algo sale acá, se arregla y se vuelve a correr; no se pasa a los gates a mano con errores pendientes.
+The gates below are evaluated by the same model that wrote the page, which makes them self-reported. Before reading them, run the two linters that do not depend on that. If something fires here, fix it and re-run; do not proceed to the manual gates with open errors.
 
 ```bash
-# 1. reglas duras propias: voseo, em-dash, métricas sin confirmar, negros/grises puros, tokens sueltos
-node <ruta-de-la-skill>/scripts/guard.mjs <ruta>
+# 1. this skill's own hard rules: locale register, em-dashes, unconfirmed metrics,
+#    pure black and white, untinted greys, colour literals outside tokens
+node <skill-path>/scripts/guard.mjs --locale <profile> <path>
 
-# 2. capa genérica de ejecución: contraste, gris-sobre-color, cards anidadas, glow, paletas IA, eyebrow chips
-npx impeccable detect <ruta>
+# 2. generic execution layer: contrast, grey-on-colour, nested cards, glow shadows,
+#    AI palettes, eyebrow chips
+npx impeccable detect <path>
 ```
 
-Dos reglas de impeccable chocan **a propósito** con esta skill y se ignoran en trabajo dark-técnico (el ticker CSS y la display face son prescripciones, no defectos). Dejar en `.impeccable/config.json` del proyecto:
+One rule of the external detector conflicts with this skill **on purpose**: the dark-técnico direction prescribes exactly one CSS ticker per page, with a motion budget and `prefers-reduced-motion` honoured, which its `marquee` rule reads as a defect. Waive that one and nothing else, in the project's detector config:
 
 ```json
 { "detector": { "ignoreRules": ["marquee"] } }
 ```
 
-Lo que impeccable NO ve y el guard sí: voseo, métricas fabricadas, y em-dashes con tolerancia cero (su regla es *advisory* y necesita 8 ocurrencias para gatillar). Lo que el guard NO ve y impeccable sí: todo lo que necesita DOM o AST (contraste calculado, anidamiento real de cards, contenido invisible en reposo). Los dos, no uno.
+What the external detector does NOT see and the bundled guard does: banned locale forms, fabricated metrics, and zero-tolerance em-dashes (its em-dash rule is advisory and needs eight occurrences to fire). What the guard does NOT see and the detector does: anything requiring a DOM or an AST (computed contrast, real card nesting, content invisible at rest). Both, not one.
 
-### Reglas duras (no negociables)
+### Hard rules
 
-1. ¿Hay voseo argentino en algún texto visible (vos/tenés/querés/agendá/mirá…)? Buscar imperativos en `-á/-é/-í` tónica y presentes en `-és/-ás/-ís`.
-2. ¿Hay algún `—` o `–`-separador en texto visible (headlines, body, quotes, botones, captions, alt)?
-3. ¿Hay alguna métrica, testimonio, nombre, cargo, logo de cliente o contador de urgencia que el usuario no haya provisto? (Riesgo SERNAC, no solo estética.)
-4. ¿Hay itálica en algún heading/display (incluida UNA palabra `<em>` dentro de un título)?
-5. ¿La display face es Fraunces o Instrument Serif sin que la marca lo justifique explícitamente? ¿O repite la display del build anterior?
-6. ¿Hay orbes de glow flotantes, esferas 3D ambientales o blobs difusos con blur+multiply detrás del contenido?
-7. ¿Hay fondo de grilla/graph-paper (con o sin máscara radial) tendido bajo la página?
-8. ¿Hay eyebrows mono-caps en más de 1 de cada 3 secciones, o algún eyebrow al LADO del heading (tag-left/header-right)?
-9. ¿Hay una fila de cards flotantes con la misma sombra, mismo radius, mismo tamaño? (El ritmo viene de variación, no de clonación.)
-10. ¿Grid-alignment: hay whitespace huérfano (gap muerto bajo el h1 por `align-items` mal elegido con columna vecina más alta), columnas de comparación desfasadas, o head de sección centrado flotando sobre body left-flush?
+1. Is there any form banned by the active locale profile in visible text? (For `es-CL`: voseo — vos/tenés/querés/agendá/mirá. Look for stressed `-á/-é/-í` imperatives and `-és/-ás/-ís` presents.)
+2. Is there any `—` or `–` used as a separator in visible text (headlines, body, quotes, buttons, captions, alt)?
+3. Is there any metric, testimonial, name, job title, client logo or urgency counter the user did not provide? (Legal exposure, not only aesthetics.)
+4. Is there italic in any heading or display line (including ONE `<em>` word inside a title)?
+5. Is the display face Fraunces or Instrument Serif without an explicit brand justification? Or does it repeat the previous build's display?
+6. Are there floating glow orbs, ambient 3D spheres, or diffuse blobs with blur+multiply behind the content?
+7. Is there a grid or graph-paper background (masked or not) laid under the page?
+8. Are there mono-caps eyebrows in more than 1 of every 3 sections, or any eyebrow BESIDE the heading (tag-left/header-right)?
+9. Is there a row of floating cards with the same shadow, same radius, same size? (Rhythm comes from variation, not cloning.)
+10. Grid alignment: is there orphan whitespace (dead gap under the `h1` from a badly chosen `align-items` next to a taller column), misaligned comparison columns, or a centred section head floating above left-flush body?
 
-### Tipografía
+### Typography
 
-11. ¿Display en Inter/Roboto/Open Sans/Poppins/Lato o system default?
-12. ¿Más de 3 familias en la página, o el outlier en más de 2 slots?
-13. ¿Contraste de peso débil (400 vs 600)? Headings contrastan ≥300 unidades con el body.
-14. ¿Gradient-text en algún heading?
-15. ¿Headline del hero >2 líneas en desktop, o >90 chars a tamaño display?
-16. ¿All-caps display con line-height <1.0 (colisión de cap-tops al wrappear)?
-17. ¿Display headers sin `overflow-wrap: anywhere; min-width: 0`?
-18. ¿Body <16px, measure fuera de 45-75ch, o all-caps en párrafos?
+11. Display in Inter/Roboto/Open Sans/Poppins/Lato or a system default?
+12. More than 3 families on the page, or the outlier in more than 2 slots?
+13. Weak weight contrast (400 vs 600)? Headings contrast ≥300 units against body.
+14. Gradient text in any heading?
+15. Hero headline over 2 lines on desktop, or over 90 characters at display size?
+16. All-caps display with line-height below 1.0 (cap-tops colliding when it wraps)?
+17. Display headers without `overflow-wrap: anywhere; min-width: 0`?
+18. Body under 16px, measure outside 45-75ch, or all-caps in paragraphs?
 
-### Color
+### Colour
 
-19. ¿`#000` o `#fff` puros como superficie?
-20. ¿Algún neutral con chroma 0 (gris sin tintear)?
-21. ¿Gradiente purple-blue/purple-cyan/mesh/aurora en cualquier parte?
-22. ¿El acento cubre >5% del viewport?
-23. ¿Paleta beige+brass+espresso en un brief premium, o azul-carbón/slate-índigo default en un dark, o crema/gris-UI-kit como base no elegida?
-24. ¿Algún par texto/fondo bajo 4.5:1 (body) o 3:1 (grande/iconos/focus)? Revisar especialmente: texto de botón ≈ fill del botón, secciones oscuras con ink heredado, muted sobre paper-2.
-25. ¿Costuras duras de color entre secciones sin intención (un glow que muere en el borde, un scrim que corta)?
+19. Pure `#000` or `#fff` as a surface?
+20. Any neutral at chroma 0 (an untinted grey)?
+21. A purple-blue, purple-cyan, mesh or aurora gradient anywhere?
+22. Does the accent cover more than 5% of the viewport?
+23. A beige+brass+espresso palette on a premium brief, or the default carbon-blue / slate-indigo on a dark one, or cream / UI-kit grey as an unchosen base?
+24. Any text/background pair below 4.5:1 (body) or 3:1 (large, icons, focus)? Check especially: button text against button fill, dark sections with inherited ink, muted on paper-2.
+25. Hard colour seams between sections with no intent (a glow dying at an edge, a scrim cutting off)?
 
-### Estructura y layout
+### Structure and layout
 
-26. ¿Template genérico (hero → 3 features iguales → CTA → footer), la misma forma de macroestructura que alguna de las últimas 3 del log, o la misma **familia** de macroestructura que el build anterior?
-27. ¿Grilla de 3 columnas iguales con icono-arriba-heading-abajo?
-28. ¿Card dentro de card?
-29. ¿Hero `100vh` con todo centrado en un solo eje vertical (eyebrow+título+lede+CTA)? Máximo 2 elementos centrados; el resto rompe el eje.
-30. ¿El nav es el fingerprint IA (wordmark + 4-5 links + botón derecha + hairline + blanco) sin justificación? ¿El footer es el de 4 columnas + social + copyright sin ser docs hub?
-31. ¿El stack de hero default (eyebrow → headline → subtexto → par de botones fill+outline, panel a la derecha) sin romper nada del esqueleto?
-32. ¿Par de botones fill+outline como fila de acciones default? ¿Dos CTAs con la misma intención en la página?
-33. ¿Más de 2 secciones seguidas con el mismo split imagen/texto zigzag? ¿Menos de 4 familias de layout en una página de 8 secciones?
-34. ¿Sombra pareja en todos los lados por reflejo, glow sobre dark, o doble sombra apilada?
-35. ¿Algún espaciado fuera de la escala nombrada?
-36. ¿Radius mezclado sin sistema (botones pill en layout recto, cards cuadradas en página pill)?
-37. ¿Bento con celdas vacías de relleno o todas blanco-sobre-blanco solo texto?
+26. A generic template (hero → 3 identical features → CTA → footer), the same macrostructure **shape** as any of the last 3 in the log, or the same macrostructure **family** as the previous build?
+27. A 3-equal-column grid with icon-above-heading-below?
+28. A card inside a card?
+29. A `100vh` hero with everything centred on one vertical axis (eyebrow+title+lede+CTA)? At most 2 centred elements; the rest breaks the axis.
+30. Is the nav the AI fingerprint (wordmark + 4-5 links + button right + hairline + white) without justification? Is the footer the 4-column + social + copyright one without being a docs hub?
+31. The default hero stack (eyebrow → headline → subtext → a fill+outline button pair, panel on the right) with nothing in the skeleton broken?
+32. A fill+outline button pair as the default action row? Two CTAs with the same intent on the page?
+33. More than 2 consecutive sections with the same image/text zigzag split? Fewer than 4 layout families on an 8-section page?
+34. Shadow even on all sides as a reflex, glow over dark, or two stacked shadows?
+35. Any spacing value outside the named scale?
+36. Mixed radius with no system (pill buttons in a square layout, square cards on a pill page)?
+37. A bento with filler cells, or all cells white-on-white text only?
 
-### Chrome y decoración
+### Chrome and decoration
 
-38. ¿Chrome redibujado (fake browser bar con dots, fake phone frame, fake ventana de código, fake terminal con traffic lights)? Screenshot real en `<figure>` o nada.
-39. ¿Screenshots falsos hechos de divs (fake dashboard, fake task list)?
-40. ¿Iconos: dos librerías mezcladas, emoji (✨🚀⚡) como icono de feature, o icono metido en un tile/círculo de color de fondo?
-41. ¿Elemento decorativo sin ancla semántica (cursor flotante, número random, chip Pantone sin razón, sticker)?
-42. ¿Glassmorphism sin backdrop real que refractar, o glass con banding/leak/pop?
-43. ¿Toggle sol-luna, dot bajo el nav item activo, o hairline decorativa suelta al lado de un label?
+38. Redrawn chrome (fake browser bar with dots, fake phone frame, fake code window, fake terminal with traffic lights)? A real screenshot in a `<figure>`, or nothing.
+39. Fake screenshots built out of divs (fake dashboard, fake task list)?
+40. Icons: two libraries mixed, emoji (✨🚀⚡) as a feature icon, or an icon dropped into a coloured tile or circle?
+41. A decorative element with no semantic anchor (floating cursor, random number, Pantone chip for no reason, sticker)?
+42. Glassmorphism with no real backdrop to refract, or glass with banding, leaking or popping?
+43. A sun/moon toggle, a dot under the active nav item, or a loose decorative hairline beside a label?
 
 ### Motion
 
-44. ¿`transition: all`, easing default del browser, o bounce/overshoot en UI?
-45. ¿Se anima width/height/top/left/margin/padding?
-46. ¿Más de UNA entrada orquestada, o fade-up-on-scroll en cada sección?
-47. ¿Contenido que arranca en opacity 0 y depende de JS/observer para existir? (Si el reveal no dispara, sección en blanco: fail absoluto.)
-48. ¿Focus ring que hace fade-in? ¿Hover-boop en botones? ¿Underline que crece al hover?
-49. ¿Falta `prefers-reduced-motion` en alguna animación? ¿Carousel/ticker sin pause en hover+focus?
-50. ¿Más de un ticker/marquee por página?
+44. `transition: all`, the browser's default easing, or bounce/overshoot in UI?
+45. Is width/height/top/left/margin/padding being animated?
+46. More than ONE orchestrated entrance, or fade-up-on-scroll in every section?
+47. Content starting at opacity 0 and depending on JS or an observer to exist? (If the reveal does not fire, the section is blank: absolute fail.)
+48. A focus ring that fades in? Hover-boop on buttons? An underline that grows on hover?
+49. Is `prefers-reduced-motion` missing on any animation? A carousel or ticker with no pause on hover and focus?
+50. More than one ticker or marquee per page?
 
-### Estados e implementación
+### States and implementation
 
-51. ¿Algún interactivo sin sus 8 estados en código (mínimo default/hover/focus-visible/active/disabled)?
-52. ¿Inputs: border-width que cambia entre estados, focus con border en vez de outline, altura distinta al botón hermano, slot de helper que colapsa, disabled solo con opacity?
-53. ¿Color o font-family inline fuera del bloque de tokens (improvisación mid-render)?
-54. ¿Controles muertos (tab/accordion/toggle que se ve interactivo y no hace nada)?
+51. Any interactive element without its 8 states in code (minimum default/hover/focus-visible/active/disabled)?
+52. Inputs: border-width changing between states, focus using a border instead of an outline, a height different from its sibling button, a helper slot that collapses, disabled expressed only with opacity?
+53. Any colour or font-family inline outside the token block (mid-render improvisation)?
+54. Dead controls (a tab, accordion or toggle that looks interactive and does nothing)?
 
 ### Responsive
 
-55. ¿Scroll horizontal en algún ancho 320-1920px? (`overflow-x: clip` en html Y body, siempre.)
-56. ¿Algún CTA, link de nav, tab o breadcrumb que wrappea a 2 líneas en algún ancho? ¿Nav de 2 líneas en desktop?
-57. ¿Grid con imágenes usando `1fr` pelado en vez de `minmax(0, 1fr)`?
-58. ¿Doble sticky a `top: 0` (nav + elemento interno) que se pisan al scrollear?
+55. Horizontal scroll at any width from 320 to 1920px? (`overflow-x: clip` on html AND body, always.)
+56. Any CTA, nav link, tab or breadcrumb wrapping to 2 lines at any width? A 2-line nav on desktop?
+57. An image grid using bare `1fr` instead of `minmax(0, 1fr)`?
+58. Two stickies at `top: 0` (nav plus an inner element) overlapping on scroll?
 
-### Firma y variedad
+### Firma and variety
 
-59. ¿La página tiene su firma (el artefacto/gesto que no se puede pegar en otro sitio)? Sin firma, es slop limpio: la restraint sin idea es trabajo a medio terminar.
-60. ¿Falta el stamp en la primera línea del CSS, o falta el append a `.firma/log.json` con sus campos completos (`familia` incluida, o la próxima rotación no puede chequear la familia del build anterior)?
+59. Does the page have its firma (the artifact or gesture that cannot be pasted into another site)? Without it, this is clean slop: restraint with no idea is half-finished work.
+60. Is the stamp missing from the first line of the CSS, or the append to `.firma/log.json` missing, or missing fields (`family` included, or the next rotation cannot check the previous build's family)?
 
-## El tell más profundo
+## The deepest tell
 
-Esquivar esta lista no es diseñar. Se puede pasar todo gate y aún así shippear slop si no se inventó nada. La lista hace el trabajo menos incorrecto; la **firma** (gate 59) y la posición (eje P) lo hacen bueno. Limpio es el piso, nunca el logro.
+Dodging this list is not designing. You can pass every gate and still ship slop if you invented nothing. The list makes the work less incorrect; the **firma** (gate 59) and the position (axis P) make it good. Clean is the floor, never the achievement.
