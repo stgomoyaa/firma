@@ -8,9 +8,58 @@ The failure mode here is different from a landing page. Marketing slop is decora
 
 > A product surface earns its firma by **showing the product doing its actual job**, not by decorating the form.
 
-An onboarding screen for an API company should show the API. One for an editor should show the document. One for a finance product should show the ledger entry. The artifact is live, bound to the inputs, and it cannot be pasted into a competitor's product, which is the definition of a firma.
+An onboarding screen for an API company shows the API. One for an editor shows the document. One for a finance product shows the ledger entry. The artifact is live, bound to the inputs, and it cannot be pasted into a competitor's product, which is the definition of a firma.
 
 This replaces decoration with proof, and it costs nothing: the data is already in the form state.
+
+## The Live Mirror
+
+The strongest version of that rule, and the one worth naming, because it is a technique rather than a principle:
+
+> **As the user fills the form, a second panel composes the product's own native output from what they typed, in real time.**
+
+The form stops being data entry and becomes a demo of the thing they are buying. They watch the output take shape. Nobody reads onboarding copy explaining the output format; everybody watches it assemble itself.
+
+### Why it works
+
+1. **It is unpasteable by construction.** The mirror renders *this* product's output format. Drop it into another company's onboarding and it is nonsense. That is a firma you cannot fake or buy.
+2. **It teaches without a tutorial.** A developer filling in their name sees the exact JSON body they will POST next week. The first screen doubles as documentation.
+3. **It kills the decoration problem.** There is no illustration, no gradient, no hero graphic, because the other half of the screen is doing real work. The most common product-surface failure (an empty second column filled with stock art) becomes impossible.
+4. **It makes latency legible.** Watching the payload build gives the form a sense of consequence that a submit button alone never has.
+
+### What the mirror renders, by product type
+
+The pattern generalises. What changes is only the output format:
+
+| Product | The mirror shows |
+|---|---|
+| API or developer platform | The HTTP request: method, path, headers, JSON body |
+| Data or analytics | The generated query, or the row that will be written |
+| Billing or invoicing | The rendered invoice or receipt line |
+| Email or marketing tool | The live email preview with merge fields resolved |
+| Dev tool or CI | The config file, or the commit and its diff |
+| Design tool | The generated token block or component code |
+| Scheduling | The calendar entry as it will appear to the invitee |
+
+If a product has no native output artifact, it does not have a Live Mirror, and forcing one produces a fake. Use a single column instead.
+
+### Implementation contract
+
+- **Bind to form state, not to submit.** The mirror updates on input. A panel that only fills after submitting is a confirmation screen, not a mirror, and it loses the entire effect.
+- **Render the real format, with its real syntax colours.** JSON keys and strings in the colours a real editor would use. Line numbers if the format has them. Syntax colour here is content, not decoration, which is why it does not break the one-accent rule.
+- **Show the empty state honestly.** Before the user types, render the skeleton with the keys present and the values empty or as a dim placeholder. Do not pre-fill invented values to make the panel look full: that is a fabricated artifact and it fails the honesty rule exactly like an invented metric.
+- **Redact credentials.** The mirror renders a real request, and people screenshot onboarding screens. An `Authorization: Bearer <live token>` in that panel leaks into every screenshot, support ticket and tutorial that follows. Show the prefix and mask the rest (`polar_sk_••••`), or use a documented placeholder.
+- **Format the values as the API would**, not as the input did. The date selects read December / 29 / 2000, the mirror shows `"2000-12-29"`. That transformation is half the teaching.
+- **It degrades.** With JS unavailable the mirror renders its static skeleton and the form still submits. Never gate the form's usability on the decorative half.
+- **Do not make it look interactive if it is not.** The mirror is output. If it is not editable, it must not look like an editor with a cursor.
+
+### Failure modes
+
+- A static code block that never changes: that is a screenshot of a lie, and worse than an empty column.
+- Syntax colours that do not match the real format, so the first thing you teach is wrong.
+- A mirror wider than the form, which inverts the hierarchy: the user's task is the form.
+- Values that appear before the user types them.
+- A live secret rendered in full.
 
 ## Worked reference: Polar onboarding
 
@@ -20,15 +69,13 @@ Extracted from a screenshot of `polar.sh/onboarding/personal`, which sits behind
 
 Two columns on near-black, roughly 55/45. Left column holds the form. Right column holds a live HTTP request. No card, no panel, no shadow: the form sits directly on the page and the input fields are the only raised surfaces.
 
-### The firma
+### The firma: a Live Mirror
 
-The right column renders **the actual `PATCH /v1/users/me` request this form will send**, and its values update as you type. Headers in dim mono (`Host`, `Content-Type`, `Content-Length`, `Authorization: Bearer polar_sk_…`), a hairline, a `REQUEST BODY` label, then the JSON body with line numbers and syntax colour: keys in lavender, string values in green.
+The right column renders **the actual `PATCH /v1/users/me` request this form will send**, and its values update as you type. This is the canonical example of the pattern above. Headers in dim mono (`Host`, `Content-Type`, `Content-Length`, `Authorization: Bearer polar_sk_…`), a hairline, a `REQUEST BODY` label, then the JSON body with line numbers and syntax colour: keys in lavender, string values in green.
 
-Three things this does at once, which is why it is worth copying as a pattern:
+Note the value transformation, which is the detail that makes it teach rather than echo: the form collects the date as three selects reading December / 29 / 2000, and the mirror shows `"date_of_birth": "2000-12-29"`. The country select says Chile, the mirror says `"country": "CL"`. The user learns the API's shape by watching their own input get translated into it.
 
-1. **It is unpasteable.** Only a developer-monetisation product can put its own API call there. Swap it into another company's onboarding and it makes no sense.
-2. **It teaches while it collects.** The audience is developers who will integrate this API. Their first screen shows them the shape of the thing they will write.
-3. **It replaces decoration entirely.** There is no illustration, no gradient, no glow, because the right half is doing real work.
+One thing to fix when copying it: the reference renders `Authorization: Bearer` with what appears to be a live secret key. Mask it.
 
 ### The details worth stealing
 
@@ -78,15 +125,6 @@ No card wrapping the form. No gradient. No glow. No orb. No grid background. No 
 - Locale gate applies in full: every label, placeholder, helper, error and button string. Errors are the strings most often left in the model's default register, because nobody reviews the unhappy path.
 - Field labels are nouns, buttons are verbs.
 
-## Gates for this file
+## Gates
 
-Added to the slop test when the target is a product surface:
-
-1. Is the form wrapped in a card that has no siblings to be separated from?
-2. Is the second column an illustration, a gradient or a stock image rather than the product doing its job?
-3. Is the progress indicator numbered circles?
-4. Is the primary action anything other than the highest-contrast element on the page?
-5. Is any label expressed only as a placeholder?
-6. Does the helper or error slot collapse at rest, so the layout jumps on validation?
-7. Does the submit button change width when it enters its loading state?
-8. Are the error strings in the locale profile's register, or did they ship in the model's default?
+The 8 gates for this file live in `slop-test.md` under "Product surfaces", so the whole battery runs from one place. They only apply when the target is an app surface.

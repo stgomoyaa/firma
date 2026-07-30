@@ -132,7 +132,7 @@ The **firma** is mandatory: the ONE artifact or gesture that stops this page bei
 ### 8 · Gates and self-critique (before handing over)
 
 1. **Six-axis self-critique** (1-5): Philosophy · Hierarchy · Execution · **Firma** · **Honesty** · Variety. Any axis <3 triggers a revision pass before the gates, with two exceptions that are not averaged: Honesty is 5 or it blocks the handoff, and Firma below 3 means there is no build. Detail in `references/slop-test.md`.
-2. Run the **gates in `references/slop-test.md`**, which start with a deterministic Gate 0: the bundled `scripts/guard.mjs` plus an external detector. Every gate answer must be **no**. If a gate fails, fix it; slop does not ship.
+2. Run the **68 gates in `references/slop-test.md`** (the last 8 apply only to app surfaces), which start with a deterministic Gate 0: the bundled `scripts/guard.mjs` plus an external detector. Every gate answer must be **no**. If a gate fails, fix it; slop does not ship.
 3. Real visual verification when a browser is available (screenshots at 2-3 widths): optical centring, nothing clipped by a chamfer or notch, parallel columns aligned.
 
 ---

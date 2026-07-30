@@ -27,7 +27,7 @@ Plus the rule the skill is named after: **nothing ships without its firma** (Spa
 | `references/motion.md` | Motion budget, named easings, the CSS ticker, the scroll-cinematic contract |
 | `references/copy.md` | Locale-independent copy rules, honesty, banned openings |
 | `references/product-surfaces.md` | Onboarding, settings, dashboards, forms, empty states |
-| `references/slop-test.md` | ~60 gates plus a six-axis self-critique, run before every handoff |
+| `references/slop-test.md` | 68 gates plus a six-axis self-critique, run before every handoff |
 | `references/audit.md` | Scoring rubric for the `audit` and `redesign` verbs |
 | `locales/es-CL.md` | The shipped locale profile: Spanish, neutral Chilean register, tuteo |
 | `scripts/guard.mjs` | Deterministic linter for the hard rules. Node, zero dependencies |

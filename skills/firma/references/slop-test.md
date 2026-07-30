@@ -135,6 +135,19 @@ What the external detector does NOT see and the bundled guard does: banned local
 59. Does the page have its firma (the artifact or gesture that cannot be pasted into another site)? Without it, this is clean slop: restraint with no idea is half-finished work.
 60. Is the stamp missing from the first line of the CSS, or the append to `.firma/log.json` missing, or missing fields (`family` included, or the next rotation cannot check the previous build's family)?
 
+### Product surfaces (only when the target is an app surface, not a marketing page)
+
+Skip this block for landing pages. Run it for onboarding, settings, dashboards, forms and empty states. Detail and the Live Mirror pattern in `product-surfaces.md`.
+
+61. Is the form wrapped in a card that has no siblings to be separated from?
+62. Is the second column an illustration, a gradient or a stock image rather than the product doing its job? (A Live Mirror is the fix: a panel that composes the product's own output from the form state as the user types.)
+63. If there is a Live Mirror: does it update on input rather than on submit? Does it render the real output format with its real syntax colours? Does it show an honest empty skeleton rather than invented pre-filled values? Does it mask credentials instead of rendering a live token? Does it transform the values the way the product would (`December / 29 / 2000` becoming `"2000-12-29"`)?
+64. Is the progress indicator numbered circles rather than hairline segments or a plain fraction?
+65. Is the primary action anything other than the highest-contrast element on the page?
+66. Is any label expressed only as a placeholder?
+67. Does the helper or error slot collapse at rest, so the layout jumps on validation?
+68. Does the submit button change width when it enters its loading state? Are the error strings in the locale profile's register, or did they ship in the model's default?
+
 ## The deepest tell
 
 Dodging this list is not designing. You can pass every gate and still ship slop if you invented nothing. The list makes the work less incorrect; the **firma** (gate 59) and the position (axis P) make it good. Clean is the floor, never the achievement.
