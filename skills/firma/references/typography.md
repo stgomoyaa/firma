@@ -6,10 +6,11 @@ Typography carries the design. If the type is wrong, nothing else matters.
 
 - A page is a **pairing**: display face plus body face. One single family only when that IS the decision (a deliberate monospace-everywhere terminal).
 - **The 2+1 rule:** three families maximum. Display plus body plus an optional outlier (wordmark, hero stat, pull quote) used in ≤2 places across the whole page. Four families is slop. Mono counts as a family.
-- **Weights at the extremes.** 800 next to 400 reads intentional; 600 next to 400 reads default. Minimum 300 units of contrast between heading and body.
+- **Weight is a register, not a contrast trick.** The reference register (Stripe 300, Vercel 400, Linear 510) keeps display light-to-regular and gets hierarchy from size and tight tracking; the poster register goes 700-800. Both are decisions. 600 next to 400 with zero tracking is the default that reads generated. Numbers in `craft.md`.
 - Scale by ratio (1.25 major third by default), at most 5 sizes per page; more hierarchy comes from weight and colour.
 - Line-height: display 1.05-1.2 (floor of 1.0 in all-caps, or cap-tops collide when it wraps), body 1.5-1.65. Measure 45-75ch (`max-width: 65ch`).
 - `font-display: swap`, `font-variant-numeric: tabular-nums` on every column of numbers, curly quotes, a real `…`. Never synthesise bold or italic.
+- **Lining figures for prices, phones, dates and addresses set in a display serif.** Many classical serifs default to old-style figures, which turn `$108.360` into something that reads as `$Io8.36o` at headline size. Set `font-variant-numeric: lining-nums` on any heading that can carry a number, and look at the render: some fonts lack the feature.
 
 ## Banned as defaults (on-distribution for every LLM)
 
@@ -17,6 +18,8 @@ Typography carries the design. If the type is wrong, nothing else matters.
 - **Serif:** **Fraunces** and **Instrument Serif** (the AI's two favourites), plus Playfair Display, Cormorant Garamond, Lora, Merriweather, and the didones (Bodoni/Didot) as a reflex for "luxury".
 - **Mono:** Courier New, default Consolas, the system mono as a brand voice.
 - **Saturated grotesks:** **Space Grotesk** and **Geist** leave the default slot. Space Grotesk became the "tasteful alternative" for everything technical and deterministic linters now flag it alongside Inter; it stays available through explicit rotation, never as a theme's first pick.
+
+**Sales and product surfaces exception (measured, see `craft.md`):** Stripe, Linear and Vercel set display in Söhne, Inter and Geist. The ban is on these faces at their defaults, not on the faces. On a sales or product page a neutral grotesk is allowed when it ships with tracking by size, optical sizing, a chosen stylistic set and non-black ink. Prefer a licensed or less common neutral (Söhne, Switzer, General Sans, Inter Display) when available.
 
 Exceptions: if the user asks for one by name, use it. Inter Tight only as a supporting body face in technical themes, never as display. A vetoed serif can be used with an explicit brand justification, never as a reflex.
 

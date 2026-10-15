@@ -53,12 +53,12 @@ What the external detector does NOT see and the bundled guard does: banned local
 1. Is there any form banned by the active locale profile in visible text? (For `es-CL`: voseo, meaning vos/tenés/querés/agendá/mirá. Look for stressed `-á/-é/-í` imperatives and `-és/-ás/-ís` presents.)
 2. Is there any `—` or `–` used as a separator in visible text (headlines, body, quotes, buttons, captions, alt)?
 3. Is there any metric, testimonial, name, job title, client logo or urgency counter the user did not provide? (Legal exposure, not only aesthetics.)
-4. Is there italic in any heading or display line (including ONE `<em>` word inside a title)?
+4. Is italic used as EMPHASIS in any heading (one `<em>` word inside a title to make it feel important)? Systematic italic that structures every heading as a register is not this and passes; a single italicised word does not.
 5. Is the display face Fraunces or Instrument Serif without an explicit brand justification? Or does it repeat the previous build's display?
-6. Are there floating glow orbs, ambient 3D spheres, or diffuse blobs with blur+multiply behind the content?
-7. Is there a grid or graph-paper background (masked or not) laid under the page?
+6. Is there a glow, orb, aurora, beam, bloom or diffuse blob whose justification is missing from the stamp, or whose justification survives the swap test? (Rewrite the sentence for a different client: if it still works, it justified nothing. Atmosphere applied behind content for depth is the reflex version and fails.)
+7. Is there a grid or graph-paper background laid under the page with no stated reason it belongs to this subject? (A blueprint grid on a fabrication brief passes; the same grid radially masked behind a services page is wallpaper.)
 8. Are there mono-caps eyebrows in more than 1 of every 3 sections, or any eyebrow BESIDE the heading (tag-left/header-right)?
-9. Is there a row of floating cards with the same shadow, same radius, same size? (Rhythm comes from variation, not cloning.)
+9. Is there a row of cards cloned in shadow, radius and size? Rhythm comes from variation, not cloning. **One exception, and only one: the Catalogue shape**, where the items are genuine variations of one thing (SKUs, plans, typefaces) and uniformity is what lets the eye compare them. Even there, at least one cell breaks the pattern to carry the recommendation or the outlier, or the grid reads as a spreadsheet.
 10. Grid alignment: is there orphan whitespace (dead gap under the `h1` from a badly chosen `align-items` next to a taller column), misaligned comparison columns, or a centred section head floating above left-flush body?
 
 ### Typography
@@ -76,7 +76,7 @@ What the external detector does NOT see and the bundled guard does: banned local
 
 19. Pure `#000` or `#fff` as a surface?
 20. Any neutral at chroma 0 (an untinted grey)?
-21. A purple-blue, purple-cyan, mesh or aurora gradient anywhere?
+21. A purple-blue, purple-cyan, mesh or aurora gradient with no justification in the stamp, or one whose justification would fit any other brand?
 22. Does the accent cover more than 5% of the viewport?
 23. A beige+brass+espresso palette on a premium brief, or the default carbon-blue / slate-indigo on a dark one, or cream / UI-kit grey as an unchosen base?
 24. Any text/background pair below 4.5:1 (body) or 3:1 (large, icons, focus)? Check especially: button text against button fill, dark sections with inherited ink, muted on paper-2.
@@ -158,6 +158,23 @@ Detail in `readme.md`.
 72. Is the number that does not flatter the project published next to the one that does?
 73. Is there a badge for a service that is not configured, or a license badge the host does not detect?
 74. Is the tagline a description of the product rather than a sample of it?
+
+### The emitted system
+
+75. Is `design.md` missing, or does any value in it contradict the tokens the build actually shipped? (Generated from the CSS, never typed. A design system that lies is worse than none.)
+76. Does its don'ts section restate principles ("keep it clean") instead of naming the specific values this build locked?
+
+### If the build uses View Transitions
+
+77. Is any `view-transition-name` repeated on two elements? (The browser skips the WHOLE transition, silently, with no console error. In a list it is the default mistake: one name on every card.)
+78. Are `::view-transition-old/new(root)` left on the browser's default crossfade instead of the build's own easings and durations?
+
+### References (every build except a component inside an existing system)
+
+79. Was the build designed without real references, or does the preview lack the reference card (references with URLs, took/rejected, category gravity)? A build with no references is designed from the model's average, which is the template look.
+80. Does the result match any single reference on palette anchor hue, display face AND macrostructure composition? That is a clone with a new name.
+81. Does it match the category gravity on paper band, display class and accent hue with no written, brief-specific position?
+82. Was it handed over as visually verified without being viewed next to the references, or was layout on a fixed canvas checked by pixel ink instead of text rects?
 
 ## The deepest tell
 

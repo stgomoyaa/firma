@@ -182,9 +182,20 @@ function checkFile(path, src) {
   }
 
   if (STYLE.has(ext) || MARKUP.has(ext)) {
-    const css = MARKUP.has(ext)
+    let css = MARKUP.has(ext)
       ? blank(src, /<script\b[\s\S]*?<\/script>/gi)
       : src;
+
+    // Two places where a colour literal is not a colour, and both produced false
+    // positives on real projects:
+    //   1. CSS comments. A file whose header reads "cero #000 y cero #fff" was flagged
+    //      for the very rule it was documenting.
+    //   2. Mask declarations. In `mask-image: linear-gradient(transparent, #000 8%, ...)`
+    //      the #000 is full opacity in the alpha channel, not ink on screen. This is the
+    //      ticker recipe motion.md itself prescribes, so the guard was failing the
+    //      pattern the skill teaches.
+    css = blank(css, /\/\*[\s\S]*?\*\//g);
+    css = blank(css, /(?:-webkit-)?mask(?:-image|-composite|-mode)?\s*:[^;}]*/gi);
 
     for (const m of all(PURE_RE, css)) {
       push('error', 'negro-blanco-puro', m.index,

@@ -67,3 +67,18 @@ Grids with images: tracks at `minmax(0, 1fr)`, never bare `1fr` (the `auto` mini
 ## When the layout is correct but flat
 
 Before shipping, do one of these: (1) add a break-out, (2) unbalance a column width, (3) move the primary CTA off centre, (4) replace a card with negative space, (5) vary the padding of ONE section so the rhythm is uneven.
+
+
+## Rhythm by variation: the recipe
+
+Gate 9 rejects rows of cloned cards and says rhythm comes from variation, without saying how. Cloning is the default because it is the easy layout, so the alternative has to be as concrete.
+
+**Vary three properties at once, never one.** Changing only the width produces a ragged row that reads as a bug; changing all three reads as composition:
+
+1. **Size.** Items at genuinely different widths and heights, driven by what each one contains, not by a decorative pattern.
+2. **Vertical alignment.** Some items hang from the top of the band, others sit on the bottom, a few float between. This is what stops a varied row from looking like a broken grid, and it is the property most often forgotten.
+3. **Rhythm of the gap.** Not every gap identical. A tighter pair reads as a group; a wider one reads as a break.
+
+Seen in production on studio galleries, where a strip of work at six different heights and three different baselines does what a uniform grid of the same six images cannot: it makes the eye travel instead of scan.
+
+**When the items are genuinely comparable** (SKUs, plans, typefaces) uniformity is correct and this does not apply. That is the Catalogue exception in gate 9, and even there one cell breaks the pattern.

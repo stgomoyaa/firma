@@ -33,7 +33,26 @@ A single sequence on load, staggered by DOM index via a custom property, total �
 
 **Absolute rule: content is visible by default.** Never depend on JS, an observer or a timeline firing for text to exist. If it does not fire (background tab, hydration, screenshot), the section is BLANK. The no-JS fallback shows everything. If that cannot be guaranteed, nothing gets hidden.
 
-Scroll: IntersectionObserver or CSS scroll-driven animations, never `addEventListener('scroll')`. Reveal-once only; parallax and scroll-scrub need a specific reason.
+Scroll: IntersectionObserver or CSS scroll-driven animations, never `addEventListener('scroll')`.
+
+### The scroll-driven trap: `animation` resets `animation-timeline`
+
+Caught in a real build, invisible to every gate and to the linter. The `animation` shorthand resets `animation-timeline` to `auto`, so declaring the timeline BEFORE the shorthand silently throws it away:
+
+```css
+/* WRONG. The timeline is discarded by the shorthand on the next line. */
+.hero { animation-timeline: scroll(root); animation-range: 0 62vh; }
+.hero { animation: recede 1s linear both; }
+
+/* RIGHT. Timeline always AFTER the shorthand. */
+.hero { animation: recede 1s linear both; }
+.hero { animation-timeline: scroll(root); animation-range: 0 62vh; }
+```
+
+The failure mode is the worst one available: with `both`, the keyframe runs as a normal time animation, finishes in one second, and **lands on its end state immediately**. A hero written to fade out on scroll is at `opacity: 0.16` before the visitor touches anything. It looks like a design decision, not a bug.
+
+It also breaks the rule above about content never depending on an animation firing, which is why it has to be verified rather than assumed. Confirm in a browser: `getAnimations()[0].timeline.constructor.name` must return `ScrollTimeline`, not `DocumentTimeline`. If an element carries both a looping animation and a scroll-driven one, `animation-timeline` takes a per-animation list: `animation-timeline: none, scroll(root)`.
+ Reveal-once only; parallax and scroll-scrub need a specific reason.
 
 ## The CSS ticker (the canonical dark-technical firma)
 
@@ -52,6 +71,67 @@ A horizontal data ticker is a legitimate firma when the content is REAL (busines
 Structure: duplicate the track's content (two copies) for a seamless loop with `translateX(-50%)`. The edge fade via `mask-image` avoids the hard cut. Separate items with a system glyph (▪ / a rationed · / a number), never an emoji.
 
 If animating a fill or bar: animate clip or transform with stable caps, fill the track COMPLETELY, smooth easing. A half fill, or caps that jump from square to round, screams slop.
+
+## View Transitions (the page transition that is not a library)
+
+The interaction axis in step 3 lists "a page transition" as a rotation option without saying how. This is how. It is native CSS, works in a multi-page PHP site exactly as in a React app, and adds zero bytes of dependency.
+
+**Support, verified 17-08-2026: 90.2% globally**, Safari 18+, Firefox 144+, Chrome/Edge 111+. It is production, not an experiment. Several showcase sites still claim Safari lacks it; that is stale.
+
+**Why it fits this skill better than any JS alternative.** The absolute rule above says content must never hide behind an animation. With View Transitions that is structural rather than a discipline: the browser animates *snapshots* of the before and after states while the real DOM is already committed. If the transition never runs, the new page is simply there. No fade-up that leaves a blank section.
+
+### Cross-document, for a real multi-page site
+
+Four lines of CSS, no JavaScript at all. This is the right one for a server-rendered site.
+
+```css
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) { animation: vt-out var(--dur-short) var(--ease-in) both; }
+::view-transition-new(root) { animation: vt-in  var(--dur-long)  var(--ease-out) both; }
+
+@keyframes vt-out { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes vt-in  { from { opacity: 0; transform: translateY(8px); } }
+```
+
+**Always override the default animations.** The browser ships a plain crossfade on `::view-transition-old/new(root)`; leaving it is the house default, which is the thing this skill exists to avoid.
+
+### The shared element, which is the part worth having
+
+A crossfade between pages is barely worth the code. What earns it is one element that persists and travels: the product photo that becomes the hero, the card that opens into the article.
+
+```css
+/* the SAME name on both pages, on the element that persists */
+.producto__foto { view-transition-name: pieza; }
+```
+
+**The gotcha that costs an afternoon: `view-transition-name` must be unique in the document.** Two elements sharing a name makes the browser skip the ENTIRE transition, silently, with no console error and no partial effect. In a list this bites immediately, because the obvious move is to put the same name on every card. Assign it per-item (`view-transition-name: pieza-7`) or set it on click, on the one element that was clicked, and clear it afterwards.
+
+### Theme toggle by circle reveal
+
+The one place a decorative reveal is motivated: the click point is where the change originates, so the animation says *this came from here*.
+
+```js
+document.startViewTransition(() => document.documentElement.classList.toggle('oscuro'))
+  .ready.then(() => document.documentElement.animate(
+    { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${radio}px at ${x}px ${y}px)`] },
+    { duration: 420, easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      pseudoElement: '::view-transition-new(root)' }));
+```
+
+`clip-path` is the documented exception to the transform-and-opacity rule here: it is what the API composites against, and the browser runs it off the main thread.
+
+### Reduced motion and the 10% without support
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+```
+
+Degradation needs no work: an unsupported browser ignores `@view-transition` and navigates normally. That is the whole fallback. For the JS form, guard it — `if (!document.startViewTransition) { aplicarCambio(); return; }` — so the state change still happens without the animation wrapping it.
+
+**Budget: ONE transition per site, not one per interaction.** A page where every click dissolves is the marquee problem in another costume. Pick the single navigation that matters (catalogue to product, list to detail) and leave the rest instant.
 
 ## Scroll-driven cinematic (the Stage family)
 
