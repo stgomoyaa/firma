@@ -26,6 +26,22 @@ Writes one PNG per width, `sheet.png` (contact sheet) and full-page slices. The 
 
 Exit codes: `0` no FAIL (warns never fail), `1` at least one FAIL, `2` bad usage or no browser. A FAIL blocks handover. A warn needs a fix or one line on why it is deliberate. The scan does not replace looking at the PNGs.
 
+## probe.mjs: frozen-frame layout checks
+
+```bash
+node scripts/qa/probe.mjs <file.html | url> [--widths 1440x900,375x812] [--frames 0,0.3,0.55,0.75,1] [--param p] [--out shots/probe]
+```
+
+## density.mjs: visual density floor
+
+```bash
+node scripts/qa/density.mjs <file.html | folder | url> [--floor] [--min-sections-ratio 1] [--min-gradients 3] [--min-big-media 3] [--json]
+```
+
+Measures scroll-reactive elements, sections with motion, gradients, media, shadow layers and backdrop filters at 1440x900. Without `--floor`, it only reports measurements; with it, the default minimums require motion in every tall section, three visible gradients and three large media elements. Exits `1` when a floor is missed.
+
+Captures each viewport and query-parameter frame after fonts are ready and a 1.5-second settle, then checks label spacing, obstacle collisions, stage margins, top fixed/sticky navigation, WCAG text contrast, and browser errors. A page may expose `window.__probe()` returning a viewport-coordinate `stage`, `labels`, and `obstacles`; otherwise mark elements with `data-probe-label`, `data-probe-obstacle`, and optionally `data-probe-stage`. The executor runs `probe.mjs` in a fix-and-rerun loop until it reports 0 FAIL before handover; the coordinator judges taste only.
+
 ## matrix.mjs: other people's machines
 
 ```bash

@@ -54,10 +54,10 @@ The older rules treated shadow as suspect. The references use it constantly, jus
 
 ## The hero asset (mandatory on sales and product pages)
 
-Every reference leads with the product, not with a sentence: Apple a full-bleed photo of the hardware, Linear the app UI, Stripe a gradient plus product UI, Vercel the deploy flow. A hero made only of type and a hairline box is the failure all three earlier Verbatim builds shared. Pick one, in this order of preference:
+Every reference leads with the product, not with a sentence: Apple a full-bleed photo of the hardware, Linear the app UI, Stripe a gradient plus product UI, Vercel the deploy flow. A hero made only of type and a hairline box is the failure all three earlier a legal-research product builds shared. Pick one, in this order of preference:
 
 1. **The product UI, rebuilt in code at retina fidelity, with real data.** A real query, a real answer, real metadata, real numbers. Window chrome, layered surfaces, a two-layer shadow, a 1px translucent border, `transform: perspective()` tilt of at most 4°. This is honest (it is the product) and it is what Linear and Stripe do.
-2. **A generated image** when the product is physical or the page needs atmosphere: from an image model (GPT Image, Higgsfield or similar). Never a fake screenshot of UI the product does not have, never a person presented as a customer.
+2. **A generated image** when the product is physical or the page needs atmosphere. **Source order, always:** (a) **GPT Image through a Codex worker first**: it is included in the plan and costs nothing per image (`image_generation`; run `codex exec -s workspace-write -C <folder>`, asking for the exact file name and pixel size;. (b) Free-licence stock (Unsplash, Pexels) with the credit in the footer, when a real photograph beats a generated one. (c) **Higgsfield last**, only when (a) failed or the job needs what only it does (Soul identity, video): it spends paid credits, and in the 16-10 bake-off two runs drained the balance and the third found it empty. Never a fake screenshot of UI the product does not have, never a person presented as a customer.
 3. **A drawn SVG diagram or illustration** only when 1 and 2 cannot show the thing.
 
 The hero asset gets more design time than the rest of the page combined.
@@ -71,3 +71,71 @@ The hero asset gets more design time than the rest of the page combined.
 ## Iteration is the craft
 
 None of the numbers above survives a single pass. The references are iterated dozens of times by people looking at them. Minimum for this skill: three rounds of render → look → specific corrections (see SKILL.md step 8). A build that was never looked at by a model that can see is not finished, whatever the gates say.
+
+## The wow moment (what "stunning" adds on top of clean)
+
+Measured on viral Opus-built landings (Oct 2026: a dark agency template with a 3D book carrying floating UI, a wordmark that dissolves into particles under the cursor, a fintech page shot entirely with generated photography, a game page whose every section is a generated video used as a scroll-triggered WebGL texture, and an isometric three.js diagram of the product's own flow). Clean craft gets a page to "credible". What these share, and what made them travel, is ONE centrepiece that moves and that nobody has seen before. Pick one per page:
+
+1. **The product's flow as a 3D scene.** An isometric or orthographic three.js diagram of how the product works (input, engine, source, output), with data travelling between blocks, scrubbed by scroll. Honest and specific: it can only be this product.
+2. **Generated media as the world.** Image or video from an image/video model, embedded as full-bleed sections or as WebGL textures triggered at fixed scroll points (25 / 50 / 75%). Right for consumer, games, lifestyle. Never fake product UI, never a person presented as a customer.
+3. **One interaction on the brand mark or headline.** A wordmark that dissolves into particles under the cursor, a header that changes shape as you scroll. One, not several.
+
+How to brief it so it lands (from a published 1-prompt + 16-follow-up build):
+- **Numbers, not adjectives.** Sizes, hex, tracking, durations, easing, every beat on a timecode or scroll percentage.
+- **Make it a pure function.** `renderAt(t)` or `renderAt(progress)`, seeded randomness, and a URL parameter (`?t=3.3`, `?p=0.5`) that freezes any moment. That turns the animation into something you can screenshot and measure.
+- **Correct by measuring frames, not by vibes.** Sample pixel colours against the brand hex, measure bounds (nothing leaves the frame or passes under the nav, 40px margins), check timings frame by frame. Each follow-up names the frame, the measured value and the target.
+- Sixteen measured follow-ups is normal for one centrepiece. Budget for it.
+
+The honesty gate still applies: most of those demos carry invented testimonials, logo walls and stats. Their visual layer is the lesson; their proof layer is exactly what this skill blocks.
+
+## Second reference pass (Oct 2026, measured live with computed styles)
+
+| Site | Display | Body | Depth | Hero asset | The memorable move |
+|---|---|---|---|---|---|
+| Anthropic | Own serif + own sans (both 300-800 variable); h1 sans 61px w700; section heads serif 80px/1.157 w400, -0.015em | Serif 24px/1.4 | Three stacked, almost invisible layers: `0 2px 2px rgb(0 0 0/.01), 0 4px 4px rgb(0 0 0/.02), 0 16px 24px rgb(0 0 0/.04)` | Type plus a drawn piece: a hand-drawn chalk line rendered on canvas at 12fps over 22 frames, with the model name bent along it | Underlined key words inside the headline; words reveal one by one (`translateY(24px)`, 800ms, `cubic-bezier(.16,1,.3,1)`, staggered) |
+| Linear | Inter Variable 64px/1.0 w510 -0.022em, `"cv01","ss03"` | 15px/1.6, -0.011em | Dark: `inset 0 0 0 .5px rgb(255 255 255/.08)` hairline plus `0 2px 32px rgb(0 0 0/.25)` | The product UI, delivered as optimized images, not live DOM | Four text tones on near-black (`#f7f8f8`, `#d0d6e0`, `#8a8f98`, `#62666d`); sections 128px |
+| Cursor | Own grotesk, h1 only 26px w400 -0.0125em: the headline is deliberately small | 16px | Product window: `0 28px 70px rgb(0 0 0/.14), 0 14px 32px rgb(0 0 0/.10)`; radius 4px everywhere | The app window (Desktop + CLI, real-looking task list, diff counts, browser preview) floating over a fine-art painting | Product UI on top of a painting: technical object, artistic ground |
+| Apple (iPhone Duo) | SF Pro Display, headline ~80px, w600 | SF Pro Text 17px, -0.022em | Almost none; tiles radius 28px | A photograph of the product held in hands, filling the fold | 18 videos and scroll-scrubbed sequences; sections 128px, first one 144/224px |
+| affiliateNetwork (Framer) | 88px/80px w600 -0.04em | 20px/28px -0.01em | Inner glow `inset 0 0 85px` in the brand hue on dark panels; radius 24-36px | A vertical phone-format video in a frame, entering with a spring (`y:150→0`, .5s, bounce .2) | Display at -0.04em plus two loud accents (magenta, acid lime) on near-black |
+
+What this adds to the rules above:
+- **Headline size is a choice, not a floor.** Cursor ships a 26px h1 and lets the product window be the hero. When the product is the hero, the headline can shrink; when type is the hero (Anthropic, affiliateNetwork), it goes 60-90px with tight tracking.
+- **The product-on-art pattern** (Cursor): a precise UI window over a painterly or photographic ground reads as premium and is achievable with a generated image as the ground and real UI on top. Honest when the UI is real.
+- **Ultra-subtle stacked shadows** (Anthropic): three layers at 1-4% opacity give lift without a visible shadow. Use this on light paper instead of one 10-20% shadow.
+- **Word-by-word headline reveal** with the measured values above is the single entrance most of these share.
+- **A drawn gesture** (Anthropic's chalk line, rendered on canvas at a low frame rate) is a human mark that no template ships with.
+
+## Adopted from taste-skill (MIT, Leonxlnx/taste-skill)
+
+- **Claim → proof map before design.** One line per section: the claim it makes and the real proof that backs it. A section with no proof is cut, not decorated. This is the step that kills invented stats before they are written.
+- **Headlines two lines or fewer at every width,** mobile included; rewrite the line breaks for mobile instead of letting them fall.
+- **Archival imagery with licence** (Openverse, Wikimedia Commons, Art Institute of Chicago, The Met) as an alternative to generated images, credited.
+- **Score each looked-at round on a fixed rubric** (design 40, usability 30, creativity 15, content 15) so rounds are comparable. The rubric is fixed before the build, never invented after seeing it.
+- Not adopted: its bans on hairlines, mono labels and gradients, which its own data does not support.
+
+## Density floor (sales and product pages)
+
+Measured 15-10-2026 at 1440x900, scrolling the whole page: Linear 1609 elements that change on scroll, 59 gradient surfaces, 270 media; Cursor 1455 / 22 / 95; Noma 167 / 1 / 101. The flat builds this skill used to produce: 0-88 / 0 / 1-2. Restraint at that level reads as "plano", not as Apple. The owner's verdict on every flat build was the same word.
+
+The floor, per sales or product page:
+- **Every section has at least one scroll-linked motion** (CSS `animation-timeline: view()`, declared after the `animation` shorthand, with an IntersectionObserver fallback). A heading reveal must finish by the time the heading enters the bottom 75% of the viewport (`animation-range: entry 10% entry 90%`), never on `cover`, or it sits half-revealed and clipped while being read.
+- **Depth on the surfaces people decide on:** at least one section on a dark or gradient ground, cards with 3-layer shadows, one glow behind the primary offer. Pricing is never a row of flat outlined boxes.
+- **Media in more than the hero:** a generated photograph or a second product mock in at least two sections, and real icons from a licensed set (Phosphor, Lucide) where a list has more than three items.
+- **A header that changes on scroll** (transparent over the hero, then a floating pill with blur; reading progress clipped inside it). Its transition animates `max-width`, never `width: 100%` to a fixed value, which jumps.
+
+Measure with `scripts/qa/density.mjs`. **The counts are a floor, not a target, and they get gamed:** every executor handed "≥350 moving elements" split paragraphs into single-word spans to hit it, and two of them broke the page doing so. So the script counts only elements of at least 2,000 px² and reports per-section coverage; the spec states that splitting body text into words to raise a count is forbidden; and the result is still judged on screenshots, never on the number.
+
+## Component libraries
+
+React Bits (reactbits.dev): 215 animated React components. Licence is MIT plus Commons Clause: use in a product is allowed, redistributing or selling the components themselves is not. React only; a static HTML page has to port the idea, not the code. Use one effect per page at most, never the over-used ones as decoration (aurora, blur text, glitch, particles, galaxy, plasma).
+
+## Mechanical gates belong to the builder
+
+Most corrections on the 3D scene of a legal-research landing were mechanical: a label over a block, a label leaving the stage, an invisible moving packet, a grey floor drawing a hard box. A model that can see should never be the first to find those. Every interactive or 3D section exposes `window.__probe()` (stage, labels, obstacles in viewport coordinates) and the builder runs `scripts/qa/probe.mjs` over frozen frames until it reports zero FAILs. Only then does the coordinator look, and only for taste.
+
+Scene defaults that remove the usual first-round failures:
+- Transparent canvas; floor as a shadow catcher (`ShadowMaterial`, ~0.1 opacity), never a coloured plane.
+- Fit the camera to the bounding box of the content with a fixed margin; never hand-place it.
+- Labels are HTML, placed by projection, with obstacles (every object's screen rectangle) as forbidden zones and a fallback through four sides.
+- Light paper materials need hemisphere + ambient light; check the darkest visible face against a target luminance.
+- Moving markers need emissive material plus a halo, sized for the smallest viewport.

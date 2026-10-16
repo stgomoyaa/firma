@@ -59,3 +59,7 @@ Listed explicitly so the derivation above is not read as the whole story:
 - **The Cinematic family and its craft contract** in `macrostructures.md` and `motion.md`: the pinned scroll stage, the layer contract, depth ordering, the frame-loop engine, the reversibility requirement, and a reduced-motion mode that keeps every piece of content available.
 - **A Definition of Done** that closes the scope instead of inviting another iteration.
 - **All 12 theme value sets** in `references/themes.md`. Theme 7 (`Cobalto`) started as hallmark's `cobalt` and was rebuilt from scratch, because hallmark's values used a neutral chroma of 0.004 and this skill's own floor is 0.005: its own theme failed its own rule. Every theme now ships with WCAG contrast computed for each token pair, and `Cobalto` gained a separate accent for use inside its dark band, where the light-mode accent only reaches 3.6:1.
+
+## tasteskill v2 (MIT, Leonxlnx/taste-skill, commit f624f37)
+
+Ported as-is into `skills/firma/`: `library/*.json`, `scripts/draw.mjs`, `scripts/assets.mjs`. Licence: MIT, Copyright (c) Leonxlnx. Full text: https://github.com/Leonxlnx/taste-skill/blob/main/LICENSE

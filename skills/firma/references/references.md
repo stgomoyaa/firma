@@ -42,7 +42,7 @@ Inspo covers whole pages. These cover one piece each, and are the place to go wh
 - **CTA voice and placement:** cta.gallery, filterable by industry and light/dark.
 - **Error and empty states:** 404s.design, filterable by style, interaction and industry. Pairs with `product-surfaces.md`.
 - **Hero:** supahero.io, hero sections only. Read where the headline, proof and action sit in the first viewport.
-- **Pricing:** pricingpages.design. Read plan count, which plan is highlighted and how the toggle and comparison table work; the copy is the owner's call.
+- **Pricing:** pricingpages.design. Read plan count, which plan is highlighted and how the toggle and comparison table work; the copy is the client's call.
 - **Whole pages, when Inspo is down or thin:** godly.website · minimal.gallery · land-book.com (login for full browsing) · landing.love (animation-led). Same extraction rules as Inspo, without its gravity numbers, so count the category yourself.
 - **Motion technique banks (read-only):** motion-primitives.com · smoothui.dev · kinetics.colorion.co · microkit.co. Study how an effect is built, then rebuild it with this build's tokens and easing. Never paste the component.
 - **Interaction axis (step 3 rotation):** 60fps.design, motion details from shipped apps, 108 filters. Take timing and the trigger, then rebuild in CSS or View Transitions.

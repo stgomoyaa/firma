@@ -77,7 +77,9 @@ If the read genuinely forks in two, **one** short question, never a questionnair
 
 ### 1b · References (before choosing anything)
 
-Hard rule 9. Pull 3-5 real references for this job before steps 2-5, in this order: Inspo MCP (`recommend` with `industry`/`vibe`/`mode` filters, never the brief alone), DESIGN.md libraries (which one per surface: `references/references.md`), and for social surfaces real posts from accounts in the same vertical and price tier. Read the category gravity (consensus paper band, display class, accent hue) and decide where this build stands on it. Declare in ONE line: *"References: A, B, C. Category: light / grotesk / cool → against on display, because <brief-specific reason>."* The choices in steps 2-5 have to be traceable to this line or to the brief. If no source is reachable, say so and design with that stated limitation. Method, extraction rules and the distance test in `references/references.md`.
+**Faster start:** `node scripts/draw.mjs` deals 3 researched directions from a gallery-site library (`references/directions.md`); use them as the three candidates for the explore step instead of inventing three from scratch.
+
+Hard rule 9. Pull 3-5 real references for this job before steps 2-5, in this order: Inspo MCP (`recommend` with `industry`/`vibe`/`mode` filters, never the brief alone), DESIGN.md libraries (which one per surface, and how to fetch a Refero card from the terminal: `references/fuentes-design-md.md`), and for social surfaces real posts from accounts in the same vertical and price tier. Read the category gravity (consensus paper band, display class, accent hue) and decide where this build stands on it. Declare in ONE line: *"References: A, B, C. Category: light / grotesk / cool → against on display, because <brief-specific reason>."* The choices in steps 2-5 have to be traceable to this line or to the brief. If no source is reachable, say so and design with that stated limitation. Method, extraction rules and the distance test in `references/references.md`.
 
 ### 2 · Direction
 
@@ -89,12 +91,12 @@ Four directions; the brief picks by signal, silent default **editorial-sober**:
 - **warm-playful** — consumer, community, onboarding. Generous radius, humanist sans, more chroma.
 
 
-**Sales and conversion sites (customer-first).** When the job of the page is selling (sales landing, raffle, ecommerce, booking), the silent default changes:
+**Sales and conversion sites (customer-first, local market).** When the job of the page is selling (sales landing, raffle, ecommerce, booking), the silent default changes:
 - **`references/craft.md` is mandatory**: its type, ink, depth and spacing numbers are the floor. A neutral grotesk executed to those numbers beats a face with personality at defaults.
-- **A hero asset is mandatory** (craft.md, "The hero asset"): the product UI rebuilt in code with real data, or a generated image from an image model. A hero made only of type and boxes does not ship.
+- **A hero asset is mandatory** (craft.md, "The hero asset"): the product UI rebuilt in code with real data, or a generated image (GPT Image via a Codex worker, or Higgsfield). A hero made only of type and boxes does not ship.
 - **Rotation is not a hard rule here.** Refine one system across builds of the same venture instead of rotating seven axes; rotate only between different ventures.
 - **Motion by default**: scroll reveals, hover states, one hero animation, honoring `prefers-reduced-motion`. Never ship it static and wait to be asked.
-- **More color and impact** than editorial-sober: match the chroma of the real competitors in that vertical and market, still with one primary accent.
+- **More color and impact** than editorial-sober: match the chroma of the real competitors in that vertical in Chile, still with one primary accent.
 - **"Clone X" briefs**: when the brief is "copy X / sell the same but cheaper", the competitor is the spec. Replicate its structure, funnel steps, feature set and pricing tiers; firma governs execution quality, not the concept.
 - **Editable levers**: badges, counters, prices, packs and their order, and operating config (hours, slots, areas) are editable from an admin panel, not hardcoded.
 - **Persona panel before handover**: 3-5 subagents acting as concrete buyers (and sellers, for a marketplace) report whether they trust it, understand how to buy, and what stops them.
@@ -167,7 +169,7 @@ If all four come back empty, the brief is too thin to design against and that is
 - Named 4pt spacing scale (`--space-xs` … `--space-4xl`); no loose `padding: 17px`.
 - Type executed to `references/craft.md`: tracking by size (negative from 24px up), display line-height 1.0-1.05, optical sizing and stylistic sets on, ink never black, four text tones. Display weight is a decision: light-to-regular (300-510) with tight tracking is the reference register; heavy (700-800) is a poster register. Never 600 by default.
 - Asymmetry with a primary axis; at most 2 centred elements in the hero. Tonal elevation plus translucent borders; shadows only on what floats, two layers, tinted to the ink (craft.md). Radius coherent with the direction (editorial 0-4px, one radius system per page).
-- Motion: `transform` and `opacity` only, 3 named custom easings, ONE orchestrated entrance per page (not fade-up-on-scroll everywhere), `prefers-reduced-motion` always, and **content never hidden behind an entrance animation** (if the reveal does not fire, the section is blank). Detail in `references/motion.md`.
+- Motion: `transform` and `opacity` only, 3 named custom easings, ONE orchestrated entrance per page (not fade-up-on-scroll everywhere) **on editorial and portfolio pages; sales and product pages follow the density floor in `references/craft.md` instead, where every section moves with scroll**, `prefers-reduced-motion` always, and **content never hidden behind an entrance animation** (if the reveal does not fire, the section is blank). Detail in `references/motion.md`.
 - Every interactive element gets its 8 states (default/hover/focus-visible/active/disabled/loading/error/success). Focus ring instant, never animated.
 - Responsive checked at 320/375/768/1280/1440 by the QA scan in step 8 (not by eye alone): no horizontal scroll (`overflow-x: clip` on html and body), CTAs and nav links on ONE line, image grids use `minmax(0, 1fr)`.
 - Copy per `references/copy.md`: specific, honest, in the target locale's register.
@@ -177,7 +179,7 @@ If all four come back empty, the brief is too thin to design against and that is
 
 ### 8 · Iterate with eyes, then gates (before handing over)
 
-**Three rounds minimum of render → look → correct.** Each round: render at 375 (device emulation, never a shrunk window: headless Chrome will not go below ~500px with `--window-size`) and 1440 with `scripts/qa/shoot.mjs`, look at the screenshots next to the references, write 3-8 specific corrections (a value, an element, a pixel distance), apply them. Who does what: the model that can see (or the person) looks and decides the corrections; whoever builds applies them. QA runs where a browser works, never inside a sandbox that cannot open Chrome. A build with fewer than three looked-at rounds is handed over as "draft", not done.
+**Three rounds minimum of render → look → correct.** Each round: render at 375 (device emulation, never a shrunk window: headless Chrome will not go below ~500px with `--window-size`) and 1440 with `scripts/qa/shoot.mjs`, look at the screenshots next to the references, write 3-8 specific corrections (a value, an element, a pixel distance), apply them. Who does what: the coordinator (Opus, a model that can see) looks and decides the corrections; the executor applies them. QA runs where a browser works: the coordinator's own session, `ops-tester` or a worker that can drive a browser. Never inside a sandbox that cannot open Chrome. A build with fewer than three looked-at rounds is handed over as "draft", not done.
 
 ### 8b · Gates and self-critique
 
@@ -226,6 +228,7 @@ The build is done when: gates green, firma present, references cited and the res
 | `references/slop-test.md` | Step 8, ALWAYS before handing over |
 | `references/audit.md` | The `audit` and `redesign` verbs |
 | `scripts/guard.mjs` | Gate 0, and any time you want the hard rules checked mechanically |
+| `references/directions.md` | Step 1b: dealing three researched directions and finding free photos |
 | `references/qa.md` | Steps 4 and 8: the explore step and the rendered QA toolkit in `scripts/qa/` |
 
 Provenance, in detail and with licences, in `NOTICE.md` of the repo: https://github.com/stgomoyaa/firma/blob/main/NOTICE.md
